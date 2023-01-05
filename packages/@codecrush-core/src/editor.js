@@ -1,3 +1,4 @@
+import { Cursor } from "./cursor";
 import { EditableInput } from "./editableInput";
 
 export class Editor {
@@ -14,20 +15,23 @@ export class Editor {
     const editor = document.createElement("div");
     editor.setAttribute("class", "text-editor");
     editor.setAttribute("tabindex", "0");
-    
+
     // Pre element
     const pre = document.createElement("pre");
     pre.setAttribute("class", "text-editor-content");
-    editor.appendChild(pre)
+    editor.appendChild(pre);
 
     //Code
     const code = document.createElement("code");
     code.setAttribute("class", "text-editor-code");
-    pre.appendChild(code)
+    pre.appendChild(code);
 
-    document.body.appendChild(editor)
+    //cursor
+    const cursor = new Cursor(editor, 0);
 
-    this.editorContent = code
+    document.body.appendChild(editor);
+
+    this.editorContent = code;
     this.editorEl = editor;
   }
 
@@ -37,20 +41,30 @@ export class Editor {
     this.editorEl.addEventListener("click", () => {
       hiddenInput.focus();
       this.isFocus = true;
-      this.editorEl.classList.add('focused')
+      this.editorEl.classList.add("focused");
     });
 
     hiddenInput.onChange((e) => {
-      this.#displayText(e)
+      this.#displayText(e);
     });
 
     hiddenInput.onBlur(() => {
       this.isFocus = false;
-      this.editorEl.classList.remove('focused')
+      this.editorEl.classList.remove("focused");
     });
   }
 
-  #displayText(value){
-    this.editorContent.textContent = value
+  #displayText(value) {
+    const lines = [];
+    let lastLineBreakIndex = 0;
+    for (let i = 0; i < value.length; i++) {
+      if (value[i] == "\n") {
+        const line = value.slice(lastLineBreakIndex, i);
+        lines.push(line);
+        lastLineBreakIndex = i + 1;
+      }
+    }
+    console.log(lines);
+    this.editorContent.textContent = value;
   }
 }

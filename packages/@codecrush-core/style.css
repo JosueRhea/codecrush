@@ -36,3 +36,9 @@ body {
 .focused {
   outline: 3px solid violet;
 }
+
+.cursor {
+  width: 2px;
+  height: 10px;
+  background-color: black;
+}

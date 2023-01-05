@@ -6,6 +6,7 @@ export class Editor {
     this.editorEl = null;
     this.textarea = null;
     this.isFocus = false;
+    this.input = null;
   }
 
   #setupEditor() {
@@ -18,19 +19,20 @@ export class Editor {
 
   init() {
     this.#setupEditor();
-    const input = new EditableInput();
+    const hiddenInput = new EditableInput();
     this.editorEl.addEventListener("click", () => {
-      input.focus();
+      hiddenInput.focus();
       this.isFocus = true;
+      this.editorEl.classList.add('focused')
     });
 
-    input.onChange((e) => {
+    hiddenInput.onChange((e) => {
       console.log(e);
     });
 
-    input.onBlur(() => {
+    hiddenInput.onBlur(() => {
       this.isFocus = false;
-      console.log("Blur");
+      this.editorEl.classList.remove('focused')
     });
   }
 }

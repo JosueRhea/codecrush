@@ -23,3 +23,6 @@ body {
   border-radius: 10px;
   border: 1px solid #ddd;
 }
+.focused {
+  outline: 3px solid violet;
+}

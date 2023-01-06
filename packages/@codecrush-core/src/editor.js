@@ -16,6 +16,8 @@ export class Editor {
     this.preEl = null;
     this.cursor = null;
     this.currentPositionOnLine = 0;
+    this.lineCount = 0
+    this.lineNumbersEl = null
   }
 
   #setupEditor() {
@@ -30,6 +32,12 @@ export class Editor {
     pre.setAttribute("class", "text-editor-content");
     editor.appendChild(pre);
 
+    //Lines
+    const lineNumbers = document.createElement('div')
+    lineNumbers.classList.add('line-numbers')    
+    pre.appendChild(lineNumbers)
+    this.lineNumbersEl = lineNumbers
+
     //Code
     const code = document.createElement("code");
     code.setAttribute("class", "text-editor-code");
@@ -40,11 +48,13 @@ export class Editor {
     this.editorContent = code;
     this.editorEl = editor;
     this.preEl = pre;
-    const firstLine = new Line(code, "");
+    const firstLine = new Line(code, "", this.lineCount);
+    firstLine.setLineNumber(lineNumbers)
     firstLine.setIsActive(true);
     const linePos = firstLine.getPosition();
     const lineHeight = firstLine.getHeight();
     this.lines.push(firstLine);
+
     //cursor
     const cursor = new Cursor(pre, linePos, lineHeight);
     this.cursor = cursor;
@@ -76,9 +86,11 @@ export class Editor {
   }
 
   #createNewLine() {
+    this.lineCount += 1
     this.lines[this.currentLine].setIsActive(false);
-    const newLine = new Line(this.editorContent, "");
+    const newLine = new Line(this.editorContent, "", this.lineCount);
     newLine.setIsActive(true);
+    newLine.setLineNumber(this.lineNumbersEl)
     this.lines.push(newLine);
     this.currentLine += 1;
     this.preEl.scrollTo({
@@ -87,8 +99,10 @@ export class Editor {
     this.currentPositionOnLine = 0;
     this.#updateCursorPosition(this.lines[this.currentLine]);
   }
+
   #deleteLine(currentLine) {
-    currentLine.setIsActive(false);
+    this.lineCount -= 1
+    currentLine.setIsActive(false);    
     currentLine.destroy();
     this.lines.pop();
     this.currentLine -= 1;

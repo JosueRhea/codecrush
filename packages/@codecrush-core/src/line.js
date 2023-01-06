@@ -3,32 +3,38 @@ import { Actions } from "./actions";
 export class Line {
   #textEl = null;
   #lineEl = null;
-  constructor(codeEl, content) {
+  #lineNumberEl = null;
+  constructor(codeEl, content, lineNumber) {
     const div = document.createElement("div");
+    const lineNumberEl = document.createElement("div");
+    lineNumberEl.classList.add("line-number");
+    lineNumberEl.textContent = lineNumber;
     div.classList.add("line");
     const p = document.createElement("p");
     p.classList.add("line-content");
     p.textContent = content;
     div.appendChild(p);
     codeEl.appendChild(div);
-
+    lineNumberEl.style.height = div.getBoundingClientRect().height + "px"
+    this.#lineNumberEl = lineNumberEl;
     // Properties
     this.#textEl = p;
     this.#lineEl = div;
     this.actions = new Actions();
     this.isActive = false;
 
-    this.leftMovesOffsets = []
+    this.leftMovesOffsets = [];
   }
 
   destroy() {
     this.#lineEl.remove();
+    this.#lineNumberEl.remove()
   }
 
   appendText(newText) {
-    const beforePosition = this.#textEl.offsetWidth
+    const beforePosition = this.#textEl.offsetWidth;
     this.#textEl.textContent += newText;
-    this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition)
+    this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
   }
 
   deleteCharacter() {
@@ -50,19 +56,23 @@ export class Line {
     }
   }
 
-  getPosition(){
-    return {top: this.#lineEl.offsetTop, left: this.#lineEl.offsetLeft}
+  setLineNumber(node){
+    node.appendChild(this.#lineNumberEl)
   }
 
-  getHeight(){
-    return this.#lineEl.offsetHeight 
+  getPosition() {
+    return { top: this.#textEl.offsetTop, left: this.#textEl.offsetLeft };
   }
 
-  getTextWidth(){
-    return this.#textEl.getBoundingClientRect().width
+  getHeight() {
+    return this.#textEl.offsetHeight;
   }
-  
-  getLength(){
-    return this.#textEl.textContent.length
+
+  getTextWidth() {
+    return this.#textEl.getBoundingClientRect().width;
+  }
+
+  getLength() {
+    return this.#textEl.textContent.length;
   }
 }

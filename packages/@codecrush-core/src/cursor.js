@@ -17,8 +17,7 @@ export class Cursor {
     this.cursor.style.left = left + "px";
   }
 
-  moveLeftOneCharacter(offset) {
-    console.log(offset)
+  moveLeftOneCharacter(offset) {    
     this.cursor.style.left = `${this.cursor.offsetLeft - offset}px`;
   }
 

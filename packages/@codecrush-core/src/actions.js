@@ -1,6 +1,5 @@
 export class Actions {
-
-    deleteCharacter(editorContent) {
-        return editorContent.slice(0, -1)
-    }
+  deleteCharacter(lineContent) {
+    return lineContent.slice(0, -1);
+  }
 }

@@ -1,7 +1,7 @@
-import { specialKeys, keyCodeToChar } from "./characters";
+import { keyCodeToChar } from "./characters";
 import { Cursor } from "./cursor";
 import { EditableInput } from "./editableInput";
-import { Actions } from './actions'
+import { Line } from "./line";
 
 export class Editor {
   constructor() {
@@ -10,7 +10,8 @@ export class Editor {
     this.textarea = null;
     this.isFocus = false;
     this.input = null;
-    this.actions = new Actions()
+    this.lines = [];
+    this.currentLine = 0;
   }
 
   #setupEditor() {
@@ -36,6 +37,7 @@ export class Editor {
 
     this.editorContent = code;
     this.editorEl = editor;
+    this.lines.push(new Line(code, ""));
   }
 
   init() {
@@ -58,13 +60,25 @@ export class Editor {
   }
 
   #displayText(value) {
-    if(value == "Backspace"){
-      const newValue = this.actions.deleteCharacter(this.editorContent.textContent) 
-      this.editorContent.textContent = newValue
-
-    }else{
-      const parsedValue = keyCodeToChar[value] ?? value
-    this.editorContent.textContent += parsedValue
+    console.log(this.lines);
+    if (value == "Backspace") {
+      const currentLine = this.lines[this.currentLine];
+      if (currentLine.isEmpty()) {
+        if (this.currentLine > 0) {
+          currentLine.destroy();
+          this.lines.pop();
+          this.currentLine -= 1;
+        }
+      } else {
+        currentLine.deleteCharacter();
+      }
+    } else if (value == "Enter") {
+      this.lines.push(new Line(this.editorContent, ""));
+      this.currentLine += 1;
+    } else {
+      const parsedValue = keyCodeToChar[value] ?? value;
+      // this.editorContent.textContent += parsedValue;
+      this.lines[this.currentLine].appendText(parsedValue);
     }
   }
 }

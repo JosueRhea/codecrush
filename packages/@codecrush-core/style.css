@@ -42,3 +42,8 @@ body {
   height: 10px;
   background-color: black;
 }
+
+.line .line-content{
+  margin: 0;
+  padding: 0;
+}

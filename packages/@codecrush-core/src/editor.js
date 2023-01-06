@@ -12,6 +12,7 @@ export class Editor {
     this.input = null;
     this.lines = [];
     this.currentLine = 0;
+    this.preEl = null;
   }
 
   #setupEditor() {
@@ -37,6 +38,7 @@ export class Editor {
 
     this.editorContent = code;
     this.editorEl = editor;
+    this.preEl = pre
     const firstLine = new Line(code, "")
     firstLine.setIsActive(true)
     this.lines.push(firstLine);
@@ -81,6 +83,9 @@ export class Editor {
       newLine.setIsActive(true)
       this.lines.push(newLine);
       this.currentLine += 1;
+      this.preEl.scrollTo({
+        top: this.preEl.scrollHeight
+      })
     } else {
       const parsedValue = keyCodeToChar[value] ?? value;
       this.lines[this.currentLine].appendText(parsedValue);

@@ -17,6 +17,8 @@ export class Line {
     this.#lineEl = div;
     this.actions = new Actions();
     this.isActive = false;
+
+    this.leftMovesOffsets = []
   }
 
   destroy() {
@@ -24,7 +26,9 @@ export class Line {
   }
 
   appendText(newText) {
+    const beforePosition = this.#textEl.offsetWidth
     this.#textEl.textContent += newText;
+    this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition)
   }
 
   deleteCharacter() {
@@ -56,5 +60,9 @@ export class Line {
 
   getTextWidth(){
     return this.#textEl.getBoundingClientRect().width
+  }
+  
+  getLength(){
+    return this.#textEl.textContent.length
   }
 }

@@ -14,6 +14,7 @@ export class Editor {
     this.currentLine = 0;
     this.preEl = null;
     this.cursor = null;
+    this.currentPositionOnLine = 0;
   }
 
   #setupEditor() {
@@ -79,10 +80,11 @@ export class Editor {
     newLine.setIsActive(true);
     this.lines.push(newLine);
     this.currentLine += 1;
+    ``;
     this.preEl.scrollTo({
       top: this.preEl.scrollHeight,
     });
-    this.#updateCursorPosition(this.lines[this.currentLine])
+    this.#updateCursorPosition(this.lines[this.currentLine]);
   }
 
   #deleteCharacter() {
@@ -94,15 +96,15 @@ export class Editor {
         this.lines.pop();
         this.currentLine -= 1;
         this.lines[this.currentLine].setIsActive(true);
-        this.#updateCursorPosition(this.lines[this.currentLine])        
+        this.#updateCursorPosition(this.lines[this.currentLine]);
       }
     } else {
       currentLine.deleteCharacter();
-      this.#updateCursorPosition(this.lines[this.currentLine])        
+      this.#updateCursorPosition(this.lines[this.currentLine]);
     }
   }
 
-  #updateCursorPosition(currentLine){
+  #updateCursorPosition(currentLine) {
     const textWidth = currentLine.getTextWidth();
     const linePos = currentLine.getPosition();
     this.cursor.updatePosition({
@@ -113,18 +115,48 @@ export class Editor {
 
   #addCharacter(value) {
     const parsedValue = keyCodeToChar[value] ?? value;
-    const currLine = this.lines[this.currentLine];
-    currLine.appendText(parsedValue);
-    this.#updateCursorPosition(currLine)
+    if (parsedValue != "") {
+      const currLine = this.lines[this.currentLine];
+      currLine.appendText(parsedValue);
+      this.#updateCursorPosition(currLine);
+      this.currentPositionOnLine += 1;
+    }
   }
 
   #displayText(value) {
-    if (value == "Backspace") {
-      this.#deleteCharacter();
-    } else if (value == "Enter") {
-      this.#createNewLine();
-    } else {
-      this.#addCharacter(value);
+    switch (value) {
+      case "Backspace":
+        this.#deleteCharacter();
+        break;
+      case "Enter":
+        this.#createNewLine();
+        break;
+      case "ArrowLeft":
+        if (this.currentPositionOnLine > 0) {
+          this.currentPositionOnLine -= 1;
+          const moveOffset =
+            this.lines[this.currentLine].leftMovesOffsets[
+              this.currentPositionOnLine
+            ];
+          this.cursor.moveLeftOneCharacter(moveOffset);
+        }
+        break;
+      case "ArrowRight":
+        const currentLine = this.lines[this.currentLine];
+        console.log(currentLine.getLength())
+        if (this.currentPositionOnLine < currentLine.getLength()) {
+          console.log("enter")
+          this.currentPositionOnLine += 1;
+          const moveOffset =
+            currentLine.leftMovesOffsets[this.currentPositionOnLine - 1];
+          this.cursor.moveRightOneCharacter(moveOffset);
+        }
+        break;
+      default:
+        this.#addCharacter(value);
+        break;
     }
+    console.log(this.lines[this.currentLine].leftMovesOffsets);
+    console.log({ current: this.currentPositionOnLine });
   }
 }

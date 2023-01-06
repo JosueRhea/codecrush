@@ -40,20 +40,31 @@ body {
 .cursor {
   width: 2px;
   background-color: black;
+  /* animation: cursorAnimation 1s steps(10, start) infinite; */
 }
 
-.line .line-content{
+.line .line-content {
   margin: 0;
   padding: 0;
   min-height: 25px;
   width: fit-content;
+  font-size: 14px;
 }
 
-.line { 
+.line {
   padding-top: 0.5px;
   padding-bottom: 0.5px;
 }
 
-.active{
+.active {
   background-color: #eee;
+}
+
+@keyframes cursorAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

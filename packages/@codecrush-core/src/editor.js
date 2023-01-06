@@ -1,5 +1,7 @@
+import { specialKeys, keyCodeToChar } from "./characters";
 import { Cursor } from "./cursor";
 import { EditableInput } from "./editableInput";
+import { Actions } from './actions'
 
 export class Editor {
   constructor() {
@@ -8,6 +10,7 @@ export class Editor {
     this.textarea = null;
     this.isFocus = false;
     this.input = null;
+    this.actions = new Actions()
   }
 
   #setupEditor() {
@@ -55,16 +58,13 @@ export class Editor {
   }
 
   #displayText(value) {
-    const lines = [];
-    let lastLineBreakIndex = 0;
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] == "\n") {
-        const line = value.slice(lastLineBreakIndex, i);
-        lines.push(line);
-        lastLineBreakIndex = i + 1;
-      }
+    if(value == "Backspace"){
+      const newValue = this.actions.deleteCharacter(this.editorContent.textContent) 
+      this.editorContent.textContent = newValue
+
+    }else{
+      const parsedValue = keyCodeToChar[value] ?? value
+    this.editorContent.textContent += parsedValue
     }
-    console.log(lines);
-    this.editorContent.textContent = value;
   }
 }

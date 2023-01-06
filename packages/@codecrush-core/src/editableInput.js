@@ -20,7 +20,8 @@ export class EditableInput {
 
   onChange(cb) {
     this.#el.addEventListener("keydown", (e) => {
-      cb(e.target.value);
+      e.preventDefault()
+      cb(e.key);
     });
   }
 

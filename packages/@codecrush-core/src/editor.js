@@ -80,10 +80,21 @@ export class Editor {
     newLine.setIsActive(true);
     this.lines.push(newLine);
     this.currentLine += 1;
-    ``;
     this.preEl.scrollTo({
       top: this.preEl.scrollHeight,
     });
+    this.currentPositionOnLine = 0;
+    this.#updateCursorPosition(this.lines[this.currentLine]);
+  }
+  #deleteLine(currentLine) {
+    currentLine.setIsActive(false);
+    currentLine.destroy();
+    this.lines.pop();
+    this.currentLine -= 1;
+    const newCurrentLine = this.lines[this.currentLine]
+    newCurrentLine.setIsActive(true);
+    const length = newCurrentLine.getLength()
+    this.currentPositionOnLine = length
     this.#updateCursorPosition(this.lines[this.currentLine]);
   }
 
@@ -91,12 +102,7 @@ export class Editor {
     const currentLine = this.lines[this.currentLine];
     if (currentLine.isEmpty()) {
       if (this.currentLine > 0) {
-        currentLine.setIsActive(false);
-        currentLine.destroy();
-        this.lines.pop();
-        this.currentLine -= 1;
-        this.lines[this.currentLine].setIsActive(true);
-        this.#updateCursorPosition(this.lines[this.currentLine]);
+        this.#deleteLine(currentLine);
       }
     } else {
       currentLine.deleteCharacter();
@@ -143,9 +149,9 @@ export class Editor {
         break;
       case "ArrowRight":
         const currentLine = this.lines[this.currentLine];
-        console.log(currentLine.getLength())
+        console.log(currentLine.getLength());
         if (this.currentPositionOnLine < currentLine.getLength()) {
-          console.log("enter")
+          console.log("enter");
           this.currentPositionOnLine += 1;
           const moveOffset =
             currentLine.leftMovesOffsets[this.currentPositionOnLine - 1];

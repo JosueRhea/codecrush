@@ -73,39 +73,58 @@ export class Editor {
     });
   }
 
+  #createNewLine() {
+    this.lines[this.currentLine].setIsActive(false);
+    const newLine = new Line(this.editorContent, "");
+    newLine.setIsActive(true);
+    this.lines.push(newLine);
+    this.currentLine += 1;
+    this.preEl.scrollTo({
+      top: this.preEl.scrollHeight,
+    });
+    this.#updateCursorPosition(this.lines[this.currentLine])
+  }
+
+  #deleteCharacter() {
+    const currentLine = this.lines[this.currentLine];
+    if (currentLine.isEmpty()) {
+      if (this.currentLine > 0) {
+        currentLine.setIsActive(false);
+        currentLine.destroy();
+        this.lines.pop();
+        this.currentLine -= 1;
+        this.lines[this.currentLine].setIsActive(true);
+        this.#updateCursorPosition(this.lines[this.currentLine])        
+      }
+    } else {
+      currentLine.deleteCharacter();
+      this.#updateCursorPosition(this.lines[this.currentLine])        
+    }
+  }
+
+  #updateCursorPosition(currentLine){
+    const textWidth = currentLine.getTextWidth();
+    const linePos = currentLine.getPosition();
+    this.cursor.updatePosition({
+      top: linePos.top,
+      left: linePos.left + textWidth,
+    });
+  }
+
+  #addCharacter(value) {
+    const parsedValue = keyCodeToChar[value] ?? value;
+    const currLine = this.lines[this.currentLine];
+    currLine.appendText(parsedValue);
+    this.#updateCursorPosition(currLine)
+  }
+
   #displayText(value) {
     if (value == "Backspace") {
-      const currentLine = this.lines[this.currentLine];
-      if (currentLine.isEmpty()) {
-        if (this.currentLine > 0) {
-          currentLine.setIsActive(false);
-          currentLine.destroy();
-          this.lines.pop();
-          this.currentLine -= 1;
-          this.lines[this.currentLine].setIsActive(true);
-        }
-      } else {
-        currentLine.deleteCharacter();
-      }
+      this.#deleteCharacter();
     } else if (value == "Enter") {
-      this.lines[this.currentLine].setIsActive(false);
-      const newLine = new Line(this.editorContent, "");
-      newLine.setIsActive(true);
-      this.lines.push(newLine);
-      this.currentLine += 1;
-      this.preEl.scrollTo({
-        top: this.preEl.scrollHeight,
-      });
+      this.#createNewLine();
     } else {
-      const parsedValue = keyCodeToChar[value] ?? value;
-      const currLine = this.lines[this.currentLine];
-      currLine.appendText(parsedValue);
-      const textWidth = currLine.getTextWidth();
-      const linePos = currLine.getPosition();
-      this.cursor.updatePosition({
-        top: linePos.top,
-        left: linePos.left + textWidth,
-      });
+      this.#addCharacter(value);
     }
   }
 }

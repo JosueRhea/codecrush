@@ -45,4 +45,16 @@ export class Line {
       this.#lineEl.classList.remove("active");
     }
   }
+
+  getPosition(){
+    return {top: this.#lineEl.offsetTop, left: this.#lineEl.offsetLeft}
+  }
+
+  getHeight(){
+    return this.#lineEl.offsetHeight 
+  }
+
+  getTextWidth(){
+    return this.#textEl.getBoundingClientRect().width
+  }
 }

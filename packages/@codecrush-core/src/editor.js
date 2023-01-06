@@ -130,6 +130,94 @@ export class Editor {
     }
   }
 
+  #moveLeft() {
+    if (this.currentPositionOnLine > 0) {
+      this.currentPositionOnLine -= 1;
+      const moveOffset =
+        this.lines[this.currentLine].leftMovesOffsets[
+          this.currentPositionOnLine
+        ];
+      this.cursor.moveLeftOneCharacter(moveOffset);
+    } else {
+      if (this.currentLine > 0) {
+        this.#moveUp(true);
+      }
+    }
+  }
+
+  #moveRight() {
+    const currentLine = this.lines[this.currentLine];
+    if (this.currentPositionOnLine < currentLine.getLength()) {
+      this.currentPositionOnLine += 1;
+      const moveOffset =
+        currentLine.leftMovesOffsets[this.currentPositionOnLine - 1];
+      this.cursor.moveRightOneCharacter(moveOffset);
+    } else {
+      if (this.currentLine < this.lines.length) {
+        this.#moveDown(true);
+      }
+    }
+  }
+
+  #moveUp(endOfLine = false) {
+    if (this.currentLine > 0 && !endOfLine) {
+      this.lines[this.currentLine].setIsActive(false);
+      this.currentLine -= 1;
+      const newCurrentLine = this.lines[this.currentLine];
+      newCurrentLine.setIsActive(true);
+      const leftOffset = sumArrayUntilIndex(
+        newCurrentLine.leftMovesOffsets,
+        this.currentPositionOnLine
+      );
+      if (newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine) {
+        this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
+        this.#updateCursorPosition(newCurrentLine);
+      } else {
+        const { top } = newCurrentLine.getPosition();
+        this.cursor.updatePosition({ top, leftOffset });
+      }
+    }
+
+    if (this.currentLine > 0 && endOfLine) {
+      this.lines[this.currentLine].setIsActive(false);
+      this.currentLine -= 1;
+      const newCurrentLine = this.lines[this.currentLine];
+      newCurrentLine.setIsActive(true);
+      this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
+      this.#updateCursorPosition(newCurrentLine);
+    }
+  }
+
+  #moveDown(startOfLine = false) {
+    if (this.currentLine < this.lines.length - 1 && !startOfLine) {
+      this.lines[this.currentLine].setIsActive(false);
+      this.currentLine += 1;
+      const newCurrentLine = this.lines[this.currentLine];
+      newCurrentLine.setIsActive(true);
+      const leftOffset = sumArrayUntilIndex(
+        newCurrentLine.leftMovesOffsets,
+        this.currentPositionOnLine
+      );
+      if (newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine) {
+        this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
+        this.#updateCursorPosition(newCurrentLine);
+      } else {
+        const { top } = newCurrentLine.getPosition();
+        this.cursor.updatePosition({ top, leftOffset });
+      }
+    }
+
+    if (this.currentLine < this.lines.length - 1 && startOfLine) {
+      this.lines[this.currentLine].setIsActive(false);
+      this.currentLine += 1;
+      const newCurrentLine = this.lines[this.currentLine];
+      newCurrentLine.setIsActive(true);
+      const pos = newCurrentLine.getPosition();
+      this.currentPositionOnLine = 0;
+      this.cursor.updatePosition({ top: pos.top, left: pos.left });
+    }
+  }
+
   #displayText(value) {
     switch (value) {
       case "Backspace":
@@ -139,70 +227,20 @@ export class Editor {
         this.#createNewLine();
         break;
       case "ArrowLeft":
-        if (this.currentPositionOnLine > 0) {
-          this.currentPositionOnLine -= 1;
-          const moveOffset =
-            this.lines[this.currentLine].leftMovesOffsets[
-              this.currentPositionOnLine
-            ];
-          this.cursor.moveLeftOneCharacter(moveOffset);
-        }
+        this.#moveLeft();
         break;
       case "ArrowRight":
-        const currentLine = this.lines[this.currentLine];
-        if (this.currentPositionOnLine < currentLine.getLength()) {
-          this.currentPositionOnLine += 1;
-          const moveOffset =
-            currentLine.leftMovesOffsets[this.currentPositionOnLine - 1];
-          this.cursor.moveRightOneCharacter(moveOffset);
-        }
+        this.#moveRight();
         break;
       case "ArrowUp":
-        if (this.currentLine > 0) {
-          this.lines[this.currentLine].setIsActive(false);
-          this.currentLine -= 1;
-          const newCurrentLine = this.lines[this.currentLine];
-          newCurrentLine.setIsActive(true);
-          const leftOffset = sumArrayUntilIndex(
-            newCurrentLine.leftMovesOffsets,
-            this.currentPositionOnLine
-          );
-          if (
-            newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine
-          ) {
-            this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
-            this.#updateCursorPosition(newCurrentLine);
-          } else {
-            const { top } = newCurrentLine.getPosition();
-            this.cursor.updatePosition({ top, leftOffset });
-          }
-        }
+        this.#moveUp();
         break;
       case "ArrowDown":
-        if (this.currentLine < this.lines.length - 1) {
-          this.lines[this.currentLine].setIsActive(false);
-          this.currentLine += 1;
-          const newCurrentLine = this.lines[this.currentLine];
-          newCurrentLine.setIsActive(true);
-          const leftOffset = sumArrayUntilIndex(
-            newCurrentLine.leftMovesOffsets,
-            this.currentPositionOnLine
-          );
-          if (
-            newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine
-          ) {
-            this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
-            this.#updateCursorPosition(newCurrentLine);
-          } else {
-            const { top } = newCurrentLine.getPosition();
-            this.cursor.updatePosition({ top, leftOffset });
-          }
-        }
+        this.#moveDown();
+        break;
       default:
         this.#addCharacter(value);
         break;
     }
-    console.log(this.lines[this.currentLine].leftMovesOffsets);
-    console.log({ current: this.currentPositionOnLine });
   }
 }

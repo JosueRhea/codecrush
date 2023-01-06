@@ -22,6 +22,7 @@ body {
   height: 200px;
   border-radius: 10px;
   border: 1px solid #ddd;
+  letter-spacing: 1px;
 }
 
 .text-editor pre {

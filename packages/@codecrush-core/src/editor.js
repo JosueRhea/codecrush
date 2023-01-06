@@ -2,6 +2,7 @@ import { keyCodeToChar } from "./characters";
 import { Cursor } from "./cursor";
 import { EditableInput } from "./editableInput";
 import { Line } from "./line";
+import { sumArrayUntilIndex } from "./utils/array";
 
 export class Editor {
   constructor() {
@@ -91,10 +92,10 @@ export class Editor {
     currentLine.destroy();
     this.lines.pop();
     this.currentLine -= 1;
-    const newCurrentLine = this.lines[this.currentLine]
+    const newCurrentLine = this.lines[this.currentLine];
     newCurrentLine.setIsActive(true);
-    const length = newCurrentLine.getLength()
-    this.currentPositionOnLine = length
+    const length = newCurrentLine.getLength();
+    this.currentPositionOnLine = length;
     this.#updateCursorPosition(this.lines[this.currentLine]);
   }
 
@@ -149,13 +150,30 @@ export class Editor {
         break;
       case "ArrowRight":
         const currentLine = this.lines[this.currentLine];
-        console.log(currentLine.getLength());
         if (this.currentPositionOnLine < currentLine.getLength()) {
-          console.log("enter");
           this.currentPositionOnLine += 1;
           const moveOffset =
             currentLine.leftMovesOffsets[this.currentPositionOnLine - 1];
           this.cursor.moveRightOneCharacter(moveOffset);
+        }
+        break;
+      case "ArrowUp":
+        if (this.currentLine > 0) {
+          this.lines[this.currentLine].setIsActive(false);
+          this.currentLine -= 1;
+          const newCurrentLine = this.lines[this.currentLine];
+          newCurrentLine.setIsActive(true);
+          const leftOffset = sumArrayUntilIndex(
+            newCurrentLine.leftMovesOffsets,
+            this.currentPositionOnLine
+          );
+          if (newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine) {
+            this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length
+            this.#updateCursorPosition(newCurrentLine);
+          } else {
+            const { top } = newCurrentLine.getPosition();
+            this.cursor.updatePosition({ top, leftOffset });
+          }
         }
         break;
       default:

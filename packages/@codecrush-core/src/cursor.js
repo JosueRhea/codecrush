@@ -10,14 +10,11 @@ export class Cursor {
     this.cursor.classList.add("cursor");
 
     editor.appendChild(this.cursor);
-    this.lastLeftIncrement = 0;
   }
 
   updatePosition({ top, left }) {
-    const currentPosition = this.cursor.offsetLeft;
     this.cursor.style.top = top + "px";
     this.cursor.style.left = left + "px";
-    this.lastLeftIncrement = this.cursor.offsetLeft - currentPosition;
   }
 
   moveLeftOneCharacter(offset) {

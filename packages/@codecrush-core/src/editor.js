@@ -167,8 +167,10 @@ export class Editor {
             newCurrentLine.leftMovesOffsets,
             this.currentPositionOnLine
           );
-          if (newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine) {
-            this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length
+          if (
+            newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine
+          ) {
+            this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
             this.#updateCursorPosition(newCurrentLine);
           } else {
             const { top } = newCurrentLine.getPosition();
@@ -176,6 +178,26 @@ export class Editor {
           }
         }
         break;
+      case "ArrowDown":
+        if (this.currentLine < this.lines.length - 1) {
+          this.lines[this.currentLine].setIsActive(false);
+          this.currentLine += 1;
+          const newCurrentLine = this.lines[this.currentLine];
+          newCurrentLine.setIsActive(true);
+          const leftOffset = sumArrayUntilIndex(
+            newCurrentLine.leftMovesOffsets,
+            this.currentPositionOnLine
+          );
+          if (
+            newCurrentLine.leftMovesOffsets.length < this.currentPositionOnLine
+          ) {
+            this.currentPositionOnLine = newCurrentLine.leftMovesOffsets.length;
+            this.#updateCursorPosition(newCurrentLine);
+          } else {
+            const { top } = newCurrentLine.getPosition();
+            this.cursor.updatePosition({ top, leftOffset });
+          }
+        }
       default:
         this.#addCharacter(value);
         break;

@@ -64,7 +64,6 @@ body {
 .line {
   padding-top: 0.5px;
   padding-bottom: 0.5px;
-  display: flex;
 }
 
 .line .line-number{

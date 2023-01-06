@@ -141,6 +141,9 @@ export class Editor {
       currLine.appendText(parsedValue);
       this.#updateCursorPosition(currLine);
       this.currentPositionOnLine += 1;
+      this.preEl.scrollTo({
+        left: this.preEl.scrollWidth,
+      });
     }
   }
 

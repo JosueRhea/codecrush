@@ -11,13 +11,16 @@ export class Line {
     p.textContent = content;
     div.appendChild(p);
     codeEl.appendChild(div);
+
+    // Properties
     this.#textEl = p;
     this.#lineEl = div;
     this.actions = new Actions();
+    this.isActive = false;
   }
 
-  destroy(){
-    this.#lineEl.remove()
+  destroy() {
+    this.#lineEl.remove();
   }
 
   appendText(newText) {
@@ -30,7 +33,16 @@ export class Line {
     );
   }
 
-  isEmpty(){
-    return this.#textEl.textContent == ""
+  isEmpty() {
+    return this.#textEl.textContent == "";
+  }
+
+  setIsActive(isActive) {
+    this.isActive = isActive;
+    if (isActive) {
+      this.#lineEl.classList.add("active");
+    } else {
+      this.#lineEl.classList.remove("active");
+    }
   }
 }

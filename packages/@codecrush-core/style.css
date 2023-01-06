@@ -46,4 +46,14 @@ body {
 .line .line-content{
   margin: 0;
   padding: 0;
+  min-height: 25px;
+}
+
+.line { 
+  padding-top: 0.5px;
+  padding-bottom: 0.5px;
+}
+
+.active{
+  background-color: #dcd;
 }

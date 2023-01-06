@@ -37,7 +37,9 @@ export class Editor {
 
     this.editorContent = code;
     this.editorEl = editor;
-    this.lines.push(new Line(code, ""));
+    const firstLine = new Line(code, "")
+    firstLine.setIsActive(true)
+    this.lines.push(firstLine);
   }
 
   init() {
@@ -60,24 +62,27 @@ export class Editor {
   }
 
   #displayText(value) {
-    console.log(this.lines);
     if (value == "Backspace") {
       const currentLine = this.lines[this.currentLine];
       if (currentLine.isEmpty()) {
         if (this.currentLine > 0) {
+          currentLine.setIsActive(false)
           currentLine.destroy();
           this.lines.pop();
           this.currentLine -= 1;
+          this.lines[this.currentLine].setIsActive(true)
         }
       } else {
         currentLine.deleteCharacter();
       }
     } else if (value == "Enter") {
-      this.lines.push(new Line(this.editorContent, ""));
+      this.lines[this.currentLine].setIsActive(false)
+      const newLine = new Line(this.editorContent, "")
+      newLine.setIsActive(true)
+      this.lines.push(newLine);
       this.currentLine += 1;
     } else {
       const parsedValue = keyCodeToChar[value] ?? value;
-      // this.editorContent.textContent += parsedValue;
       this.lines[this.currentLine].appendText(parsedValue);
     }
   }

@@ -16,8 +16,8 @@ export class Editor {
     this.preEl = null;
     this.cursor = null;
     this.currentPositionOnLine = 0;
-    this.lineCount = 0
-    this.lineNumbersEl = null
+    this.lineCount = 0;
+    this.lineNumbersEl = null;
   }
 
   #setupEditor() {
@@ -33,10 +33,10 @@ export class Editor {
     editor.appendChild(pre);
 
     //Lines
-    const lineNumbers = document.createElement('div')
-    lineNumbers.classList.add('line-numbers')    
-    pre.appendChild(lineNumbers)
-    this.lineNumbersEl = lineNumbers
+    const lineNumbers = document.createElement("div");
+    lineNumbers.classList.add("line-numbers");
+    pre.appendChild(lineNumbers);
+    this.lineNumbersEl = lineNumbers;
 
     //Code
     const code = document.createElement("code");
@@ -49,7 +49,7 @@ export class Editor {
     this.editorEl = editor;
     this.preEl = pre;
     const firstLine = new Line(code, "", this.lineCount);
-    firstLine.setLineNumber(lineNumbers)
+    firstLine.setLineNumber(lineNumbers);
     firstLine.setIsActive(true);
     const linePos = firstLine.getPosition();
     const lineHeight = firstLine.getHeight();
@@ -86,11 +86,11 @@ export class Editor {
   }
 
   #createNewLine() {
-    this.lineCount += 1
+    this.lineCount += 1;
     this.lines[this.currentLine].setIsActive(false);
     const newLine = new Line(this.editorContent, "", this.lineCount);
     newLine.setIsActive(true);
-    newLine.setLineNumber(this.lineNumbersEl)
+    newLine.setLineNumber(this.lineNumbersEl);
     this.lines.push(newLine);
     this.currentLine += 1;
     this.preEl.scrollTo({
@@ -100,17 +100,18 @@ export class Editor {
     this.#updateCursorPosition(this.lines[this.currentLine]);
   }
 
-  #deleteLine(currentLine) {
-    this.lineCount -= 1
-    currentLine.setIsActive(false);    
+  #deleteLine(currentLine, position) {
+    console.log(position);
+    this.lineCount -= 1;
+    currentLine.setIsActive(false);
     currentLine.destroy();
     this.lines.pop();
     this.currentLine -= 1;
     const newCurrentLine = this.lines[this.currentLine];
     newCurrentLine.setIsActive(true);
-    const length = newCurrentLine.getLength();
+    const length = position ? position : newCurrentLine.getLength();
     this.currentPositionOnLine = length;
-    this.#updateCursorPosition(this.lines[this.currentLine]);
+    this.#updateCursorPositionTo(this.currentPositionOnLine, newCurrentLine);
   }
 
   #deleteCharacter() {
@@ -120,10 +121,28 @@ export class Editor {
         this.#deleteLine(currentLine);
       }
     } else {
-      currentLine.deleteCharacter(this.currentPositionOnLine);
-      this.#moveLeft()
-      // this.#updateCursorPosition(this.lines[this.currentLine]);
+      if (this.currentPositionOnLine > 0) {
+        currentLine.deleteCharacter(this.currentPositionOnLine);
+        this.#moveLeft();
+      } else {
+        if (this.currentLine > 0) {
+          const lineToAppend = this.lines[this.currentLine - 1];
+          const newPosition = lineToAppend.getLength();
+          currentLine.giveContentTo(lineToAppend);
+          this.#deleteLine(currentLine, newPosition);
+        }
+      }
     }
+  }
+
+  #updateCursorPositionTo(position, line) {
+    const left = line.getOffsetSum(position);
+    const linePos = line.getPosition();
+    console.log(left);
+    this.cursor.updatePosition({
+      top: linePos.top,
+      left: linePos.left + left,
+    });
   }
 
   #updateCursorPosition(currentLine) {
@@ -140,7 +159,7 @@ export class Editor {
     if (parsedValue != "") {
       const currLine = this.lines[this.currentLine];
       currLine.appendText(parsedValue, this.currentPositionOnLine);
-      this.#moveRight()
+      this.#moveRight();
       this.preEl.scrollTo({
         left: this.preEl.scrollWidth,
       });
@@ -259,5 +278,9 @@ export class Editor {
         this.#addCharacter(value);
         break;
     }
+    console.log({
+      currentLine: this.currentLine,
+      linePosition: this.currentPositionOnLine,
+    });
   }
 }

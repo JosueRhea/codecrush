@@ -6,9 +6,10 @@ export class Line {
   #lineEl = null;
   #lineNumberEl = null;
   constructor(codeEl, content, lineNumber, index) {
+    console.log({indexToInsert: index})
     this.actions = new Actions();
     this.leftMovesOffsets = [];
-    const div = document.createElement("div");        
+    const div = document.createElement("div");
     const lineNumberEl = document.createElement("div");
     lineNumberEl.classList.add("line-number");
     lineNumberEl.textContent = lineNumber;
@@ -35,11 +36,12 @@ export class Line {
   }
 
   changeLineNumber(number) {
-    console.log({number, content: this.getContentAfter(0)})
+    // console.log({ number, content: this.getContentAfter(0) });
     this.#lineNumberEl.textContent = number;
   }
 
   appendText(newText, currentCursorPosition) {
+    this.#lineEl.id = newText 
     if (newText.length > 1) {
       console.log("More than 1");
       let newCursor = currentCursorPosition;
@@ -72,7 +74,10 @@ export class Line {
   }
 
   deleteCharacterAfter(position) {
-    this.#textEl.textContent = this.actions.deleteAfter(this.#textEl.textContent, position);
+    this.#textEl.textContent = this.actions.deleteAfter(
+      this.#textEl.textContent,
+      position
+    );
   }
 
   giveContentTo(lineToAppend) {
@@ -96,8 +101,8 @@ export class Line {
     }
   }
 
-  setLineNumber(node) {
-    node.appendChild(this.#lineNumberEl);
+  setLineNumber(node, position) {
+    node.insertBefore(this.#lineNumberEl, node.children[position]);
   }
 
   getContentAfter(position) {

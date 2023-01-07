@@ -49,7 +49,7 @@ export class Editor {
     this.editorEl = editor;
     this.preEl = pre;
     const firstLine = new Line(code, "", this.lineCount, 0);
-    firstLine.setLineNumber(lineNumbers);
+    firstLine.setLineNumber(lineNumbers, 0);
     firstLine.setIsActive(true);
     const linePos = firstLine.getPosition();
     const lineHeight = firstLine.getHeight();
@@ -94,28 +94,26 @@ export class Editor {
 
     if (!contentAfterPosition) {
       this.currentLine += 1;
-      console.log(this.currentLine)
       const newLine = new Line(
         this.editorContent,
         "",
         this.currentLine,
         this.currentLine
       );
-      newLine.setIsActive(true);
-      newLine.setLineNumber(this.lineNumbersEl);
-
-      //Push line
       this.lines = insertInto(this.lines, this.currentLine, newLine);
-      console.log(this.lines.length)
+      newLine.setIsActive(true);
+      this.#recomputeLineNumbers()
+      newLine.setLineNumber(this.lineNumbersEl, this.currentLine);
+      //Push line
       this.preEl.scrollTo({
         top: this.preEl.scrollHeight,
       });
       this.currentPositionOnLine = 0;
       this.#updateCursorPositionTo(this.currentPositionOnLine, newLine);
     } else {
-      // this.currentLine += 1;
-      currentLine.deleteCharacterAfter(position);
-      console.log(currentLine)
+      console.log("Enter here")
+      this.currentLine += 1;
+      currentLineEl.deleteCharacterAfter(position);      
       const newLine = new Line(
         this.editorContent,
         contentAfterPosition,
@@ -123,17 +121,17 @@ export class Editor {
         this.currentLine
       );
       newLine.setIsActive(true);
-      newLine.setLineNumber(this.lineNumbersEl);
-      this.lines = insertInto(this.lines, this.currentLine, newLine);
-      console.log(this.lines.length);
+      newLine.setLineNumber(this.lineNumbersEl, this.currentLine);
+      this.lines = insertInto(this.lines, this.currentLine, newLine);      
       this.preEl.scrollTo({
         top: this.preEl.scrollHeight,
       });
       this.currentPositionOnLine = 0;
       this.#updateCursorPositionTo(this.currentPositionOnLine, newLine);
-      this.#recomputeLineNumbers()
     }
+    // this.#recomputeLineNumbers()
   }
+
 
   #recomputeLineNumbers() {
     this.lines.forEach((line, i) => {

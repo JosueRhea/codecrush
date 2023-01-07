@@ -35,7 +35,7 @@ body {
   display: flex;
 }
 
-.text-editor code{
+.text-editor code {
   width: 100%;
 }
 .focused {
@@ -56,7 +56,7 @@ body {
   font-size: 14px;
 }
 
-.line-numbers{
+.line-numbers {
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -66,7 +66,7 @@ body {
   padding-bottom: 0.5px;
 }
 
-.line .line-number{
+.line-numbers .line-number {
   width: fit-content;
 }
 

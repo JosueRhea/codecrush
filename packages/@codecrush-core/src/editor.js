@@ -100,25 +100,33 @@ export class Editor {
     this.#updateCursorPosition(this.lines[this.currentLine]);
   }
 
-  #deleteLine(currentLine, position) {
-    console.log(position);
-    this.lineCount -= 1;
+  #deleteLine(currentLineIndex, position) {
+    const currentLine = this.lines[currentLineIndex];
     currentLine.setIsActive(false);
     currentLine.destroy();
-    this.lines.pop();
+    this.lines = this.lines.reduce((acc, curr, i) => {
+      if (i !== currentLineIndex) {
+        acc.push(curr);
+      }
+      return acc;
+    }, []);
+    this.lines.forEach((line, i) => line.changeLineNumber(i));
+    this.lineCount -= 1;
     this.currentLine -= 1;
     const newCurrentLine = this.lines[this.currentLine];
+    console.log({ lines: this.lines });
     newCurrentLine.setIsActive(true);
     const length = position ? position : newCurrentLine.getLength();
     this.currentPositionOnLine = length;
     this.#updateCursorPositionTo(this.currentPositionOnLine, newCurrentLine);
+    console.log({ lines: this.lines, count: this.lineCount });
   }
 
   #deleteCharacter() {
     const currentLine = this.lines[this.currentLine];
     if (currentLine.isEmpty()) {
       if (this.currentLine > 0) {
-        this.#deleteLine(currentLine);
+        this.#deleteLine(this.currentLine);
       }
     } else {
       if (this.currentPositionOnLine > 0) {
@@ -129,7 +137,7 @@ export class Editor {
           const lineToAppend = this.lines[this.currentLine - 1];
           const newPosition = lineToAppend.getLength();
           currentLine.giveContentTo(lineToAppend);
-          this.#deleteLine(currentLine, newPosition);
+          this.#deleteLine(this.currentLine, newPosition);
         }
       }
     }
@@ -138,7 +146,6 @@ export class Editor {
   #updateCursorPositionTo(position, line) {
     const left = line.getOffsetSum(position);
     const linePos = line.getPosition();
-    console.log(left);
     this.cursor.updatePosition({
       top: linePos.top,
       left: linePos.left + left,

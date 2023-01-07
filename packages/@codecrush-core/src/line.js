@@ -32,9 +32,12 @@ export class Line {
     this.#lineNumberEl.remove();
   }
 
+  changeLineNumber(number){
+    this.#lineNumberEl.textContent = number
+  }
+
   appendText(newText, currentCursorPosition) {
-    if (newText.length > 1) {
-      console.log("Enter more");
+    if (newText.length > 1) {      
       let newCursor = currentCursorPosition;
       for (let i = 0; i < newText.length; i++) {
         const beforePosition = this.#textEl.offsetWidth;
@@ -47,7 +50,6 @@ export class Line {
         this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
       }
     } else {
-      console.log("Enter");
       const beforePosition = this.#textEl.offsetWidth;
       this.#textEl.textContent = this.actions.addCharacter(
         newText,

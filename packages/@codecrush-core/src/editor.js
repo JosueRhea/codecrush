@@ -120,8 +120,9 @@ export class Editor {
         this.#deleteLine(currentLine);
       }
     } else {
-      currentLine.deleteCharacter();
-      this.#updateCursorPosition(this.lines[this.currentLine]);
+      currentLine.deleteCharacter(this.currentPositionOnLine);
+      this.#moveLeft()
+      // this.#updateCursorPosition(this.lines[this.currentLine]);
     }
   }
 
@@ -138,9 +139,8 @@ export class Editor {
     const parsedValue = keyCodeToChar[value] ?? value;
     if (parsedValue != "") {
       const currLine = this.lines[this.currentLine];
-      currLine.appendText(parsedValue);
-      this.#updateCursorPosition(currLine);
-      this.currentPositionOnLine += 1;
+      currLine.appendText(parsedValue, this.currentPositionOnLine);
+      this.#moveRight()
       this.preEl.scrollTo({
         left: this.preEl.scrollWidth,
       });

@@ -15,7 +15,7 @@ export class Line {
     p.textContent = content;
     div.appendChild(p);
     codeEl.appendChild(div);
-    lineNumberEl.style.height = div.getBoundingClientRect().height + "px"
+    lineNumberEl.style.height = div.getBoundingClientRect().height + "px";
     this.#lineNumberEl = lineNumberEl;
     // Properties
     this.#textEl = p;
@@ -28,18 +28,19 @@ export class Line {
 
   destroy() {
     this.#lineEl.remove();
-    this.#lineNumberEl.remove()
+    this.#lineNumberEl.remove();
   }
 
-  appendText(newText) {
+  appendText(newText, currentCursorPosition) {
     const beforePosition = this.#textEl.offsetWidth;
-    this.#textEl.textContent += newText;
+    this.#textEl.textContent = this.actions.addCharacter(newText, this.#textEl.textContent, currentCursorPosition);
     this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
   }
 
-  deleteCharacter() {
+  deleteCharacter(currentCursorPosition) {
     this.#textEl.textContent = this.actions.deleteCharacter(
-      this.#textEl.textContent
+      this.#textEl.textContent,
+      currentCursorPosition
     );
   }
 
@@ -56,8 +57,8 @@ export class Line {
     }
   }
 
-  setLineNumber(node){
-    node.appendChild(this.#lineNumberEl)
+  setLineNumber(node) {
+    node.appendChild(this.#lineNumberEl);
   }
 
   getPosition() {

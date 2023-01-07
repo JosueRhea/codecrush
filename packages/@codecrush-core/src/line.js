@@ -5,26 +5,28 @@ export class Line {
   #textEl = null;
   #lineEl = null;
   #lineNumberEl = null;
-  constructor(codeEl, content, lineNumber) {
-    const div = document.createElement("div");
+  constructor(codeEl, content, lineNumber, index) {
+    this.actions = new Actions();
+    this.leftMovesOffsets = [];
+    const div = document.createElement("div");        
     const lineNumberEl = document.createElement("div");
     lineNumberEl.classList.add("line-number");
     lineNumberEl.textContent = lineNumber;
     div.classList.add("line");
     const p = document.createElement("p");
+    this.#textEl = p;
     p.classList.add("line-content");
-    p.textContent = content;
     div.appendChild(p);
-    codeEl.appendChild(div);
+    codeEl.insertBefore(div, codeEl.children[index]);
     lineNumberEl.style.height = div.getBoundingClientRect().height + "px";
     this.#lineNumberEl = lineNumberEl;
     // Properties
     this.#textEl = p;
     this.#lineEl = div;
-    this.actions = new Actions();
     this.isActive = false;
-
-    this.leftMovesOffsets = [];
+    if (content != "") {
+      this.appendText(content, 0);
+    }
   }
 
   destroy() {
@@ -32,12 +34,14 @@ export class Line {
     this.#lineNumberEl.remove();
   }
 
-  changeLineNumber(number){
-    this.#lineNumberEl.textContent = number
+  changeLineNumber(number) {
+    console.log({number, content: this.getContentAfter(0)})
+    this.#lineNumberEl.textContent = number;
   }
 
   appendText(newText, currentCursorPosition) {
-    if (newText.length > 1) {      
+    if (newText.length > 1) {
+      console.log("More than 1");
       let newCursor = currentCursorPosition;
       for (let i = 0; i < newText.length; i++) {
         const beforePosition = this.#textEl.offsetWidth;
@@ -67,8 +71,12 @@ export class Line {
     );
   }
 
+  deleteCharacterAfter(position) {
+    this.#textEl.textContent = this.actions.deleteAfter(this.#textEl.textContent, position);
+  }
+
   giveContentTo(lineToAppend) {
-    lineToAppend.appendText(this.getContent(), lineToAppend.getLength());    
+    lineToAppend.appendText(this.getContent(), lineToAppend.getLength());
   }
 
   getContent() {
@@ -90,6 +98,14 @@ export class Line {
 
   setLineNumber(node) {
     node.appendChild(this.#lineNumberEl);
+  }
+
+  getContentAfter(position) {
+    const content = this.#textEl.textContent.slice(
+      position,
+      this.#textEl.length
+    );
+    return content == "" ? null : content;
   }
 
   getPosition() {

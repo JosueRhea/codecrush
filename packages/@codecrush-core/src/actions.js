@@ -9,7 +9,11 @@ export class Actions {
     return newContent;
   }
 
-  addCharacter(value, lineContent, position){    
+  addCharacter(value, lineContent, position) {
     return lineContent.slice(0, position) + value + lineContent.slice(position);
+  }
+
+  deleteAfter(lineContent, position) {
+    return lineContent.slice(0, position);
   }
 }

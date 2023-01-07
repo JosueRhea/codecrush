@@ -2,7 +2,7 @@ import { keyCodeToChar } from "./characters";
 import { Cursor } from "./cursor";
 import { EditableInput } from "./editableInput";
 import { Line } from "./line";
-import { sumArrayUntilIndex } from "./utils/array";
+import { insertInto, sumArrayUntilIndex } from "./utils/array";
 
 export class Editor {
   constructor() {
@@ -48,7 +48,7 @@ export class Editor {
     this.editorContent = code;
     this.editorEl = editor;
     this.preEl = pre;
-    const firstLine = new Line(code, "", this.lineCount);
+    const firstLine = new Line(code, "", this.lineCount, 0);
     firstLine.setLineNumber(lineNumbers);
     firstLine.setIsActive(true);
     const linePos = firstLine.getPosition();
@@ -85,19 +85,60 @@ export class Editor {
     });
   }
 
-  #createNewLine() {
+  #createNewLine(currentLineIndex, position) {
+    //Deactivate the currrent line
+    const currentLineEl = this.lines[currentLineIndex];
     this.lineCount += 1;
-    this.lines[this.currentLine].setIsActive(false);
-    const newLine = new Line(this.editorContent, "", this.lineCount);
-    newLine.setIsActive(true);
-    newLine.setLineNumber(this.lineNumbersEl);
-    this.lines.push(newLine);
-    this.currentLine += 1;
-    this.preEl.scrollTo({
-      top: this.preEl.scrollHeight,
+    currentLineEl.setIsActive(false);
+    const contentAfterPosition = currentLineEl.getContentAfter(position);
+
+    if (!contentAfterPosition) {
+      this.currentLine += 1;
+      console.log(this.currentLine)
+      const newLine = new Line(
+        this.editorContent,
+        "",
+        this.currentLine,
+        this.currentLine
+      );
+      newLine.setIsActive(true);
+      newLine.setLineNumber(this.lineNumbersEl);
+
+      //Push line
+      this.lines = insertInto(this.lines, this.currentLine, newLine);
+      console.log(this.lines.length)
+      this.preEl.scrollTo({
+        top: this.preEl.scrollHeight,
+      });
+      this.currentPositionOnLine = 0;
+      this.#updateCursorPositionTo(this.currentPositionOnLine, newLine);
+    } else {
+      // this.currentLine += 1;
+      currentLine.deleteCharacterAfter(position);
+      console.log(currentLine)
+      const newLine = new Line(
+        this.editorContent,
+        contentAfterPosition,
+        this.currentLine,
+        this.currentLine
+      );
+      newLine.setIsActive(true);
+      newLine.setLineNumber(this.lineNumbersEl);
+      this.lines = insertInto(this.lines, this.currentLine, newLine);
+      console.log(this.lines.length);
+      this.preEl.scrollTo({
+        top: this.preEl.scrollHeight,
+      });
+      this.currentPositionOnLine = 0;
+      this.#updateCursorPositionTo(this.currentPositionOnLine, newLine);
+      this.#recomputeLineNumbers()
+    }
+  }
+
+  #recomputeLineNumbers() {
+    this.lines.forEach((line, i) => {
+      line.changeLineNumber(i);
     });
-    this.currentPositionOnLine = 0;
-    this.#updateCursorPosition(this.lines[this.currentLine]);
   }
 
   #deleteLine(currentLineIndex, position) {
@@ -110,16 +151,14 @@ export class Editor {
       }
       return acc;
     }, []);
-    this.lines.forEach((line, i) => line.changeLineNumber(i));
+    this.#recomputeLineNumbers(currentLineIndex);
     this.lineCount -= 1;
     this.currentLine -= 1;
     const newCurrentLine = this.lines[this.currentLine];
-    console.log({ lines: this.lines });
     newCurrentLine.setIsActive(true);
     const length = position ? position : newCurrentLine.getLength();
     this.currentPositionOnLine = length;
     this.#updateCursorPositionTo(this.currentPositionOnLine, newCurrentLine);
-    console.log({ lines: this.lines, count: this.lineCount });
   }
 
   #deleteCharacter() {
@@ -267,7 +306,7 @@ export class Editor {
         this.#deleteCharacter();
         break;
       case "Enter":
-        this.#createNewLine();
+        this.#createNewLine(this.currentLine, this.currentPositionOnLine);
         break;
       case "ArrowLeft":
         this.#moveLeft();
@@ -285,9 +324,10 @@ export class Editor {
         this.#addCharacter(value);
         break;
     }
-    console.log({
-      currentLine: this.currentLine,
-      linePosition: this.currentPositionOnLine,
-    });
+    // console.log({
+    //   posOnLine: this.currentPositionOnLine,
+    //   currLineIndex: this.currentLine,
+    //   offsets: this.lines[this.currentLine].leftMovesOffsets,
+    // });
   }
 }

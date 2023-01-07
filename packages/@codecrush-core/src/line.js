@@ -5,8 +5,7 @@ export class Line {
   #textEl = null;
   #lineEl = null;
   #lineNumberEl = null;
-  constructor(codeEl, content, lineNumber, index) {
-    console.log({indexToInsert: index})
+  constructor(codeEl, content, lineNumber, index) {    
     this.actions = new Actions();
     this.leftMovesOffsets = [];
     const div = document.createElement("div");
@@ -35,15 +34,13 @@ export class Line {
     this.#lineNumberEl.remove();
   }
 
-  changeLineNumber(number) {
-    // console.log({ number, content: this.getContentAfter(0) });
+  changeLineNumber(number) {    
     this.#lineNumberEl.textContent = number;
   }
 
   appendText(newText, currentCursorPosition) {
     this.#lineEl.id = newText 
     if (newText.length > 1) {
-      console.log("More than 1");
       let newCursor = currentCursorPosition;
       for (let i = 0; i < newText.length; i++) {
         const beforePosition = this.#textEl.offsetWidth;

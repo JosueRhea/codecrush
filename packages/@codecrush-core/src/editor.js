@@ -110,8 +110,7 @@ export class Editor {
       });
       this.currentPositionOnLine = 0;
       this.#updateCursorPositionTo(this.currentPositionOnLine, newLine);
-    } else {
-      console.log("Enter here")
+    } else {      
       this.currentLine += 1;
       currentLineEl.deleteCharacterAfter(position);      
       const newLine = new Line(
@@ -120,9 +119,10 @@ export class Editor {
         this.currentLine,
         this.currentLine
       );
-      newLine.setIsActive(true);
-      newLine.setLineNumber(this.lineNumbersEl, this.currentLine);
       this.lines = insertInto(this.lines, this.currentLine, newLine);      
+      newLine.setIsActive(true);
+      this.#recomputeLineNumbers()
+      newLine.setLineNumber(this.lineNumbersEl, this.currentLine);
       this.preEl.scrollTo({
         top: this.preEl.scrollHeight,
       });

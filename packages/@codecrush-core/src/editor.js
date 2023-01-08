@@ -18,6 +18,7 @@ export class Editor {
     this.currentPositionOnLine = 0;
     this.lineCount = 0;
     this.lineNumbersEl = null;
+    this.components = []
   }
 
   #setupEditor() {
@@ -327,5 +328,9 @@ export class Editor {
     //   currLineIndex: this.currentLine,
     //   offsets: this.lines[this.currentLine].leftMovesOffsets,
     // });
+  }
+
+  use(component){
+    this.components.push(component)
   }
 }

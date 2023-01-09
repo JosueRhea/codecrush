@@ -5,7 +5,7 @@
 
 // editor.init();
 
-import { Editor } from "./n_editor";
+import { Editor } from "./src/editor";
 import { Navigation } from "./src/Navigation";
 import { TextEditor } from "./src/TextEditor";
 import "./style.css"

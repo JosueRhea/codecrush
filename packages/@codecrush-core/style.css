@@ -20,7 +20,7 @@ body {
 .text-editor {
   width: 500px;
   height: 200px;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid #ddd;
   letter-spacing: 1px;
 }
@@ -45,7 +45,7 @@ body {
 .cursor {
   width: 2px;
   background-color: black;
-  /* animation: cursorAnimation 1s steps(10, start) infinite; */
+  animation: cursorAnimation 1s steps(10, start) infinite;
 }
 
 .line .line-content {

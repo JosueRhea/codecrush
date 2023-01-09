@@ -70,9 +70,9 @@ export class TextEditor extends Component {
       this.recomputeLineNumbers()
       newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
       //Push line
-      this.editor.preEl.scrollTo({
-        top: this.editor.preEl.scrollHeight,
-      });    
+      // this.editor.preEl.scrollTo({
+      //   top: this.editor.preEl.scrollHeight,
+      // });    
       this.editor.onNewLine()
     } else {            
       const nextIndex = this.editor.currentLineIndex + 1
@@ -87,9 +87,9 @@ export class TextEditor extends Component {
       newLine.setIsActive(true);
       this.recomputeLineNumbers()
       newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
-      this.editor.preEl.scrollTo({
-        top: this.editor.preEl.scrollHeight,
-      });
+      // this.editor.preEl.scrollTo({
+      //   top: this.editor.preEl.scrollHeight,
+      // });
       this.editor.onNewLine()
     }
   }

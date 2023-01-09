@@ -29,11 +29,13 @@ export class Navigation extends Component {
         const parsedValue = keyCodeToChar[key] ?? key;
         if (parsedValue == "") return;
         this.moveRight();
-        this.editor.preEl.scrollTo({
-          left: this.editor.preEl.scrollWidth,
-        });
+        // this.editor.preEl.scrollTo({
+        //   left: this.editor.preEl.scrollWidth,
+        // });
         break;
     }
+
+    this.updateScroll();
   }
 
   onCharacterDelete() {
@@ -187,5 +189,25 @@ export class Navigation extends Component {
       top: linePos.top,
       left: linePos.left + left,
     });
+  }
+
+  updateScroll() {
+    const cursorPos = this.editor.cursor.getPosition();
+    const containerPos = this.editor.editorEl.getBoundingClientRect();
+    const relativePos = {
+      x: cursorPos.left - containerPos.left,
+      y: cursorPos.top - containerPos.top,
+    };
+    const lineHeight =
+      this.editor.lines[this.editor.currentLineIndex].getClientHeight();
+
+    if (relativePos.y > containerPos.height - lineHeight) {
+      const scrollY = relativePos.y - containerPos.height + lineHeight;
+      this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + scrollY;
+    }
+
+    if (relativePos.y < 0) {      
+      this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + relativePos.y;
+    }
   }
 }

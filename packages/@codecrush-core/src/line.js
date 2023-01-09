@@ -118,6 +118,10 @@ export class Line {
     return this.#textEl.offsetHeight;
   }
 
+  getClientHeight(){
+    return this.#textEl.getBoundingClientRect().height;
+  }
+
   getTextWidth() {
     return this.#textEl.getBoundingClientRect().width;
   }

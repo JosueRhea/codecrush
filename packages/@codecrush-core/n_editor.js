@@ -44,7 +44,7 @@ export class Editor {
     this.editorContent = code;
     this.editorEl = editor;
     this.preEl = pre;
-    const firstLine = new Line(code, "", this.lineCount, 0);
+    const firstLine = new Line(code, "", 0, 0);
     firstLine.setLineNumber(lineNumbers, 0);
     firstLine.setIsActive(true);
     const linePos = firstLine.getPosition();
@@ -83,6 +83,30 @@ export class Editor {
     for (const component of this.components) {
       if (component.onKeyPressed) {
         component.onKeyPressed(e);
+      }
+    }
+  }
+
+  onCharacterDelete(){
+    for (const component of this.components) {
+      if (component.onCharacterDelete) {
+        component.onCharacterDelete();
+      }
+    }
+  }
+
+  onNewLine(){
+    for (const component of this.components) {
+      if (component.onNewLine) {
+        component.onNewLine();
+      }
+    }
+  }
+
+  onDeleteLine(positionOnLine){
+    for (const component of this.components) {
+      if (component.onDeleteLine) {
+        component.onDeleteLine(positionOnLine);
       }
     }
   }

@@ -4,4 +4,10 @@ export class Component {
   }
 
   onKeyPressed(data) {}
+
+  onCharacterDelete(){}
+
+  onNewLine(){}
+  
+  onDeleteLine(positionOnLine){}
 }

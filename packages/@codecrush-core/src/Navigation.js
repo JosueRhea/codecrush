@@ -201,19 +201,20 @@ export class Navigation extends Component {
     const lineHeight =
       this.editor.lines[this.editor.currentLineIndex].getClientHeight();
 
-    if (relativePos.y > containerPos.height - lineHeight) {
+    if (relativePos.y > containerPos.height - lineHeight - 20) {
       const scrollY = relativePos.y - containerPos.height + lineHeight;
-      this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + scrollY;
+      this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + scrollY + 20;
     }
 
     if (relativePos.y < 0) {
       this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + relativePos.y;
     }
 
-    if (relativePos.x > containerPos.width - cursorPos.width) {
+    if (relativePos.x > containerPos.width - cursorPos.width - 20) {      
       const scrollX = relativePos.x - containerPos.width + cursorPos.width;
-      this.editor.preEl.scrollLeft = this.editor.preEl.scrollLeft + scrollX;
+      this.editor.preEl.scrollLeft = this.editor.preEl.scrollLeft + scrollX + 20;
     }
+        
     if (relativePos.x == 0) {
       this.editor.preEl.scrollLeft = 0;
     }

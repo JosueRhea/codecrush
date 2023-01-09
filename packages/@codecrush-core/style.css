@@ -22,7 +22,7 @@ body {
   height: 200px;
   border-radius: 5px;
   border: 1px solid #ddd;
-  letter-spacing: 1px;
+  letter-spacing: 1px;  
 }
 
 .text-editor pre {
@@ -33,6 +33,7 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
+  padding-bottom: 20px;
 }
 
 .text-editor code {
@@ -50,6 +51,16 @@ body {
   /* animation: cursorAnimation 1s steps(10, start) infinite; */
 }
 
+.line {
+  padding-top: 0.5px;
+  padding-bottom: 0.5px;
+  padding-right: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: fit-content;
+}
+
+
 .line .line-content {
   margin: 0;
   padding: 0;
@@ -61,11 +72,6 @@ body {
 .line-numbers {
   padding-left: 5px;
   padding-right: 5px;
-}
-
-.line {
-  padding-top: 0.5px;
-  padding-bottom: 0.5px;
 }
 
 .line-numbers .line-number {

@@ -5,7 +5,7 @@ export class Line {
   #textEl = null;
   #lineEl = null;
   #lineNumberEl = null;
-  constructor(codeEl, content, lineNumber, index) {    
+  constructor(codeEl, content, lineNumber, index) {
     this.actions = new Actions();
     this.leftMovesOffsets = [];
     const div = document.createElement("div");
@@ -34,12 +34,12 @@ export class Line {
     this.#lineNumberEl.remove();
   }
 
-  changeLineNumber(number) {    
+  changeLineNumber(number) {
     this.#lineNumberEl.textContent = number;
   }
 
   appendText(newText, currentCursorPosition) {
-    this.#lineEl.id = newText 
+    this.#lineEl.id = newText;
     if (newText.length > 1) {
       let newCursor = currentCursorPosition;
       for (let i = 0; i < newText.length; i++) {
@@ -118,7 +118,7 @@ export class Line {
     return this.#textEl.offsetHeight;
   }
 
-  getClientHeight(){
+  getClientHeight() {
     return this.#textEl.getBoundingClientRect().height;
   }
 

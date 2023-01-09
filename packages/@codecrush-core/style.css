@@ -39,13 +39,15 @@ body {
   width: 100%;
 }
 .focused {
-  outline: 3px solid #ddd;
+  /* outline: 3px solid #ddd;
+   */
+   border: 1px solid #000;
 }
 
 .cursor {
   width: 2px;
   background-color: black;
-  animation: cursorAnimation 1s steps(10, start) infinite;
+  /* animation: cursorAnimation 1s steps(10, start) infinite; */
 }
 
 .line .line-content {

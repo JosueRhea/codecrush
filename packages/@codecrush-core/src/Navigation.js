@@ -206,8 +206,20 @@ export class Navigation extends Component {
       this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + scrollY;
     }
 
-    if (relativePos.y < 0) {      
+    if (relativePos.y < 0) {
       this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + relativePos.y;
+    }
+
+    if (relativePos.x > containerPos.width - cursorPos.width) {
+      const scrollX = relativePos.x - containerPos.width + cursorPos.width;
+      this.editor.preEl.scrollLeft = this.editor.preEl.scrollLeft + scrollX;
+    }
+    if (relativePos.x == 0) {
+      this.editor.preEl.scrollLeft = 0;
+    }
+    if (relativePos.x < 0) {
+      this.editor.preEl.scrollLeft =
+        this.editor.preEl.scrollLeft + relativePos.x;
     }
   }
 }

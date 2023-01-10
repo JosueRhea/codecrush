@@ -24,8 +24,8 @@ export class Editor {
     //Get the code
     setCDN("https://unpkg.com/shiki/");
     await getHighlighter({
-      theme: "one-dark-pro",
-      langs: ["javascript"],
+      theme: "poimandres",
+      langs: ["typescript"],
     }).then((h) => {
       this.theme = h.getTheme();
       console.log(this.theme);

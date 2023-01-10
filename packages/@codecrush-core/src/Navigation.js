@@ -93,7 +93,6 @@ export class Navigation extends Component {
   moveLeftOneWord() {
     if (this.editor.currentPositionOnLine > 0) {
       const currentLine = this.editor.lines[this.editor.currentLineIndex];
-      if (currentLine.positions.length <= 0) return this.moveStartOfLine();
       const newPosition =
         currentLine.getBeforeWordPosition(this.editor.currentPositionOnLine) ??
         0;

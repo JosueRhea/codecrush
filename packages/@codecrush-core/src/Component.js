@@ -3,7 +3,7 @@ export class Component {
     this.editor = null;
   }
 
-  onKeyPressed(data) {}
+  onKeyPressed(data, withCtrlKey) {}
 
   onCharacterDelete(){}
 

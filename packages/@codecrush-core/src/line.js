@@ -10,6 +10,7 @@ export class Line {
     this.leftMovesOffsets = [];
     this.lineHtml = "";
     this.text = "";
+    this.positions = [];
     this.init(codeEl, content, lineNumber, index);
   }
 
@@ -30,6 +31,14 @@ export class Line {
     this.#textEl = p;
     this.#lineEl = div;
     this.isActive = false;
+  }
+
+  getBeforeWordPosition(position) {
+    return this.actions.getBeforeWordPosition(this.positions, position);
+  }
+
+  getAfterWordPosition(position){
+    return this.actions.getAfterWordPosition(this.positions, position);
   }
 
   destroy() {
@@ -67,6 +76,7 @@ export class Line {
       this.getHtml(highlighter, currentCursorPosition);
       this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
     }
+    this.positions = this.actions.getWordsPositions(this.text);
   }
 
   getHtml(highlighter, currentCursorPosition) {
@@ -129,10 +139,10 @@ export class Line {
     this.isActive = isActive;
     if (isActive) {
       this.#lineEl.classList.add("active");
-      this.#lineNumberEl.classList.add('active')
+      this.#lineNumberEl.classList.add("active");
     } else {
       this.#lineEl.classList.remove("active");
-      this.#lineNumberEl.classList.remove('active')
+      this.#lineNumberEl.classList.remove("active");
     }
   }
 

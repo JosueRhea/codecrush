@@ -1,15 +1,15 @@
 import { keyCodeToChar } from "./characters";
 import { Component } from "./Component";
-import { sumArrayUntilIndex } from "./utils/array";
 
 export class Navigation extends Component {
   constructor() {
     super();
   }
 
-  onKeyPressed(key) {
+  onKeyPressed(key, withCtrlKey) {
     switch (key) {
       case "ArrowLeft":
+        if (withCtrlKey) return this.moveLeftOneWord();
         this.moveLeft();
         break;
       case "ArrowUp":
@@ -19,16 +19,23 @@ export class Navigation extends Component {
         this.moveDown();
         break;
       case "ArrowRight":
+        if (withCtrlKey) return this.moveRightOneWord();
         this.moveRight();
         break;
       case "Backspace":
         break;
       case "Enter":
         break;
+      case "Home":
+        this.moveStartOfLine();
+        break;
+      case "End":
+        this.moveEndOfLine();
+        break;
       default:
         const parsedValue = keyCodeToChar[key] ?? key;
         if (parsedValue == "") return;
-        this.moveRight();        
+        this.moveRight();
         break;
     }
 
@@ -76,6 +83,43 @@ export class Navigation extends Component {
       const moveOffset =
         currentLine.leftMovesOffsets[this.editor.currentPositionOnLine - 1];
       this.editor.cursor.moveRightOneCharacter(moveOffset);
+    } else {
+      if (this.editor.currentLineIndex < this.editor.lines.length) {
+        this.moveDown(true);
+      }
+    }
+  }
+
+  moveLeftOneWord() {
+    if (this.editor.currentPositionOnLine > 0) {
+      const currentLine = this.editor.lines[this.editor.currentLineIndex];
+      if (currentLine.positions.length <= 0) return this.moveStartOfLine();
+      const newPosition =
+        currentLine.getBeforeWordPosition(this.editor.currentPositionOnLine) ??
+        0;
+      this.editor.currentPositionOnLine = newPosition;
+      this.updateCursorPositionTo(newPosition, currentLine);
+    } else {
+      if (this.editor.currentLineIndex > 0) {
+        this.moveUp(true);
+      }
+    }
+  }
+
+  moveRightOneWord() {
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
+    if (this.editor.currentPositionOnLine < currentLine.getLength()) {
+      const newPosition =
+        currentLine.getAfterWordPosition(this.editor.currentPositionOnLine) ??
+        currentLine.getLength();
+      this.editor.currentPositionOnLine = newPosition;
+      this.updateCursorPositionTo(
+        this.editor.currentPositionOnLine,
+        currentLine
+      );
+      // const moveOffset =
+      //   currentLine.leftMovesOffsets[this.editor.currentPositionOnLine - 1];
+      // this.editor.cursor.moveRightOneCharacter(moveOffset);
     } else {
       if (this.editor.currentLineIndex < this.editor.lines.length) {
         this.moveDown(true);
@@ -179,6 +223,19 @@ export class Navigation extends Component {
     }
   }
 
+  moveEndOfLine() {
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
+    const position = currentLine.getLength();
+    this.editor.currentPositionOnLine = position;
+    this.updateCursorPositionTo(this.editor.currentPositionOnLine, currentLine);
+  }
+
+  moveStartOfLine() {
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
+    this.editor.currentPositionOnLine = 0;
+    this.updateCursorPositionTo(this.editor.currentPositionOnLine, currentLine);
+  }
+
   updateCursorPositionTo(position, line) {
     const left = line.getOffsetSum(position);
     const linePos = line.getPosition();
@@ -207,11 +264,12 @@ export class Navigation extends Component {
       this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + relativePos.y;
     }
 
-    if (relativePos.x > containerPos.width - cursorPos.width - 20) {      
+    if (relativePos.x > containerPos.width - cursorPos.width - 20) {
       const scrollX = relativePos.x - containerPos.width + cursorPos.width;
-      this.editor.preEl.scrollLeft = this.editor.preEl.scrollLeft + scrollX + 20;
+      this.editor.preEl.scrollLeft =
+        this.editor.preEl.scrollLeft + scrollX + 20;
     }
-        
+
     if (relativePos.x == 0) {
       this.editor.preEl.scrollLeft = 0;
     }

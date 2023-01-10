@@ -98,8 +98,8 @@ export class Editor {
       }
     });
 
-    hiddenInput.onChange((e) => {
-      this.onKeyPressed(e);
+    hiddenInput.onChange((e, withCtrlKey) => {
+      this.onKeyPressed(e, withCtrlKey);
     });
 
     hiddenInput.onBlur((e) => {
@@ -111,10 +111,10 @@ export class Editor {
     console.log("loaded");
   }
 
-  onKeyPressed(e) {
+  onKeyPressed(e,withCtrlKey) {
     for (const component of this.components) {
       if (component.onKeyPressed) {
-        component.onKeyPressed(e);
+        component.onKeyPressed(e, withCtrlKey);
       }
     }
   }

@@ -18,13 +18,17 @@ export class Actions {
   }
 
   getWordsPositions(string) {
-    const positions = [];
-    for (let i = 0; i < string.length; i++) {
-      if (string[i] === " ") {
-        positions.push(i);
-      }
-    }
-    return positions;
+    let words = string.split(/[\s.]+/);
+    let currentPosition = 0;
+    let wordPositions = [];
+    words.forEach((word) => {
+      let start = currentPosition;
+      currentPosition += word.length + 1;
+      let end = currentPosition - 1;
+      wordPositions.push(start);
+      wordPositions.push(end);
+    });
+    return wordPositions;
   }
 
   getBeforeWordPosition(array, position) {
@@ -35,17 +39,17 @@ export class Actions {
         break;
       }
     }
-    return beforeValue
+    return beforeValue;
   }
 
-  getAfterWordPosition(array, position){
+  getAfterWordPosition(array, position) {
     let afterValue;
     for (let i = 0; i < array.length; i++) {
-      if (i > position) {
+      if (array[i] > position) {
         afterValue = array[i];
         break;
       }
     }
-    return afterValue
+    return afterValue;
   }
 }

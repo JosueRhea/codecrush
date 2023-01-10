@@ -110,15 +110,12 @@ export class Navigation extends Component {
     if (this.editor.currentPositionOnLine < currentLine.getLength()) {
       const newPosition =
         currentLine.getAfterWordPosition(this.editor.currentPositionOnLine) ??
-        currentLine.getLength();
+        currentLine.getLength();        
       this.editor.currentPositionOnLine = newPosition;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         currentLine
       );
-      // const moveOffset =
-      //   currentLine.leftMovesOffsets[this.editor.currentPositionOnLine - 1];
-      // this.editor.cursor.moveRightOneCharacter(moveOffset);
     } else {
       if (this.editor.currentLineIndex < this.editor.lines.length) {
         this.moveDown(true);
@@ -170,8 +167,7 @@ export class Navigation extends Component {
       this.editor.currentLineIndex -= 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);
-      this.editor.currentPositionOnLine =
-        newCurrentLine.leftMovesOffsets.length;
+      this.editor.currentPositionOnLine = newCurrentLine.getLength();
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         newCurrentLine

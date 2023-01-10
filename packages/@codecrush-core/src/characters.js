@@ -45,7 +45,7 @@ export const specialKeys = [
 
 export const keyCodeToChar = {
   Backspace: '',
-  Tab: '\t',
+  Tab: ' ',
   Enter: '\n',
   Shift: '',
   Control: '',

@@ -15,6 +15,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  
 }
 
 .text-editor {
@@ -22,6 +23,7 @@ body {
   height: 200px;
   border-radius: 5px;
   border: 1px solid #ddd;
+  background: #21212e;
   letter-spacing: 1px;  
 }
 
@@ -79,7 +81,7 @@ body {
 }
 
 .active {
-  background-color: #eee;
+  background-color: #323244;
 }
 
 @keyframes cursorAnimation {

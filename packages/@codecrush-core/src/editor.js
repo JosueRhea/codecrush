@@ -14,6 +14,8 @@ export class Editor {
     this.cursor = null
     this.currentLineIndex = 0
     this.currentPositionOnLine = 0
+    this.highlighter = null
+    this.isLoaded = false
   }
 
   init() {
@@ -77,6 +79,9 @@ export class Editor {
       this.isFocus = false;
       this.editorEl.classList.remove("focused");
     });
+
+    this.isLoaded = true
+    console.log("loaded")
   }
 
   onKeyPressed(e) {

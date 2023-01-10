@@ -21,17 +21,14 @@ export class Navigation extends Component {
       case "ArrowRight":
         this.moveRight();
         break;
-      case "Enter":
-        break;
       case "Backspace":
+        break;
+      case "Enter":
         break;
       default:
         const parsedValue = keyCodeToChar[key] ?? key;
         if (parsedValue == "") return;
-        this.moveRight();
-        // this.editor.preEl.scrollTo({
-        //   left: this.editor.preEl.scrollWidth,
-        // });
+        this.moveRight();        
         break;
     }
 

@@ -8,6 +8,12 @@ export class Line {
   constructor(codeEl, content, lineNumber, index) {
     this.actions = new Actions();
     this.leftMovesOffsets = [];
+    this.lineHtml = "";
+    this.text = "";
+    this.init(codeEl, content, lineNumber, index);
+  }
+
+  init(codeEl, content, lineNumber, index) {
     const div = document.createElement("div");
     const lineNumberEl = document.createElement("div");
     lineNumberEl.classList.add("line-number");
@@ -38,47 +44,85 @@ export class Line {
     this.#lineNumberEl.textContent = number;
   }
 
-  appendText(newText, currentCursorPosition) {
-    this.#lineEl.id = newText;
+  appendText(newText, currentCursorPosition, highlighter) {
     if (newText.length > 1) {
       let newCursor = currentCursorPosition;
       for (let i = 0; i < newText.length; i++) {
         const beforePosition = this.#textEl.offsetWidth;
-        this.#textEl.textContent = this.actions.addCharacter(
+        const textParsed = this.actions.addCharacter(
           newText[i],
           this.#textEl.textContent,
           newCursor
         );
+        // this.#textEl.textContent = textParsed;
+        this.text = textParsed;
+        this.#textEl.innerHTML = this.getHtml(highlighter);
         newCursor++;
         this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
       }
     } else {
       const beforePosition = this.#textEl.offsetWidth;
-      this.#textEl.textContent = this.actions.addCharacter(
+      const textParsed = this.actions.addCharacter(
         newText,
         this.#textEl.textContent,
         currentCursorPosition
       );
+      this.text = textParsed;
+      this.getHtml(highlighter, currentCursorPosition);
+      // this.#textEl.textContent = textParsed
+      // this.#textEl.innerHTML = this.getHtml(highlighter);
+      // console.log(html)
+      // this.#textEl.textContent = textParsed;
       this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
     }
   }
 
-  deleteCharacter(currentCursorPosition) {
-    this.#textEl.textContent = this.actions.deleteCharacter(
+  getHtml(highlighter, currentCursorPosition) {
+    if (!highlighter) return;
+    const highlightedTokens = highlighter.codeToThemedTokens(
+      this.text,
+      "js",
+      "nord"
+    );
+    this.#textEl.innerHTML = "";
+    highlightedTokens[0].forEach((token) => {
+      const element = this.createTokenElement(token);
+      this.#textEl.appendChild(element);
+    });
+  }
+
+  createTokenElement(token) {
+    const span = document.createElement("span");
+    span.innerText = token.content;
+    span.style.color = token.color;
+    span.style.fontStyle = token.fontStyle;
+    return span;
+  }
+
+  deleteCharacter(currentCursorPosition, highlighter) {
+    const textParsed = this.actions.deleteCharacter(
       this.#textEl.textContent,
       currentCursorPosition
     );
+    this.text = textParsed;
+    this.getHtml(highlighter, currentCursorPosition);
   }
 
-  deleteCharacterAfter(position) {
-    this.#textEl.textContent = this.actions.deleteAfter(
+  deleteCharacterAfter(position, highlighter) {
+    const textParsed = this.actions.deleteAfter(
       this.#textEl.textContent,
       position
     );
+    this.text = textParsed;
+    this.getHtml(highlighter, currentCursorPosition);
   }
 
   giveContentTo(lineToAppend) {
-    lineToAppend.appendText(this.getContent(), lineToAppend.getLength());
+    lineToAppend.appendText(
+      this.getContent(),
+      lineToAppend.getLength(),
+      this.editor.highlighter
+    );
   }
 
   getContent() {

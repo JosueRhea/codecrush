@@ -15,7 +15,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  
 }
 
 .text-editor {
@@ -23,8 +22,8 @@ body {
   height: 200px;
   border-radius: 5px;
   border: 1px solid #ddd;
-  background: #21212e;
-  letter-spacing: 1px;  
+  background: var(--editor-theme-bg);
+  letter-spacing: 1px;
 }
 
 .text-editor pre {
@@ -44,7 +43,7 @@ body {
 .focused {
   /* outline: 3px solid #ddd;
    */
-   border: 1px solid #000;
+  border: 1px solid #000;
 }
 
 .cursor {
@@ -62,7 +61,6 @@ body {
   min-width: fit-content;
 }
 
-
 .line .line-content {
   margin: 0;
   padding: 0;
@@ -74,14 +72,19 @@ body {
 .line-numbers {
   padding-left: 5px;
   padding-right: 5px;
+  color: var(--editor-editorLineNumber-foreground);
 }
 
 .line-numbers .line-number {
   width: fit-content;
 }
 
-.active {
-  background-color: #323244;
+.text-editor-content .line-numbers .active {
+  color: var(--editor-editorLineNumber-activeForeground);
+}
+
+.text-editor-code .active {
+  background-color: #d8dee910;
 }
 
 @keyframes cursorAnimation {

@@ -1,3 +1,4 @@
+import { getHighlighter, setCDN } from "shiki";
 import { Cursor } from "./cursor";
 import { EditableInput } from "./editableInput";
 import { Line } from "./line";
@@ -8,21 +9,41 @@ export class Editor {
     this.editorContent = null;
     this.editorEl = null;
     this.preEl = null;
-    this.isFocus = false
-    this.lineNumbersEl = false
-    this.lines = []
-    this.cursor = null
-    this.currentLineIndex = 0
-    this.currentPositionOnLine = 0
-    this.highlighter = null
-    this.isLoaded = false
+    this.isFocus = false;
+    this.lineNumbersEl = false;
+    this.lines = [];
+    this.cursor = null;
+    this.currentLineIndex = 0;
+    this.currentPositionOnLine = 0;
+    this.highlighter = null;
+    this.isLoaded = false;
+    this.theme = null;
   }
 
-  init() {
+  async init() {
+    //Get the code
+    setCDN("https://unpkg.com/shiki/");
+    await getHighlighter({
+      theme: "one-dark-pro",
+      langs: ["javascript"],
+    }).then((h) => {
+      this.theme = h.getTheme();
+      console.log(this.theme);
+      this.highlighter = h;
+    });
     //Parent element
     const editor = document.createElement("div");
     editor.setAttribute("class", "text-editor");
     editor.setAttribute("tabindex", "0");
+    editor.style.setProperty("--editor-theme-bg", this.theme.bg);
+    editor.style.setProperty(
+      "--editor-editorLineNumber-foreground",
+      this.theme.colors["editorLineNumber.foreground"]
+    );
+    editor.style.setProperty(
+      "--editor-editorLineNumber-activeForeground",
+      this.theme.colors["editorLineNumber.activeForeground"]
+    );
 
     // Pre element
     const pre = document.createElement("pre");
@@ -33,6 +54,7 @@ export class Editor {
     //Lines
     const lineNumbers = document.createElement("div");
     lineNumbers.classList.add("line-numbers");
+    // lineNumbers.style.color = this.theme.colors["editorLineNumber.foreground"];
     pre.appendChild(lineNumbers);
     this.lineNumbersEl = lineNumbers;
 
@@ -54,7 +76,12 @@ export class Editor {
     this.lines.push(firstLine);
 
     //cursor
-    const cursor = new Cursor(pre, linePos, lineHeight);
+    const cursor = new Cursor(
+      pre,
+      linePos,
+      lineHeight,
+      this.theme.colors["editorCursor.foreground"]
+    );
     this.cursor = cursor;
 
     this.editorEl.addEventListener("mousedown", (e) => {
@@ -72,7 +99,7 @@ export class Editor {
     });
 
     hiddenInput.onChange((e) => {
-      this.onKeyPressed(e)
+      this.onKeyPressed(e);
     });
 
     hiddenInput.onBlur((e) => {
@@ -80,8 +107,8 @@ export class Editor {
       this.editorEl.classList.remove("focused");
     });
 
-    this.isLoaded = true
-    console.log("loaded")
+    this.isLoaded = true;
+    console.log("loaded");
   }
 
   onKeyPressed(e) {
@@ -92,7 +119,7 @@ export class Editor {
     }
   }
 
-  onCharacterDelete(){
+  onCharacterDelete() {
     for (const component of this.components) {
       if (component.onCharacterDelete) {
         component.onCharacterDelete();
@@ -100,7 +127,7 @@ export class Editor {
     }
   }
 
-  onNewLine(){
+  onNewLine() {
     for (const component of this.components) {
       if (component.onNewLine) {
         component.onNewLine();
@@ -108,7 +135,7 @@ export class Editor {
     }
   }
 
-  onDeleteLine(positionOnLine){
+  onDeleteLine(positionOnLine) {
     for (const component of this.components) {
       if (component.onDeleteLine) {
         component.onDeleteLine(positionOnLine);

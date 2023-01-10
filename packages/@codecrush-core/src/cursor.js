@@ -1,8 +1,9 @@
 export class Cursor {
-  constructor(editor, position, height) {
+  constructor(editor, position, height, color) {
     this.pos = { top: position.top, left: position.left };
 
     this.cursor = document.createElement("div");
+    this.cursor.style.backgroundColor = color
     this.cursor.style.position = "absolute";
     this.cursor.style.top = this.pos.top + "px";
     this.cursor.style.left = this.pos.left + "px";

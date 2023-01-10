@@ -74,7 +74,7 @@ export class Line {
     const highlightedTokens = highlighter.codeToThemedTokens(
       this.text,
       "js",
-      "nord"
+      "one-dark-pro"
     );
     this.#textEl.innerHTML = "";
     highlightedTokens[0].forEach((token) => {
@@ -129,8 +129,10 @@ export class Line {
     this.isActive = isActive;
     if (isActive) {
       this.#lineEl.classList.add("active");
+      this.#lineNumberEl.classList.add('active')
     } else {
       this.#lineEl.classList.remove("active");
+      this.#lineNumberEl.classList.remove('active')
     }
   }
 

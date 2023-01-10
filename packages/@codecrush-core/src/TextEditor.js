@@ -8,18 +8,6 @@ import { insertInto } from "./utils/array";
 export class TextEditor extends Component {
   constructor() {
     super();
-    this.init();
-  }
-  
-  init() {
-    setCDN("https://unpkg.com/shiki/");
-    getHighlighter({
-      theme: "nord",
-      langs: ["javascript"],
-    }).then((h) => {
-      this.editor.highlighter = h
-      console.log("highlighter loaded")
-    });
   }
   
   onKeyPressed(key) {

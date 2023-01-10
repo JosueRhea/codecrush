@@ -73,8 +73,8 @@ export class Line {
     if (!highlighter) return;
     const highlightedTokens = highlighter.codeToThemedTokens(
       this.text,
-      "typescript",
-      "poimandres"
+      "ts",
+      "one-dark-pro"
     );
     this.#textEl.innerHTML = "";
     highlightedTokens[0].forEach((token) => {

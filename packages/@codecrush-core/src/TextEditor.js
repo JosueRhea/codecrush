@@ -58,7 +58,7 @@ export class TextEditor extends Component {
           const lineToAppend =
             this.editor.lines[this.editor.currentLineIndex - 1];
           const newPosition = lineToAppend.getLength();
-          currentLine.giveContentTo(lineToAppend);
+          currentLine.giveContentTo(lineToAppend, this.editor.highlighter);
           this.deleteLine(this.editor.currentLineIndex, newPosition);
         }
       }
@@ -100,6 +100,7 @@ export class TextEditor extends Component {
       newLine.setIsActive(true);
       this.recomputeLineNumbers();
       newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
+      newLine.appendText(contentAfterPosition, 0, this.editor.highlighter)
       this.editor.onNewLine();
     }
   }

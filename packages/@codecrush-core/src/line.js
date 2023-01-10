@@ -30,9 +30,6 @@ export class Line {
     this.#textEl = p;
     this.#lineEl = div;
     this.isActive = false;
-    if (content != "") {
-      this.appendText(content, 0);
-    }
   }
 
   destroy() {
@@ -54,9 +51,8 @@ export class Line {
           this.#textEl.textContent,
           newCursor
         );
-        // this.#textEl.textContent = textParsed;
         this.text = textParsed;
-        this.#textEl.innerHTML = this.getHtml(highlighter);
+        this.getHtml(highlighter);
         newCursor++;
         this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
       }
@@ -69,10 +65,6 @@ export class Line {
       );
       this.text = textParsed;
       this.getHtml(highlighter, currentCursorPosition);
-      // this.#textEl.textContent = textParsed
-      // this.#textEl.innerHTML = this.getHtml(highlighter);
-      // console.log(html)
-      // this.#textEl.textContent = textParsed;
       this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
     }
   }
@@ -114,14 +106,14 @@ export class Line {
       position
     );
     this.text = textParsed;
-    this.getHtml(highlighter, currentCursorPosition);
+    this.getHtml(highlighter, position);
   }
 
-  giveContentTo(lineToAppend) {
+  giveContentTo(lineToAppend, highlighter) {
     lineToAppend.appendText(
       this.getContent(),
       lineToAppend.getLength(),
-      this.editor.highlighter
+      highlighter
     );
   }
 

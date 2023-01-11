@@ -1,5 +1,5 @@
 import { Actions } from "./actions";
-import { sumArrayUntilIndex } from "./utils/array";
+import { sumArrayUntilIndex, sumRange } from "./utils/array";
 
 export class Line {
   #lineEl = null;
@@ -11,6 +11,8 @@ export class Line {
     this.lineHtml = "";
     this.text = "";
     this.positions = [];
+    this.selection = null;
+    this.selectionEl = null;
     this.init(codeEl, content, lineNumber, index);
   }
 
@@ -27,6 +29,12 @@ export class Line {
     codeEl.insertBefore(div, codeEl.children[index]);
     lineNumberEl.style.height = div.getBoundingClientRect().height + "px";
     this.#lineNumberEl = lineNumberEl;
+
+    //selection
+    const selectionDiv = document.createElement("div");
+    selectionDiv.classList.add("selection");
+    div.appendChild(selectionDiv);
+    this.selectionEl = selectionDiv;
     // Properties
     this.textEl = p;
     this.#lineEl = div;
@@ -108,7 +116,7 @@ export class Line {
     );
     this.text = textParsed;
     this.getHtml(highlighter, currentCursorPosition);
-    this.leftMovesOffsets.length = this.getLength()
+    this.leftMovesOffsets.length = this.getLength();
   }
 
   deleteCharacterAfter(position, highlighter) {
@@ -116,9 +124,9 @@ export class Line {
       this.textEl.textContent,
       position
     );
-    this.text = textParsed;    
+    this.text = textParsed;
     this.getHtml(highlighter, position);
-    this.leftMovesOffsets.length = this.getLength()
+    this.leftMovesOffsets.length = this.getLength();
   }
 
   giveContentTo(lineToAppend, highlighter) {
@@ -179,5 +187,9 @@ export class Line {
 
   getOffsetSum(position) {
     return sumArrayUntilIndex(this.leftMovesOffsets, position);
+  }
+
+  getOffsetSumRange(start, end) {
+    return sumRange(this.leftMovesOffsets, start, end);
   }
 }

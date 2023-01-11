@@ -80,6 +80,11 @@ body {
   color: var(--editor-editorLineNumber-foreground);
 }
 
+.text-editor-content .selection {
+  position: absolute;
+  background-color: #ffffff20;
+}
+
 .line-numbers .line-number {
   width: fit-content;
 }

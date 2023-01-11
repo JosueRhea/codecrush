@@ -19,7 +19,8 @@ export class Editor {
     this.isLoaded = false;
     this.theme = null;
     this.linesInViewport = null;
-    this.isSelecting = false    
+    this.isSelecting = false
+    this.editorSelection = null
   }
 
   async init() {

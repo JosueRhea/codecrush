@@ -10,7 +10,7 @@ export class Selection extends Component {
     switch (key) {
       case "ArrowLeft":
         if (shiftKey) {
-          this.selectText();
+          this.selectTextToLeft();
         } else {
           this.deselectText();
         }
@@ -18,34 +18,62 @@ export class Selection extends Component {
       default:
         break;
     }
+    console.log(this.editor.lines[this.editor.currentLineIndex].selection);
   }
 
-  selectText() {
+  selectTextToLeft() {
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
     if (this.editor.isSelecting) {
-      // const range = document.createRange();
-      // this.range =
-      // range.setStart(p1.firstChild, 0);
-      // range.setEnd(p2.firstChild, 4);
-      // const selection = window.getSelection();
-      // selection.removeAllRanges();
-      // selection.addRange(range);
+      currentLine.selection.start = this.editor.currentPositionOnLine;
+      currentLine.selection.width = currentLine.getOffsetSumRange(
+        currentLine.selection.start,
+        currentLine.selection.end
+      );
+      currentLine.selection.left = currentLine.getOffsetSum(
+        this.editor.currentPositionOnLine
+      );
+      this.renderSelection();
     } else {
       this.editor.isSelecting = true;
-    //   const textEl = this.editor.lines[this.editor.currentLineIndex].textEl;
-    //   this.range = document.createRange();
-    //   console.log(textEl)
-    //   this.range.setStart(
-    //     textEl,
-    //     this.editor.currentPositionOnLine
-    //   );
-    //   range.setEnd(textEl, this.editor.currentPositionOnLine - 1);
-    //   const selection = window.getSelection();
-    //   selection.removeAllRanges();
-    //   selection.addRange(range);
+      currentLine.selection = {
+        start: this.editor.currentPositionOnLine,
+        end: this.editor.currentPositionOnLine + 1,
+      };
+
+      currentLine.selection.width = currentLine.getOffsetSumRange(
+        currentLine.selection.start,
+        currentLine.selection.end
+      );
+
+      currentLine.selection.left = currentLine.getOffsetSum(
+        this.editor.currentPositionOnLine
+      );
+      this.renderSelection();
     }
   }
 
   deselectText() {
-    if (this.editor.isSelecting) this.editor.isSelecting = false;
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
+    if (this.editor.isSelecting) {
+      this.editor.isSelecting = false;
+      currentLine.selection = null;
+      currentLine.selectionEl.style.top = "";
+      currentLine.selectionEl.style.left = "";
+      currentLine.selectionEl.style.width = "";
+      currentLine.selectionEl.style.height = "";      
+    }
+  }
+
+  renderSelection() {
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
+    const linePos = currentLine.getPosition();
+    if (currentLine.selection) {
+      currentLine.selectionEl.style.top = linePos.top + "px";
+      currentLine.selectionEl.style.left =
+        linePos.left + currentLine.selection.left + "px";
+      currentLine.selectionEl.style.width = currentLine.selection.width + "px";
+      currentLine.selectionEl.style.height =
+        currentLine.getClientHeight() + "px";
+    }
   }
 }

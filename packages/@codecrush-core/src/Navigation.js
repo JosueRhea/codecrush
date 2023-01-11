@@ -45,11 +45,10 @@ export class Navigation extends Component {
   onCharacterDelete() {
     if (this.editor.currentPositionOnLine > 0) {
       this.editor.currentPositionOnLine -= 1;
-      const moveOffset =
-        this.editor.lines[this.editor.currentLineIndex].leftMovesOffsets[
-          this.editor.currentPositionOnLine
-        ];
-      this.editor.cursor.moveLeftOneCharacter(moveOffset);
+      this.updateCursorPositionTo(
+        this.editor.currentPositionOnLine,
+        this.editor.lines[this.editor.currentLineIndex]
+      );
     } else {
       if (this.editor.currentLineIndex > 0) {
         this.moveUp();
@@ -80,9 +79,10 @@ export class Navigation extends Component {
     const currentLine = this.editor.lines[this.editor.currentLineIndex];
     if (this.editor.currentPositionOnLine < currentLine.getLength()) {
       this.editor.currentPositionOnLine += 1;
-      const moveOffset =
-        currentLine.leftMovesOffsets[this.editor.currentPositionOnLine - 1];
-      this.editor.cursor.moveRightOneCharacter(moveOffset);
+      this.updateCursorPositionTo(
+        this.editor.currentPositionOnLine,
+        this.editor.lines[this.editor.currentLineIndex]
+      );
     } else {
       if (this.editor.currentLineIndex < this.editor.lines.length) {
         this.moveDown(true);
@@ -110,7 +110,7 @@ export class Navigation extends Component {
     if (this.editor.currentPositionOnLine < currentLine.getLength()) {
       const newPosition =
         currentLine.getAfterWordPosition(this.editor.currentPositionOnLine) ??
-        currentLine.getLength();        
+        currentLine.getLength();
       this.editor.currentPositionOnLine = newPosition;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
@@ -126,11 +126,10 @@ export class Navigation extends Component {
   moveLeft() {
     if (this.editor.currentPositionOnLine > 0) {
       this.editor.currentPositionOnLine -= 1;
-      const moveOffset =
-        this.editor.lines[this.editor.currentLineIndex].leftMovesOffsets[
-          this.editor.currentPositionOnLine
-        ];
-      this.editor.cursor.moveLeftOneCharacter(moveOffset);
+      this.updateCursorPositionTo(
+        this.editor.currentPositionOnLine,
+        this.editor.lines[this.editor.currentLineIndex]
+      );
     } else {
       if (this.editor.currentLineIndex > 0) {
         this.moveUp(true);

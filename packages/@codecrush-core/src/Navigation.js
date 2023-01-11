@@ -46,6 +46,7 @@ export class Navigation extends Component {
     }
 
     this.updateScroll();
+    console.log(this.editor.lines[this.editor.currentLineIndex].leftMovesOffsets)
   }
 
   onCharacterDelete() {
@@ -225,7 +226,7 @@ export class Navigation extends Component {
 
   movePageDown() {
     for (let i = 0; i < this.editor.linesInViewport; i++) {
-      this.moveDown();      
+      this.moveDown();
     }
   }
 

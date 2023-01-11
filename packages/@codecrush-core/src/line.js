@@ -2,10 +2,10 @@ import { Actions } from "./actions";
 import { sumArrayUntilIndex } from "./utils/array";
 
 export class Line {
-  #textEl = null;
   #lineEl = null;
   #lineNumberEl = null;
   constructor(codeEl, content, lineNumber, index) {
+    this.textEl = null;
     this.actions = new Actions();
     this.leftMovesOffsets = [];
     this.lineHtml = "";
@@ -21,14 +21,14 @@ export class Line {
     lineNumberEl.textContent = lineNumber;
     div.classList.add("line");
     const p = document.createElement("p");
-    this.#textEl = p;
+    this.textEl = p;
     p.classList.add("line-content");
     div.appendChild(p);
     codeEl.insertBefore(div, codeEl.children[index]);
     lineNumberEl.style.height = div.getBoundingClientRect().height + "px";
     this.#lineNumberEl = lineNumberEl;
     // Properties
-    this.#textEl = p;
+    this.textEl = p;
     this.#lineEl = div;
     this.isActive = false;
   }
@@ -37,7 +37,7 @@ export class Line {
     return this.actions.getBeforeWordPosition(this.positions, position);
   }
 
-  getAfterWordPosition(position){
+  getAfterWordPosition(position) {
     return this.actions.getAfterWordPosition(this.positions, position);
   }
 
@@ -54,27 +54,27 @@ export class Line {
     if (newText.length > 1) {
       let newCursor = currentCursorPosition;
       for (let i = 0; i < newText.length; i++) {
-        const beforePosition = this.#textEl.offsetWidth;
+        const beforePosition = this.textEl.offsetWidth;
         const textParsed = this.actions.addCharacter(
           newText[i],
-          this.#textEl.textContent,
+          this.textEl.textContent,
           newCursor
         );
         this.text = textParsed;
         this.getHtml(highlighter);
         newCursor++;
-        this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
+        this.leftMovesOffsets.push(this.textEl.offsetWidth - beforePosition);
       }
     } else {
-      const beforePosition = this.#textEl.offsetWidth;
+      const beforePosition = this.textEl.offsetWidth;
       const textParsed = this.actions.addCharacter(
         newText,
-        this.#textEl.textContent,
+        this.textEl.textContent,
         currentCursorPosition
       );
       this.text = textParsed;
       this.getHtml(highlighter, currentCursorPosition);
-      this.leftMovesOffsets.push(this.#textEl.offsetWidth - beforePosition);
+      this.leftMovesOffsets.push(this.textEl.offsetWidth - beforePosition);
     }
     this.positions = this.actions.getWordsPositions(this.text);
   }
@@ -86,10 +86,10 @@ export class Line {
       "ts",
       "one-dark-pro"
     );
-    this.#textEl.innerHTML = "";
+    this.textEl.innerHTML = "";
     highlightedTokens[0].forEach((token) => {
       const element = this.createTokenElement(token);
-      this.#textEl.appendChild(element);
+      this.textEl.appendChild(element);
     });
   }
 
@@ -103,20 +103,22 @@ export class Line {
 
   deleteCharacter(currentCursorPosition, highlighter) {
     const textParsed = this.actions.deleteCharacter(
-      this.#textEl.textContent,
+      this.textEl.textContent,
       currentCursorPosition
     );
     this.text = textParsed;
     this.getHtml(highlighter, currentCursorPosition);
+    this.leftMovesOffsets.length = this.getLength()
   }
 
   deleteCharacterAfter(position, highlighter) {
     const textParsed = this.actions.deleteAfter(
-      this.#textEl.textContent,
+      this.textEl.textContent,
       position
     );
-    this.text = textParsed;
+    this.text = textParsed;    
     this.getHtml(highlighter, position);
+    this.leftMovesOffsets.length = this.getLength()
   }
 
   giveContentTo(lineToAppend, highlighter) {
@@ -128,11 +130,11 @@ export class Line {
   }
 
   getContent() {
-    return this.#textEl.textContent;
+    return this.textEl.textContent;
   }
 
   isEmpty() {
-    return this.#textEl.textContent == "";
+    return this.textEl.textContent == "";
   }
 
   setIsActive(isActive) {
@@ -151,31 +153,28 @@ export class Line {
   }
 
   getContentAfter(position) {
-    const content = this.#textEl.textContent.slice(
-      position,
-      this.#textEl.length
-    );
+    const content = this.textEl.textContent.slice(position, this.textEl.length);
     return content == "" ? null : content;
   }
 
   getPosition() {
-    return { top: this.#textEl.offsetTop, left: this.#textEl.offsetLeft };
+    return { top: this.textEl.offsetTop, left: this.textEl.offsetLeft };
   }
 
   getHeight() {
-    return this.#textEl.offsetHeight;
+    return this.textEl.offsetHeight;
   }
 
   getClientHeight() {
-    return this.#textEl.getBoundingClientRect().height;
+    return this.textEl.getBoundingClientRect().height;
   }
 
   getTextWidth() {
-    return this.#textEl.getBoundingClientRect().width;
+    return this.textEl.getBoundingClientRect().width;
   }
 
   getLength() {
-    return this.#textEl.textContent.length;
+    return this.textEl.textContent.length;
   }
 
   getOffsetSum(position) {

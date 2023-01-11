@@ -19,6 +19,7 @@ export class Editor {
     this.isLoaded = false;
     this.theme = null;
     this.linesInViewport = null;
+    this.isSelecting = false    
   }
 
   async init() {
@@ -75,11 +76,6 @@ export class Editor {
     const linePos = firstLine.getPosition();
     const lineHeight = firstLine.getHeight();
     this.lines.push(firstLine);
-
-    console.log(
-      this.preEl.getBoundingClientRect().height - 20,
-      firstLine.getClientHeight()
-    );
     const realHeight = this.preEl.getBoundingClientRect().height - 20;
 
     this.linesInViewport = realHeight / firstLine.getClientHeight();
@@ -107,8 +103,8 @@ export class Editor {
       }
     });
 
-    hiddenInput.onChange((e, withCtrlKey) => {
-      this.onKeyPressed(e, withCtrlKey);
+    hiddenInput.onChange((e, withCtrlKey, shiftKey) => {
+      this.onKeyPressed(e, withCtrlKey, shiftKey);      
     });
 
     hiddenInput.onBlur((e) => {
@@ -120,10 +116,10 @@ export class Editor {
     console.log("loaded");
   }
 
-  onKeyPressed(e, withCtrlKey) {
+  onKeyPressed(e, withCtrlKey, shiftKey) {
     for (const component of this.components) {
       if (component.onKeyPressed) {
-        component.onKeyPressed(e, withCtrlKey);
+        component.onKeyPressed(e, withCtrlKey, shiftKey);
       }
     }
   }

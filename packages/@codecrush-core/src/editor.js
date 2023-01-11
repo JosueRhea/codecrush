@@ -18,6 +18,7 @@ export class Editor {
     this.highlighter = null;
     this.isLoaded = false;
     this.theme = null;
+    this.linesInViewport = null;
   }
 
   async init() {
@@ -75,6 +76,14 @@ export class Editor {
     const lineHeight = firstLine.getHeight();
     this.lines.push(firstLine);
 
+    console.log(
+      this.preEl.getBoundingClientRect().height - 20,
+      firstLine.getClientHeight()
+    );
+    const realHeight = this.preEl.getBoundingClientRect().height - 20;
+
+    this.linesInViewport = realHeight / firstLine.getClientHeight();
+
     //cursor
     const cursor = new Cursor(
       pre,
@@ -111,7 +120,7 @@ export class Editor {
     console.log("loaded");
   }
 
-  onKeyPressed(e,withCtrlKey) {
+  onKeyPressed(e, withCtrlKey) {
     for (const component of this.components) {
       if (component.onKeyPressed) {
         component.onKeyPressed(e, withCtrlKey);

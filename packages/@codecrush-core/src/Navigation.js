@@ -22,6 +22,12 @@ export class Navigation extends Component {
         if (withCtrlKey) return this.moveRightOneWord();
         this.moveRight();
         break;
+      case "PageDown":
+        this.movePageDown();
+        break;
+      case "PageUp":
+        this.movePageUp();
+        break;
       case "Backspace":
         break;
       case "Enter":
@@ -214,6 +220,18 @@ export class Navigation extends Component {
         this.editor.currentPositionOnLine,
         newCurrentLine
       );
+    }
+  }
+
+  movePageDown() {
+    for (let i = 0; i < this.editor.linesInViewport; i++) {
+      this.moveDown();      
+    }
+  }
+
+  movePageUp() {
+    for (let i = 0; i < this.editor.linesInViewport; i++) {
+      this.moveUp();
     }
   }
 

@@ -45,8 +45,7 @@ export class Navigation extends Component {
         break;
     }
 
-    this.updateScroll();
-    console.log(this.editor.lines[this.editor.currentLineIndex].leftMovesOffsets)
+    this.updateScroll();    
   }
 
   onCharacterDelete() {

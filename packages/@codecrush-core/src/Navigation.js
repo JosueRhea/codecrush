@@ -392,6 +392,7 @@ export class Navigation extends Component {
       startOfLine
     ) {
       this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
+      const beforeCurrentLineIndex = this.editor.currentLineIndex
       this.editor.currentLineIndex += 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);

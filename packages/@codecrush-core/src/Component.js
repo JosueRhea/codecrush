@@ -5,11 +5,13 @@ export class Component {
 
   onKeyPressed(data, withCtrlKey, shiftKey) {}
 
-  onCharacterDelete(){}
+  onCharacterDelete() {}
 
-  onNewLine(){}
-  
-  onDeleteLine(positionOnLine){}
-  
-  onLineIndexChange(){}
+  onNewLine() {}
+
+  onDeleteLine(positionOnLine) {}
+
+  onLineIndexChange() {}
+
+  onPositionChange(data) {}
 }

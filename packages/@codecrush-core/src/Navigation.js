@@ -50,16 +50,28 @@ export class Navigation extends Component {
 
   onCharacterDelete() {
     if (this.editor.currentPositionOnLine > 0) {
-      this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
       this.editor.currentPositionOnLine -= 1;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         this.editor.lines[this.editor.currentLineIndex]
       );
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine + 1,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     } else {
       if (this.editor.currentLineIndex > 0) {
         this.moveUp();
-        this.editor.onLineIndexChange();
       }
     }
   }
@@ -67,35 +79,75 @@ export class Navigation extends Component {
   onNewLine() {
     this.editor.currentLineIndex += 1;
     const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
-    this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+    const beforeCursorPosition = this.editor.currentPositionOnLine;
     this.editor.currentPositionOnLine = 0;
     this.updateCursorPositionTo(
       this.editor.currentPositionOnLine,
       newCurrentLine
     );
-    this.editor.onLineIndexChange();
+    this.editor.onPositionChange({
+      before: {
+        line: {
+          index: this.editor.currentLineIndex - 1,
+          position: beforeCursorPosition,
+        },
+      },
+      after: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: this.editor.currentPositionOnLine,
+        },
+      },
+    });
   }
 
   onDeleteLine(positionOnLine) {
     this.editor.currentLineIndex -= 1;
-    this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+    const beforeCursorPosition = this.editor.currentPositionOnLine;
     this.editor.currentPositionOnLine = positionOnLine;
     this.updateCursorPositionTo(
       this.editor.currentPositionOnLine,
       this.editor.lines[this.editor.currentLineIndex]
     );
-    this.editor.onLineIndexChange();
+    this.editor.onPositionChange({
+      before: {
+        line: {
+          index: this.editor.currentLineIndex + 1,
+          position: beforeCursorPosition,
+        },
+      },
+      after: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: this.editor.currentPositionOnLine,
+        },
+      },
+    });
   }
 
   moveRight() {
     const currentLine = this.editor.lines[this.editor.currentLineIndex];
     if (this.editor.currentPositionOnLine < currentLine.getLength()) {
-      this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+      const beforeCursorPosition = this.editor.currentPositionOnLine;
       this.editor.currentPositionOnLine += 1;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         this.editor.lines[this.editor.currentLineIndex]
       );
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: beforeCursorPosition,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     } else {
       if (this.editor.currentLineIndex < this.editor.lines.length) {
         this.moveDown(true);
@@ -109,9 +161,23 @@ export class Navigation extends Component {
       const newPosition =
         currentLine.getBeforeWordPosition(this.editor.currentPositionOnLine) ??
         0;
-        this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+      const beforeCursorPosition = this.editor.currentPositionOnLine;
       this.editor.currentPositionOnLine = newPosition;
       this.updateCursorPositionTo(newPosition, currentLine);
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: beforeCursorPosition,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     } else {
       if (this.editor.currentLineIndex > 0) {
         this.moveUp(true);
@@ -125,12 +191,26 @@ export class Navigation extends Component {
       const newPosition =
         currentLine.getAfterWordPosition(this.editor.currentPositionOnLine) ??
         currentLine.getLength();
-        this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+      const beforeCursorPosition = this.editor.currentPositionOnLine;
       this.editor.currentPositionOnLine = newPosition;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         currentLine
       );
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: beforeCursorPosition,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     } else {
       if (this.editor.currentLineIndex < this.editor.lines.length) {
         this.moveDown(true);
@@ -140,12 +220,26 @@ export class Navigation extends Component {
 
   moveLeft() {
     if (this.editor.currentPositionOnLine > 0) {
-      this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+      const beforeCursorPosition = this.editor.currentPositionOnLine;
       this.editor.currentPositionOnLine -= 1;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         this.editor.lines[this.editor.currentLineIndex]
       );
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: beforeCursorPosition,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     } else {
       if (this.editor.currentLineIndex > 0) {
         this.moveUp(true);
@@ -156,6 +250,7 @@ export class Navigation extends Component {
   moveUp(endOfLine = false) {
     if (this.editor.currentLineIndex > 0 && !endOfLine) {
       this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
+      const beforeCurrentLineIndex = this.editor.currentLineIndex;
       this.editor.currentLineIndex -= 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);
@@ -163,34 +258,75 @@ export class Navigation extends Component {
         newCurrentLine.leftMovesOffsets.length <
         this.editor.currentPositionOnLine
       ) {
-        this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+        const beforeCursorPosition = this.editor.currentPositionOnLine;
         this.editor.currentPositionOnLine =
           newCurrentLine.leftMovesOffsets.length;
         this.updateCursorPositionTo(
           this.editor.currentPositionOnLine,
           newCurrentLine
         );
+        this.editor.onPositionChange({
+          before: {
+            line: {
+              index: beforeCurrentLineIndex,
+              position: beforeCursorPosition,
+            },
+          },
+          after: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+        });
       } else {
         this.updateCursorPositionTo(
           this.editor.currentPositionOnLine,
           newCurrentLine
         );
+        this.editor.onPositionChange({
+          before: {
+            line: {
+              index: beforeCurrentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+          after: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+        });
       }
-      this.editor.onLineIndexChange();
     }
 
     if (this.editor.currentLineIndex > 0 && endOfLine) {
       this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
+      const beforeCurrentLineIndex = this.editor.currentLineIndex;
       this.editor.currentLineIndex -= 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);
-      this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+      const beforeCursorPosition = this.editor.currentPositionOnLine;
       this.editor.currentPositionOnLine = newCurrentLine.getLength();
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         newCurrentLine
       );
-      this.editor.onLineIndexChange();
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: beforeCurrentLineIndex,
+            position: beforeCursorPosition,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     }
   }
 
@@ -200,6 +336,7 @@ export class Navigation extends Component {
       !startOfLine
     ) {
       this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
+      const beforeCurrentLineIndex = this.editor.currentLineIndex;
       this.editor.currentLineIndex += 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);
@@ -207,20 +344,47 @@ export class Navigation extends Component {
         newCurrentLine.leftMovesOffsets.length <
         this.editor.currentPositionOnLine
       ) {
-        this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+        const beforeCursorPosition = this.editor.currentPositionOnLine;
         this.editor.currentPositionOnLine =
           newCurrentLine.leftMovesOffsets.length;
         this.updateCursorPositionTo(
           this.editor.currentPositionOnLine,
           newCurrentLine
         );
+        this.editor.onPositionChange({
+          before: {
+            line: {
+              index: beforeCurrentLineIndex,
+              position: beforeCursorPosition,
+            },
+          },
+          after: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+        });
       } else {
         this.updateCursorPositionTo(
           this.editor.currentPositionOnLine,
           newCurrentLine
         );
+        this.editor.onPositionChange({
+          before: {
+            line: {
+              index: beforeCurrentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+          after: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+        });
       }
-      this.editor.onLineIndexChange();
     }
 
     if (
@@ -231,13 +395,26 @@ export class Navigation extends Component {
       this.editor.currentLineIndex += 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);
-      this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+      const beforeCursorPosition = this.editor.currentPositionOnLine;
       this.editor.currentPositionOnLine = 0;
       this.updateCursorPositionTo(
         this.editor.currentPositionOnLine,
         newCurrentLine
       );
-      this.editor.onLineIndexChange();
+      this.editor.onPositionChange({
+        before: {
+          line: {
+            index: beforeCurrentLineIndex,
+            position: beforeCursorPosition,
+          },
+        },
+        after: {
+          line: {
+            index: this.editor.currentLineIndex,
+            position: this.editor.currentPositionOnLine,
+          },
+        },
+      });
     }
   }
 
@@ -256,16 +433,44 @@ export class Navigation extends Component {
   moveEndOfLine() {
     const currentLine = this.editor.lines[this.editor.currentLineIndex];
     const position = currentLine.getLength();
-    this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+    const beforeCursorPosition = this.editor.currentPositionOnLine;
     this.editor.currentPositionOnLine = position;
     this.updateCursorPositionTo(this.editor.currentPositionOnLine, currentLine);
+    this.editor.onPositionChange({
+      before: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: beforeCursorPosition,
+        },
+      },
+      after: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: this.editor.currentPositionOnLine,
+        },
+      },
+    });
   }
 
   moveStartOfLine() {
     const currentLine = this.editor.lines[this.editor.currentLineIndex];
-    this.editor.lastCurrentPositionOnLine = this.editor.currentPositionOnLine
+    const beforeCursorPosition = this.editor.currentPositionOnLine;
     this.editor.currentPositionOnLine = 0;
     this.updateCursorPositionTo(this.editor.currentPositionOnLine, currentLine);
+    this.editor.onPositionChange({
+      before: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: beforeCursorPosition,
+        },
+      },
+      after: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: this.editor.currentPositionOnLine,
+        },
+      },
+    });
   }
 
   updateCursorPositionTo(position, line) {

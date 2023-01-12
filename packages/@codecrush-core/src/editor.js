@@ -15,13 +15,12 @@ export class Editor {
     this.cursor = null;
     this.currentLineIndex = 0;
     this.currentPositionOnLine = 0;
-    this.lastCurrentPositionOnLine = 0;
     this.highlighter = null;
     this.isLoaded = false;
     this.theme = null;
     this.linesInViewport = null;
     this.isSelecting = false;
-    this.editorSelection = null;
+    this.editorSelection = [];
   }
 
   async init() {
@@ -154,6 +153,14 @@ export class Editor {
     for (const component of this.components) {
       if (component.onDeleteLine) {
         component.onDeleteLine(positionOnLine);
+      }
+    }
+  }
+
+  onPositionChange(data){
+    for (const component of this.components) {
+      if (component.onPositionChange) {
+        component.onPositionChange(data);
       }
     }
   }

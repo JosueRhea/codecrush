@@ -15,12 +15,13 @@ export class Editor {
     this.cursor = null;
     this.currentLineIndex = 0;
     this.currentPositionOnLine = 0;
+    this.lastCurrentPositionOnLine = 0;
     this.highlighter = null;
     this.isLoaded = false;
     this.theme = null;
     this.linesInViewport = null;
-    this.isSelecting = false
-    this.editorSelection = null
+    this.isSelecting = false;
+    this.editorSelection = null;
   }
 
   async init() {
@@ -105,7 +106,7 @@ export class Editor {
     });
 
     hiddenInput.onChange((e, withCtrlKey, shiftKey) => {
-      this.onKeyPressed(e, withCtrlKey, shiftKey);      
+      this.onKeyPressed(e, withCtrlKey, shiftKey);
     });
 
     hiddenInput.onBlur((e) => {
@@ -137,6 +138,14 @@ export class Editor {
     for (const component of this.components) {
       if (component.onNewLine) {
         component.onNewLine();
+      }
+    }
+  }
+
+  onLineIndexChange() {
+    for (const component of this.components) {
+      if (component.onNewLine) {
+        component.onLineIndexChange();
       }
     }
   }

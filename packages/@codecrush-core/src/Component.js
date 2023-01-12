@@ -10,4 +10,6 @@ export class Component {
   onNewLine(){}
   
   onDeleteLine(positionOnLine){}
+  
+  onLineIndexChange(){}
 }

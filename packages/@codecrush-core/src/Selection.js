@@ -17,8 +17,10 @@ export class Selection extends Component {
 
   onPositionChange(data) {
     if (!this.isShiftKey) return;
-    const isLeft = data.before.line.position > data.after.line.position;
-    if (isLeft) {
+    const IS_LEFT = data.before.line.position > data.after.line.position;
+    const IS_UP = data.before.line.index > data.after.line.index;
+    console.log(data);
+    if (IS_LEFT) {
       const lineIndex = data.before.line.index;
       this.selectTextToLeft(
         lineIndex,
@@ -26,12 +28,28 @@ export class Selection extends Component {
         data.before.line.position
       );
     }
+
+    if (IS_UP) {
+      const lineBeforeIndex = data.before.line.index
+      const positionBeforeIndex = data.before.line.position
+      const lineAfterIndex = data.after.line.index
+      const positionAfterIndex = data.after.line.position
+      this.selectTextToUp(lineBeforeIndex, positionBeforeIndex, lineAfterIndex, positionAfterIndex);
+    }
+  }
+
+  selectTextToUp(lineBeforeIndex, positionBeforeIndex, lineAfterIndex, positionAfterIndex) {
+    const afterLine = this.editor.lines[lineAfterIndex]
+    const length = afterLine.getLength()
+    this.selectTextToLeft(lineBeforeIndex, 0, positionBeforeIndex);
+    this.selectTextToLeft(lineAfterIndex, positionAfterIndex, length)
   }
 
   selectTextToLeft(lineIndex, start, end) {
     const currentLine = this.editor.lines[lineIndex];
-    if (this.editor.isSelecting) {
-      this.editor.editorSelection.map((selection) => {
+    const lineExistInSelection = this.editor.editorSelection.find(n => n.lineIndex ===lineIndex)
+    if (this.editor.isSelecting && lineExistInSelection) {
+      this.editor.editorSelection = this.editor.editorSelection.map((selection) => {
         if (selection.lineIndex === lineIndex) {
           selection.start = start;
           const width = currentLine.getOffsetSumRange(
@@ -44,11 +62,12 @@ export class Selection extends Component {
           this.editor.editorSelection.push(selection);
           this.renderSelection();
         }
+        return selection
       });
     } else {
       this.editor.isSelecting = true;
       const selection = {
-        lineIndex: this.editor.currentLineIndex,
+        lineIndex: lineIndex,
         start: start,
         end: end,
       };

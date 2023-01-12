@@ -17,53 +17,79 @@ export class Selection extends Component {
 
   onPositionChange(data) {
     if (!this.isShiftKey) return;
-    const IS_LEFT = data.before.line.position > data.after.line.position;
-    const IS_UP = data.before.line.index > data.after.line.index;
-    console.log(data);
+    const lineBeforeIndex = data.before.line.index;
+    const positionBeforeIndex = data.before.line.position;
+    const lineAfterIndex = data.after.line.index;
+    const positionAfterIndex = data.after.line.position;
+
+    const IS_LEFT = positionBeforeIndex > positionAfterIndex;
+    const IS_LEFT_UP = lineBeforeIndex > lineAfterIndex && positionBeforeIndex == 0
+    const IS_UP = lineBeforeIndex > lineAfterIndex;
+
+    console.log({ before: data.before, after: data.after });
+
     if (IS_LEFT) {
-      const lineIndex = data.before.line.index;
       this.selectTextToLeft(
-        lineIndex,
-        data.after.line.position,
-        data.before.line.position
+        lineBeforeIndex,
+        positionAfterIndex,
+        positionBeforeIndex
       );
     }
 
+    // if(IS_LEFT_UP){
+    //   this.selectTextToUp(
+    //     lineBeforeIndex,
+    //     positionBeforeIndex,
+    //     lineAfterIndex,
+    //     positionAfterIndex
+    //   );
+    // }
+
     if (IS_UP) {
-      const lineBeforeIndex = data.before.line.index
-      const positionBeforeIndex = data.before.line.position
-      const lineAfterIndex = data.after.line.index
-      const positionAfterIndex = data.after.line.position
-      this.selectTextToUp(lineBeforeIndex, positionBeforeIndex, lineAfterIndex, positionAfterIndex);
+      this.selectTextToUp(
+        lineBeforeIndex,
+        positionBeforeIndex,
+        lineAfterIndex,
+        positionAfterIndex - 1
+      );
     }
   }
 
-  selectTextToUp(lineBeforeIndex, positionBeforeIndex, lineAfterIndex, positionAfterIndex) {
-    const afterLine = this.editor.lines[lineAfterIndex]
-    const length = afterLine.getLength()
+  selectTextToUp(
+    lineBeforeIndex,
+    positionBeforeIndex,
+    lineAfterIndex,
+    positionAfterIndex
+  ) {
+    const afterLine = this.editor.lines[lineAfterIndex];
+    const length = afterLine.getLength();
     this.selectTextToLeft(lineBeforeIndex, 0, positionBeforeIndex);
-    this.selectTextToLeft(lineAfterIndex, positionAfterIndex, length)
+    this.selectTextToLeft(lineAfterIndex, positionAfterIndex, length);
   }
 
   selectTextToLeft(lineIndex, start, end) {
     const currentLine = this.editor.lines[lineIndex];
-    const lineExistInSelection = this.editor.editorSelection.find(n => n.lineIndex ===lineIndex)
+    const lineExistInSelection = this.editor.editorSelection.find(
+      (n) => n.lineIndex === lineIndex
+    );
     if (this.editor.isSelecting && lineExistInSelection) {
-      this.editor.editorSelection = this.editor.editorSelection.map((selection) => {
-        if (selection.lineIndex === lineIndex) {
-          selection.start = start;
-          const width = currentLine.getOffsetSumRange(
-            selection.start,
-            selection.end
-          );
-          const left = currentLine.getOffsetSum(selection.start);
-          selection.width = width;
-          selection.left = left;
-          this.editor.editorSelection.push(selection);
-          this.renderSelection();
+      this.editor.editorSelection = this.editor.editorSelection.map(
+        (selection) => {
+          if (selection.lineIndex === lineIndex) {
+            selection.start = start;
+            const width = currentLine.getOffsetSumRange(
+              selection.start,
+              selection.end
+            );
+            const left = currentLine.getOffsetSum(selection.start);
+            selection.width = width;
+            selection.left = left;
+            this.editor.editorSelection.push(selection);
+            this.renderSelection();
+          }
+          return selection;
         }
-        return selection
-      });
+      );
     } else {
       this.editor.isSelecting = true;
       const selection = {

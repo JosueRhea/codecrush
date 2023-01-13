@@ -26,6 +26,7 @@ export class Selection extends Component {
     const IS_RIGHT = positionBeforeIndex < positionAfterIndex;
     // const IS_LEFT_UP = lineBeforeIndex > lineAfterIndex && positionBeforeIndex == 0
     const IS_UP = lineBeforeIndex > lineAfterIndex;
+    const IS_DOWN = lineBeforeIndex < lineAfterIndex;
     // const IS_RIGHT_WITH_LEFT_SELECTION = IS_LEFT &&
 
     if (IS_LEFT) {
@@ -62,6 +63,15 @@ export class Selection extends Component {
       );
     }
 
+    if (IS_DOWN) {
+      this.selectTextToDown(
+        lineBeforeIndex,
+        positionBeforeIndex,
+        lineAfterIndex,
+        positionAfterIndex
+      );
+    }
+
     console.log({ before: data.before, after: data.after });
     console.log(this.editor.editorSelection);
   }
@@ -78,6 +88,18 @@ export class Selection extends Component {
     this.selectTextToLeft(lineAfterIndex, positionAfterIndex, length);
   }
 
+  selectTextToDown(
+    lineBeforeIndex,
+    positionBeforeIndex,
+    lineAfterIndex,
+    positionAfterIndex
+  ) {
+    const beforeLine = this.editor.lines[lineBeforeIndex];
+    const length = beforeLine.getLength();
+    this.selectTextToLeft(lineBeforeIndex, positionBeforeIndex, length);
+    this.selectTextToLeft(lineAfterIndex, 0, positionAfterIndex);
+  }
+
   selectTextToLeft(lineIndex, start, end) {
     const currentLine = this.editor.lines[lineIndex];
     const lineExistInSelectionIndex = this.editor.editorSelection.findIndex(
@@ -87,7 +109,7 @@ export class Selection extends Component {
       const lineSelection =
         this.editor.editorSelection[lineExistInSelectionIndex];
       if (lineSelection.rightCount > 0) {
-        console.log(lineSelection.rightCount)
+        console.log(lineSelection.rightCount);
         lineSelection.end = start;
         const width = currentLine.getOffsetSumRange(
           lineSelection.start,
@@ -116,7 +138,7 @@ export class Selection extends Component {
         start: start,
         end: end,
         leftCount: 1,
-        rightCount: 0
+        rightCount: 0,
       };
       const width = currentLine.getOffsetSumRange(
         selection.start,
@@ -167,7 +189,7 @@ export class Selection extends Component {
         start: start,
         end: end,
         rightCount: 1,
-        leftCount: 0
+        leftCount: 0,
       };
       const width = currentLine.getOffsetSumRange(
         selection.start,

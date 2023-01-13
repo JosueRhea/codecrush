@@ -5,6 +5,8 @@ export class Selection extends Component {
     super();
     this.range = null;
     this.isShiftKey = false;
+    this.upCount = 0;
+    this.downCount = 0;
   }
 
   onKeyPressed(key, _, shiftKey) {
@@ -45,15 +47,6 @@ export class Selection extends Component {
       );
     }
 
-    // if(IS_LEFT_UP){
-    //   this.selectTextToUp(
-    //     lineBeforeIndex,
-    //     positionBeforeIndex,
-    //     lineAfterIndex,
-    //     positionAfterIndex - 1
-    //   );
-    // }
-
     if (IS_UP) {
       this.selectTextToUp(
         lineBeforeIndex,
@@ -86,6 +79,7 @@ export class Selection extends Component {
     const length = afterLine.getLength();
     this.selectTextToLeft(lineBeforeIndex, 0, positionBeforeIndex);
     this.selectTextToLeft(lineAfterIndex, positionAfterIndex, length);
+    this.upCount += 1;
   }
 
   selectTextToDown(
@@ -96,8 +90,9 @@ export class Selection extends Component {
   ) {
     const beforeLine = this.editor.lines[lineBeforeIndex];
     const length = beforeLine.getLength();
-    this.selectTextToLeft(lineBeforeIndex, positionBeforeIndex, length);
-    this.selectTextToLeft(lineAfterIndex, 0, positionAfterIndex);
+    this.selectTextToRight(lineBeforeIndex, positionBeforeIndex, length);
+    this.selectTextToRight(lineAfterIndex, 0, positionAfterIndex);
+    this.downCount += 1;
   }
 
   selectTextToLeft(lineIndex, start, end) {
@@ -207,15 +202,19 @@ export class Selection extends Component {
     if (this.editor.isSelecting) {
       this.editor.isSelecting = false;
       this.editor.editorSelection.forEach(({ lineIndex }) => {
-        const line = this.editor.lines[lineIndex];
-        line.selection = null;
-        line.selectionEl.style.top = "";
-        line.selectionEl.style.left = "";
-        line.selectionEl.style.width = "";
-        line.selectionEl.style.height = "";
+        this.deselectLine(lineIndex);
       });
       this.editor.editorSelection.length = 0;
     }
+  }
+
+  deselectLine(lineIndex) {
+    const line = this.editor.lines[lineIndex];
+    line.selection = null;
+    line.selectionEl.style.top = "";
+    line.selectionEl.style.left = "";
+    line.selectionEl.style.width = "";
+    line.selectionEl.style.height = "";
   }
 
   renderSelection() {

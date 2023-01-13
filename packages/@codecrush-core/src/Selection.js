@@ -28,9 +28,6 @@ export class Selection extends Component {
     const IS_UP = lineBeforeIndex > lineAfterIndex;
     // const IS_RIGHT_WITH_LEFT_SELECTION = IS_LEFT &&
 
-    console.log({ before: data.before, after: data.after });
-    console.log(this.editor.editorSelection);
-
     if (IS_LEFT) {
       this.selectTextToLeft(
         lineBeforeIndex,
@@ -64,6 +61,9 @@ export class Selection extends Component {
         positionAfterIndex
       );
     }
+
+    console.log({ before: data.before, after: data.after });
+    console.log(this.editor.editorSelection);
   }
 
   selectTextToUp(
@@ -86,14 +86,28 @@ export class Selection extends Component {
     if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
       const lineSelection =
         this.editor.editorSelection[lineExistInSelectionIndex];
-      lineSelection.start = start;
-      const width = currentLine.getOffsetSumRange(
-        lineSelection.start,
-        lineSelection.end
-      );
-      const left = currentLine.getOffsetSum(lineSelection.start);
-      lineSelection.width = width;
-      lineSelection.left = left;
+      if (lineSelection.rightCount > 0) {
+        console.log(lineSelection.rightCount)
+        lineSelection.end = start;
+        const width = currentLine.getOffsetSumRange(
+          lineSelection.start,
+          lineSelection.end
+        );
+        const left = currentLine.getOffsetSum(lineSelection.start);
+        lineSelection.width = width;
+        lineSelection.left = left;
+        lineSelection.rightCount -= 1;
+      } else {
+        lineSelection.start = start;
+        const width = currentLine.getOffsetSumRange(
+          lineSelection.start,
+          lineSelection.end
+        );
+        const left = currentLine.getOffsetSum(lineSelection.start);
+        lineSelection.width = width;
+        lineSelection.left = left;
+        lineSelection.leftCount += 1;
+      }
       this.renderSelection();
     } else {
       this.editor.isSelecting = true;
@@ -101,6 +115,8 @@ export class Selection extends Component {
         lineIndex: lineIndex,
         start: start,
         end: end,
+        leftCount: 1,
+        rightCount: 0
       };
       const width = currentLine.getOffsetSumRange(
         selection.start,
@@ -122,14 +138,27 @@ export class Selection extends Component {
     if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
       const lineSelection =
         this.editor.editorSelection[lineExistInSelectionIndex];
-      lineSelection.end = end;
-      const width = currentLine.getOffsetSumRange(
-        lineSelection.start,
-        lineSelection.end
-      );
-      const left = currentLine.getOffsetSum(lineSelection.start);
-      lineSelection.width = width;
-      lineSelection.left = left;
+      if (lineSelection.leftCount > 0) {
+        lineSelection.start = end;
+        const width = currentLine.getOffsetSumRange(
+          lineSelection.start,
+          lineSelection.end
+        );
+        const left = currentLine.getOffsetSum(lineSelection.start);
+        lineSelection.width = width;
+        lineSelection.left = left;
+        lineSelection.leftCount -= 1;
+      } else {
+        lineSelection.end = end;
+        const width = currentLine.getOffsetSumRange(
+          lineSelection.start,
+          lineSelection.end
+        );
+        const left = currentLine.getOffsetSum(lineSelection.start);
+        lineSelection.width = width;
+        lineSelection.left = left;
+        lineSelection.rightCount += 1;
+      }
       this.renderSelection();
     } else {
       this.editor.isSelecting = true;
@@ -137,6 +166,8 @@ export class Selection extends Component {
         lineIndex: lineIndex,
         start: start,
         end: end,
+        rightCount: 1,
+        leftCount: 0
       };
       const width = currentLine.getOffsetSumRange(
         selection.start,

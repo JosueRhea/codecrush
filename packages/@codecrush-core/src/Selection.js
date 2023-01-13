@@ -23,8 +23,10 @@ export class Selection extends Component {
     const positionAfterIndex = data.after.line.position;
 
     const IS_LEFT = positionBeforeIndex > positionAfterIndex;
-    const IS_LEFT_UP = lineBeforeIndex > lineAfterIndex && positionBeforeIndex == 0
+    const IS_RIGHT = positionBeforeIndex < positionAfterIndex;
+    // const IS_LEFT_UP = lineBeforeIndex > lineAfterIndex && positionBeforeIndex == 0
     const IS_UP = lineBeforeIndex > lineAfterIndex;
+    // const IS_RIGHT_WITH_LEFT_SELECTION = IS_LEFT &&
 
     console.log({ before: data.before, after: data.after });
 
@@ -36,12 +38,16 @@ export class Selection extends Component {
       );
     }
 
+    if (IS_RIGHT) {
+      console.log("Right");
+    }
+
     // if(IS_LEFT_UP){
     //   this.selectTextToUp(
     //     lineBeforeIndex,
     //     positionBeforeIndex,
     //     lineAfterIndex,
-    //     positionAfterIndex
+    //     positionAfterIndex - 1
     //   );
     // }
 
@@ -50,9 +56,11 @@ export class Selection extends Component {
         lineBeforeIndex,
         positionBeforeIndex,
         lineAfterIndex,
-        positionAfterIndex - 1
+        positionAfterIndex
       );
     }
+
+    console.log(this.editor.editorSelection);
   }
 
   selectTextToUp(
@@ -69,27 +77,57 @@ export class Selection extends Component {
 
   selectTextToLeft(lineIndex, start, end) {
     const currentLine = this.editor.lines[lineIndex];
-    const lineExistInSelection = this.editor.editorSelection.find(
+    const lineExistInSelectionIndex = this.editor.editorSelection.findIndex(
       (n) => n.lineIndex === lineIndex
     );
-    if (this.editor.isSelecting && lineExistInSelection) {
-      this.editor.editorSelection = this.editor.editorSelection.map(
-        (selection) => {
-          if (selection.lineIndex === lineIndex) {
-            selection.start = start;
-            const width = currentLine.getOffsetSumRange(
-              selection.start,
-              selection.end
-            );
-            const left = currentLine.getOffsetSum(selection.start);
-            selection.width = width;
-            selection.left = left;
-            this.editor.editorSelection.push(selection);
-            this.renderSelection();
-          }
-          return selection;
-        }
+    if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
+      const lineSelection =
+        this.editor.editorSelection[lineExistInSelectionIndex];
+      lineSelection.start = start;
+      const width = currentLine.getOffsetSumRange(
+        lineSelection.start,
+        lineSelection.end
       );
+      const left = currentLine.getOffsetSum(lineSelection.start);
+      lineSelection.width = width;
+      lineSelection.left = left;
+      this.renderSelection();
+    } else {
+      this.editor.isSelecting = true;
+      const selection = {
+        lineIndex: lineIndex,
+        start: start,
+        end: end,
+      };
+      const width = currentLine.getOffsetSumRange(
+        selection.start,
+        selection.end
+      );
+      const left = currentLine.getOffsetSum(selection.start);
+      selection.width = width;
+      selection.left = left;
+      this.editor.editorSelection.push(selection);
+      this.renderSelection();
+    }
+  }
+
+  selectTextToRight(lineIndex, start, end) {
+    const currentLine = this.editor.lines[lineIndex];
+    const lineExistInSelectionIndex = this.editor.editorSelection.find(
+      (n) => n.lineIndex === lineIndex
+    );
+    if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
+      const lineSelection =
+        this.editor.editorSelection[lineExistInSelectionIndex];
+      lineSelection.start = start;
+      const width = currentLine.getOffsetSumRange(
+        lineSelection.start,
+        lineSelection.end
+      );
+      const left = currentLine.getOffsetSum(lineSelection.start);
+      lineSelection.width = width;
+      lineSelection.left = left;
+      this.renderSelection();
     } else {
       this.editor.isSelecting = true;
       const selection = {

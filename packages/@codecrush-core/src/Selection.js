@@ -29,6 +29,7 @@ export class Selection extends Component {
     // const IS_RIGHT_WITH_LEFT_SELECTION = IS_LEFT &&
 
     console.log({ before: data.before, after: data.after });
+    console.log(this.editor.editorSelection);
 
     if (IS_LEFT) {
       this.selectTextToLeft(
@@ -39,7 +40,11 @@ export class Selection extends Component {
     }
 
     if (IS_RIGHT) {
-      console.log("Right");
+      this.selectTextToRight(
+        lineBeforeIndex,
+        positionBeforeIndex,
+        positionAfterIndex
+      );
     }
 
     // if(IS_LEFT_UP){
@@ -59,8 +64,6 @@ export class Selection extends Component {
         positionAfterIndex
       );
     }
-
-    console.log(this.editor.editorSelection);
   }
 
   selectTextToUp(
@@ -113,13 +116,13 @@ export class Selection extends Component {
 
   selectTextToRight(lineIndex, start, end) {
     const currentLine = this.editor.lines[lineIndex];
-    const lineExistInSelectionIndex = this.editor.editorSelection.find(
+    const lineExistInSelectionIndex = this.editor.editorSelection.findIndex(
       (n) => n.lineIndex === lineIndex
     );
     if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
       const lineSelection =
         this.editor.editorSelection[lineExistInSelectionIndex];
-      lineSelection.start = start;
+      lineSelection.end = end;
       const width = currentLine.getOffsetSumRange(
         lineSelection.start,
         lineSelection.end

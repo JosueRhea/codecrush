@@ -40,12 +40,10 @@ export class TextEditor extends Component {
   }
 
   deleteCharacterInRange(lineIndex, start, end) {
-    console.log(start, end)
     const line = this.editor.lines[lineIndex];
-    for (let i = 0; i < line.getContent().length; i++) {
-      if (i >= start && i <= end) {
-        console.log("Here")
-        this.deleteCharacterByLineIndex(lineIndex, i + 1);
+    for (let i = line.getLength(); i >= 0; i--) {
+      if (i > start && i <= end) {
+        this.deleteCharacterByLineIndex(lineIndex, i);
       }
     }
   }
@@ -54,19 +52,20 @@ export class TextEditor extends Component {
     const currentLine = this.editor.lines[lineIndex];
     if (currentLine.isEmpty()) {
       if (lineIndex > 0) {
-        this.deleteLine(lineIndex);
+        console.log("TODO: delete line for selection")
+        // this.deleteLine(lineIndex);
       }
     } else {
       if (position >= 0) {
-        console.log("Entering here with ", position)
         currentLine.deleteCharacter(position, this.editor.highlighter);
         // this.editor.onCharacterDelete();
       } else {
         if (lineIndex > 0) {
-          const lineToAppend = this.editor.lines[lineIndex - 1];
-          const newPosition = lineToAppend.getLength();
-          currentLine.giveContentTo(lineToAppend, this.editor.highlighter);
-          this.deleteLine(lineIndex, newPosition);
+          console.log("TODO: give content to line for selection")
+          // const lineToAppend = this.editor.lines[lineIndex - 1];
+          // const newPosition = lineToAppend.getLength();
+          // currentLine.giveContentTo(lineToAppend, this.editor.highlighter);
+          // this.deleteLine(lineIndex, newPosition);
         }
       }
     }

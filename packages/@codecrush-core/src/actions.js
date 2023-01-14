@@ -52,4 +52,18 @@ export class Actions {
     }
     return afterValue;
   }
+
+  deleteCharacterRange(text, start, end) {
+    console.log("given index", start, end)
+    let newString = "";
+    for (let i = 0; i < text.length; i++) {
+      if (i >= start && i < end) {
+        continue;
+      } else {
+        console.log("Enter here with index", start, end)
+        newString += text[i];
+      }
+    }
+    return newString
+  }
 }

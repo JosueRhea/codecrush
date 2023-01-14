@@ -129,6 +129,17 @@ export class Line {
     this.leftMovesOffsets.length = this.getLength();
   }
 
+  deleteCharacterRange(start, end, highlighter) {
+    const textParsed = this.actions.deleteCharacterRange(
+      this.textEl.textContent,
+      start,
+      end
+    );
+    this.text = textParsed;
+    this.getHtml(highlighter, start);
+    this.leftMovesOffsets.length = this.getLength();
+  }
+
   giveContentTo(lineToAppend, highlighter) {
     lineToAppend.appendText(
       this.getContent(),

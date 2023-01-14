@@ -1,5 +1,3 @@
-import { getHighlighter } from "shiki";
-import { setCDN } from "shiki";
 import { keyCodeToChar } from "./characters";
 import { Component } from "./Component";
 import { Line } from "./line";
@@ -9,13 +7,19 @@ export class TextEditor extends Component {
   constructor() {
     super();
   }
-  
+
   onKeyPressed(key) {
     switch (key) {
       case "Backspace":
-        this.deleteCharacter(this.editor.highlighter);
+        if (this.editor.editorSelection.length > 0) {
+          this.editor.editorSelection.forEach((line) => {
+            this.deleteCharacterInRange(line.lineIndex, line.start, line.end);
+          });
+        } else {
+          this.deleteCharacter(this.editor.highlighter);
+        }
         break;
-        case "Enter":
+      case "Enter":
         this.createNewLine();
         break;
       default:
@@ -28,7 +32,44 @@ export class TextEditor extends Component {
     const parsedValue = keyCodeToChar[key] ?? key;
     if (parsedValue == "") return;
     const currLine = this.editor.lines[this.editor.currentLineIndex];
-    currLine.appendText(parsedValue, this.editor.currentPositionOnLine, this.editor.highlighter);    
+    currLine.appendText(
+      parsedValue,
+      this.editor.currentPositionOnLine,
+      this.editor.highlighter
+    );
+  }
+
+  deleteCharacterInRange(lineIndex, start, end) {
+    console.log(start, end)
+    const line = this.editor.lines[lineIndex];
+    for (let i = 0; i < line.getContent().length; i++) {
+      if (i >= start && i <= end) {
+        console.log("Here")
+        this.deleteCharacterByLineIndex(lineIndex, i + 1);
+      }
+    }
+  }
+
+  deleteCharacterByLineIndex(lineIndex, position) {
+    const currentLine = this.editor.lines[lineIndex];
+    if (currentLine.isEmpty()) {
+      if (lineIndex > 0) {
+        this.deleteLine(lineIndex);
+      }
+    } else {
+      if (position >= 0) {
+        console.log("Entering here with ", position)
+        currentLine.deleteCharacter(position, this.editor.highlighter);
+        // this.editor.onCharacterDelete();
+      } else {
+        if (lineIndex > 0) {
+          const lineToAppend = this.editor.lines[lineIndex - 1];
+          const newPosition = lineToAppend.getLength();
+          currentLine.giveContentTo(lineToAppend, this.editor.highlighter);
+          this.deleteLine(lineIndex, newPosition);
+        }
+      }
+    }
   }
 
   deleteCharacter() {
@@ -39,7 +80,10 @@ export class TextEditor extends Component {
       }
     } else {
       if (this.editor.currentPositionOnLine > 0) {
-        currentLine.deleteCharacter(this.editor.currentPositionOnLine, this.editor.highlighter);
+        currentLine.deleteCharacter(
+          this.editor.currentPositionOnLine,
+          this.editor.highlighter
+        );
         this.editor.onCharacterDelete();
       } else {
         if (this.editor.currentLineIndex > 0) {
@@ -73,7 +117,7 @@ export class TextEditor extends Component {
       this.editor.lines = insertInto(this.editor.lines, nextIndex, newLine);
       newLine.setIsActive(true);
       this.recomputeLineNumbers();
-      newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);      
+      newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
       this.editor.onNewLine();
     } else {
       const nextIndex = this.editor.currentLineIndex + 1;
@@ -88,28 +132,31 @@ export class TextEditor extends Component {
       newLine.setIsActive(true);
       this.recomputeLineNumbers();
       newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
-      newLine.appendText(contentAfterPosition, 0, this.editor.highlighter)
+      newLine.appendText(contentAfterPosition, 0, this.editor.highlighter);
       this.editor.onNewLine();
     }
   }
 
   deleteLine(currentLineIndex, position) {
     const currentLine = this.editor.lines[currentLineIndex];
-    currentLine.setIsActive(false);
-    currentLine.destroy();
+    if (currentLine) {
+      currentLine.setIsActive(false);
+      currentLine.destroy();
 
-    //Delete the line in the array
-    this.editor.lines = this.editor.lines.reduce((acc, curr, i) => {
-      if (i !== currentLineIndex) {
-        acc.push(curr);
-      }
-      return acc;
-    }, []);
-    this.recomputeLineNumbers();
-    const newCurrentLine = this.editor.lines[this.editor.currentLineIndex - 1];
-    newCurrentLine.setIsActive(true);
-    const length = position ? position : newCurrentLine.getLength();
-    this.editor.onDeleteLine(length);
+      //Delete the line in the array
+      this.editor.lines = this.editor.lines.reduce((acc, curr, i) => {
+        if (i !== currentLineIndex) {
+          acc.push(curr);
+        }
+        return acc;
+      }, []);
+      this.recomputeLineNumbers();
+      const newCurrentLine =
+        this.editor.lines[this.editor.currentLineIndex - 1];
+      newCurrentLine.setIsActive(true);
+      const length = position ? position : newCurrentLine.getLength();
+      this.editor.onDeleteLine(length);
+    }
   }
 
   recomputeLineNumbers() {

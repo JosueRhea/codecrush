@@ -64,9 +64,6 @@ export class Selection extends Component {
         positionAfterIndex
       );
     }
-
-    console.log({ before: data.before, after: data.after });
-    console.log(this.editor.editorSelection);
   }
 
   selectTextToUp(

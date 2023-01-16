@@ -14,4 +14,6 @@ export class Component {
   onLineIndexChange() {}
 
   onPositionChange(data) {}
+
+  onMouseClick(clickX, clickY) {}
 }

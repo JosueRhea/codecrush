@@ -1,5 +1,6 @@
 import { keyCodeToChar } from "./characters";
 import { Component } from "./Component";
+import { inRange } from "./utils/numbers";
 
 export class Navigation extends Component {
   constructor() {
@@ -392,7 +393,7 @@ export class Navigation extends Component {
       startOfLine
     ) {
       this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
-      const beforeCurrentLineIndex = this.editor.currentLineIndex
+      const beforeCurrentLineIndex = this.editor.currentLineIndex;
       this.editor.currentLineIndex += 1;
       const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
       newCurrentLine.setIsActive(true);
@@ -514,6 +515,35 @@ export class Navigation extends Component {
     if (relativePos.x < 0) {
       this.editor.preEl.scrollLeft =
         this.editor.preEl.scrollLeft + relativePos.x;
+    }
+  }
+
+  //Mouse navigation
+  onMouseClick(_, clickY) {
+    const y = clickY;
+    const currentLineIndex = this.editor.currentLineIndex;
+
+    const lineIndex = this.editor.lines.findIndex((n) => {
+      const linePos = n.getPosition();
+      return inRange(y, linePos.top, linePos.top + n.getClientHeight());
+    });
+
+    if (lineIndex !== -1) {
+      const movements = lineIndex - currentLineIndex;
+      if (movements > 0) {
+        for (let i = 0; i < movements; i++) {
+          this.moveDown();
+        }
+      } else {
+        for (let i = 0; i < Math.abs(movements); i++) {
+          this.moveUp();
+        }
+      }
+    } else {
+      const linesBottom = this.editor.lines.length - currentLineIndex;
+      for (let i = 0; i < linesBottom; i++) {
+        this.moveDown()
+      }
     }
   }
 }

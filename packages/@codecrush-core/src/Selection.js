@@ -100,8 +100,7 @@ export class Selection extends Component {
     if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
       const lineSelection =
         this.editor.editorSelection[lineExistInSelectionIndex];
-      if (lineSelection.rightCount > 0) {
-        console.log(lineSelection.rightCount);
+      if (lineSelection.rightCount > 0) {        
         lineSelection.end = start;
         const width = currentLine.getOffsetSumRange(
           lineSelection.start,

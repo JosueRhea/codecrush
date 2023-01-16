@@ -54,7 +54,6 @@ export class Actions {
   }
 
   deleteCharacterRange(text, start, end) {
-    console.log("given index", start, end)
     let newString = "";
     for (let i = 0; i < text.length; i++) {
       if (i >= start && i < end) {

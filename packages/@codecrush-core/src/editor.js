@@ -94,9 +94,17 @@ export class Editor {
       e.preventDefault();
     });
 
+    this.preEl.addEventListener("mousedown", (e) => {
+      const clickY =
+        e.clientY -
+        this.preEl.getBoundingClientRect().top +
+        this.preEl.scrollTop;
+      this.onMouseClick(0, clickY);
+    });
+
     // Input
     const hiddenInput = new EditableInput();
-    this.editorEl.addEventListener("click", () => {
+    this.editorEl.addEventListener("click", (e) => {
       if (!this.isFocus) {
         hiddenInput.focus();
         this.isFocus = true;
@@ -115,6 +123,14 @@ export class Editor {
 
     this.isLoaded = true;
     console.log("loaded");
+  }
+
+  onMouseClick(clickX, clickY) {
+    for (const component of this.components) {
+      if (component.onMouseClick) {
+        component.onMouseClick(clickX, clickY);
+      }
+    }
   }
 
   onKeyPressed(e, withCtrlKey, shiftKey) {
@@ -157,7 +173,7 @@ export class Editor {
     }
   }
 
-  onPositionChange(data){
+  onPositionChange(data) {
     for (const component of this.components) {
       if (component.onPositionChange) {
         component.onPositionChange(data);

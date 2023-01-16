@@ -203,4 +203,15 @@ export class Line {
   getOffsetSumRange(start, end) {
     return sumRange(this.leftMovesOffsets, start, end);
   }
+
+  getClosestPositionIndex(target) {
+    let currentSum = 0;
+    for (let i = 0; i < this.leftMovesOffsets.length; i++) {
+      currentSum += this.leftMovesOffsets[i];
+      if (currentSum >= target) {
+        return i;
+      }
+    }
+    return this.leftMovesOffsets.length;
+  }
 }

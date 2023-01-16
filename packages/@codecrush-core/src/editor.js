@@ -99,7 +99,10 @@ export class Editor {
         e.clientY -
         this.preEl.getBoundingClientRect().top +
         this.preEl.scrollTop;
-      this.onMouseClick(0, clickY);
+      const clickX =
+        e.clientX - this.preEl.getBoundingClientRect().left + this.preEl.scrollLeft;
+
+      this.onMouseClick(clickX, clickY);
     });
 
     // Input

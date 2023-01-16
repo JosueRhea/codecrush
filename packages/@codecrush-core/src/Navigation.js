@@ -519,7 +519,7 @@ export class Navigation extends Component {
   }
 
   //Mouse navigation
-  onMouseClick(_, clickY) {
+  onMouseClick(clickX, clickY) {
     const y = clickY;
     const currentLineIndex = this.editor.currentLineIndex;
 
@@ -534,15 +534,61 @@ export class Navigation extends Component {
         for (let i = 0; i < movements; i++) {
           this.moveDown();
         }
+        const beforeCursorPosition = this.editor.currentPositionOnLine
+        const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
+        const newCurrentLinePos = newCurrentLine.getPosition();
+        const newPosition = newCurrentLine.getClosestPositionIndex(
+          clickX - newCurrentLinePos.left
+        );
+        this.editor.currentPositionOnLine = newPosition;
+        this.updateCursorPositionTo(this.editor.currentPositionOnLine, newCurrentLine);
+        this.editor.onPositionChange({
+          before: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: beforeCursorPosition,
+            },
+          },
+          after: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+        });
       } else {
         for (let i = 0; i < Math.abs(movements); i++) {
           this.moveUp();
         }
+
+        const beforeCursorPosition = this.editor.currentPositionOnLine
+        const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
+        const newCurrentLinePos = newCurrentLine.getPosition();
+        const newPosition = newCurrentLine.getClosestPositionIndex(
+          clickX - newCurrentLinePos.left
+        );
+        this.editor.currentPositionOnLine = newPosition;
+        this.updateCursorPositionTo(this.editor.currentPositionOnLine, newCurrentLine);
+        this.editor.onPositionChange({
+          before: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: beforeCursorPosition,
+            },
+          },
+          after: {
+            line: {
+              index: this.editor.currentLineIndex,
+              position: this.editor.currentPositionOnLine,
+            },
+          },
+        });
       }
     } else {
       const linesBottom = this.editor.lines.length - currentLineIndex;
       for (let i = 0; i < linesBottom; i++) {
-        this.moveDown()
+        this.moveDown();
+        this.moveEndOfLine()
       }
     }
   }

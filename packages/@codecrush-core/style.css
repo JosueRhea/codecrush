@@ -42,6 +42,13 @@ body {
   padding-bottom: 20px;
 }
 
+.text-editor pre .autocompletion {
+  position: absolute;
+  background: red;
+  height: fit-content;
+  max-height: 400px;
+}
+
 .text-editor code {
   width: 100%;
 }

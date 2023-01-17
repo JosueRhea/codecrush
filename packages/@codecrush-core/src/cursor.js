@@ -22,6 +22,10 @@ export class Cursor {
     return this.cursor.getBoundingClientRect()
   }
 
+  getLeft(){
+    return this.cursor.offsetLeft
+  }
+
   moveLeftOneCharacter(offset) {    
     this.cursor.style.left = `${this.cursor.offsetLeft - offset}px`;
   }

@@ -44,9 +44,10 @@ body {
 
 .text-editor pre .autocompletion {
   position: absolute;
-  background: red;
+  background: var(--editor-editorLineNumber-foreground);
   height: fit-content;
   max-height: 400px;
+  border-radius: 5px;
 }
 
 .text-editor code {

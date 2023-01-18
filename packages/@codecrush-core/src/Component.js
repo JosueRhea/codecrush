@@ -16,4 +16,6 @@ export class Component {
   onPositionChange(data) {}
 
   onMouseClick(clickX, clickY) {}
+
+  onCompletionAccept(completion) {}
 }

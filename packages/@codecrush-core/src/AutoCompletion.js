@@ -9,6 +9,7 @@ export class AutoCompletion extends Component {
     this.results = [];
     this.completionEl = null;
     this.query = "";
+    this.currentWord = "";
   }
 
   onKeyPressed(key) {
@@ -40,6 +41,14 @@ export class AutoCompletion extends Component {
         this.quit();
         break;
       case "Enter":
+        if (this.editor.isAutoCompleting) {
+          if (this.results.length > 0) {
+            this.editor.onCompletionAccept(
+              this.results[0].substring(this.currentWord.length)
+            );
+            this.editor.isAutoCompleting = false;
+          }
+        }
         this.quit();
         break;
       case "Home":
@@ -65,6 +74,7 @@ export class AutoCompletion extends Component {
   quit() {
     if (!this.completionEl) return;
     this.completionEl.quit();
+    this.isAutoCompleting = false;
   }
 
   search() {
@@ -75,11 +85,15 @@ export class AutoCompletion extends Component {
       0,
       this.editor.currentPositionOnLine
     );
-    const lastDelimiter = Math.max(beforePosition.lastIndexOf("."), beforePosition.lastIndexOf(' '));
+    const lastDelimiter = Math.max(
+      beforePosition.lastIndexOf("."),
+      beforePosition.lastIndexOf(" ")
+    );
     const currentWord = lineContent.slice(
       lastDelimiter + 1,
       this.editor.currentPositionOnLine
     );
+    this.currentWord = currentWord;
     this.results = findQuery(currentWord);
   }
 
@@ -95,6 +109,10 @@ export class AutoCompletion extends Component {
     if (!this.completionEl) {
       const completionEl = new Completion(this.editor.preEl);
       this.completionEl = completionEl;
+    }
+
+    if (this.results.length > 0) {
+      this.editor.isAutoCompleting = true;
     }
 
     this.completionEl.render(

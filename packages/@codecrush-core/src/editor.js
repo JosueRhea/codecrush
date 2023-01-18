@@ -21,6 +21,7 @@ export class Editor {
     this.linesInViewport = null;
     this.isSelecting = false;
     this.editorSelection = [];
+    this.isAutoCompleting = false
   }
 
   async init() {
@@ -180,6 +181,14 @@ export class Editor {
     for (const component of this.components) {
       if (component.onPositionChange) {
         component.onPositionChange(data);
+      }
+    }
+  }
+
+  onCompletionAccept(completion){
+    for (const component of this.components) {
+      if (component.onCompletionAccept) {
+        component.onCompletionAccept(completion);
       }
     }
   }

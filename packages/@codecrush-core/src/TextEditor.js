@@ -20,6 +20,7 @@ export class TextEditor extends Component {
         }
         break;
       case "Enter":
+        if (this.editor.isAutoCompleting) break;
         this.createNewLine();
         break;
       default:
@@ -52,7 +53,7 @@ export class TextEditor extends Component {
     const currentLine = this.editor.lines[lineIndex];
     if (currentLine.isEmpty()) {
       if (lineIndex > 0) {
-        console.log("TODO: delete line for selection")
+        console.log("TODO: delete line for selection");
         // this.deleteLine(lineIndex);
       }
     } else {
@@ -61,7 +62,7 @@ export class TextEditor extends Component {
         // this.editor.onCharacterDelete();
       } else {
         if (lineIndex > 0) {
-          console.log("TODO: give content to line for selection")
+          console.log("TODO: give content to line for selection");
           // const lineToAppend = this.editor.lines[lineIndex - 1];
           // const newPosition = lineToAppend.getLength();
           // currentLine.giveContentTo(lineToAppend, this.editor.highlighter);
@@ -162,5 +163,9 @@ export class TextEditor extends Component {
     this.editor.lines.forEach((line, i) => {
       line.changeLineNumber(i);
     });
+  }
+
+  onCompletionAccept(completion) {
+    this.addCharacter(completion);
   }
 }

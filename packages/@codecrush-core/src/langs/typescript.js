@@ -10,6 +10,11 @@ const keyworks = [
   "new",
   "if",
   "else",
+  "for",
+  "var",
+  "Math",
+  "max",
+  "min",
 ];
 
 export const findQuery = (query) => {

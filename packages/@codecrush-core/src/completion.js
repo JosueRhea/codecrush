@@ -16,7 +16,7 @@ export class Completion {
     this.element.style.top = top + "px";
     this.element.style.width = width + "px";
     this.element.style.left = left + "px";
-    this.element.innerHTML = ''
+    this.element.innerHTML = "";
 
     if (results.length > 0) {
       results.forEach((result) => {

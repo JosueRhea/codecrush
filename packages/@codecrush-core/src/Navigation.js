@@ -534,14 +534,17 @@ export class Navigation extends Component {
         for (let i = 0; i < movements; i++) {
           this.moveDown();
         }
-        const beforeCursorPosition = this.editor.currentPositionOnLine
+        const beforeCursorPosition = this.editor.currentPositionOnLine;
         const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
         const newCurrentLinePos = newCurrentLine.getPosition();
         const newPosition = newCurrentLine.getClosestPositionIndex(
           clickX - newCurrentLinePos.left
         );
         this.editor.currentPositionOnLine = newPosition;
-        this.updateCursorPositionTo(this.editor.currentPositionOnLine, newCurrentLine);
+        this.updateCursorPositionTo(
+          this.editor.currentPositionOnLine,
+          newCurrentLine
+        );
         this.editor.onPositionChange({
           before: {
             line: {
@@ -561,14 +564,17 @@ export class Navigation extends Component {
           this.moveUp();
         }
 
-        const beforeCursorPosition = this.editor.currentPositionOnLine
+        const beforeCursorPosition = this.editor.currentPositionOnLine;
         const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
         const newCurrentLinePos = newCurrentLine.getPosition();
         const newPosition = newCurrentLine.getClosestPositionIndex(
           clickX - newCurrentLinePos.left
         );
         this.editor.currentPositionOnLine = newPosition;
-        this.updateCursorPositionTo(this.editor.currentPositionOnLine, newCurrentLine);
+        this.updateCursorPositionTo(
+          this.editor.currentPositionOnLine,
+          newCurrentLine
+        );
         this.editor.onPositionChange({
           before: {
             line: {
@@ -588,8 +594,31 @@ export class Navigation extends Component {
       const linesBottom = this.editor.lines.length - currentLineIndex;
       for (let i = 0; i < linesBottom; i++) {
         this.moveDown();
-        this.moveEndOfLine()
+        this.moveEndOfLine();
       }
     }
+  }
+
+  onCompletionAccept(completion) {
+    const beforeCursorPosition = this.editor.currentPositionOnLine;
+    this.editor.currentPositionOnLine += completion.length;
+    this.updateCursorPositionTo(
+      this.editor.currentPositionOnLine,
+      this.editor.lines[this.editor.currentLineIndex]
+    );
+    this.editor.onPositionChange({
+      before: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: beforeCursorPosition,
+        },
+      },
+      after: {
+        line: {
+          index: this.editor.currentLineIndex,
+          position: this.editor.currentPositionOnLine,
+        },
+      },
+    });
   }
 }

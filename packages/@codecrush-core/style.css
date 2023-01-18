@@ -17,11 +17,6 @@ body {
   justify-content: center;
 }
 
-::selection {
-  color: gold;
-  background-color: red;
-}
-
 .text-editor {
   width: 80%;
   height: 400px;

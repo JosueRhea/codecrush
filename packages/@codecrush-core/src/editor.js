@@ -37,7 +37,7 @@ export class Editor {
     });
     //Parent element
     const editor = document.createElement("div");
-    editor.setAttribute("class", "text-editor");
+    editor.setAttribute("class", "codecrush-editor");
     editor.setAttribute("tabindex", "0");
     editor.style.setProperty("--editor-theme-bg", this.theme.bg);
     editor.style.setProperty(
@@ -122,7 +122,7 @@ export class Editor {
       if (!this.isFocus) {
         hiddenInput.focus();
         this.isFocus = true;
-        this.editorEl.classList.add("focused");
+        this.editorEl.classList.add("codecrush-editor-focused");
       }
     });
 
@@ -132,7 +132,7 @@ export class Editor {
 
     hiddenInput.onBlur((e) => {
       this.isFocus = false;
-      this.editorEl.classList.remove("focused");
+      this.editorEl.classList.remove("codecrush-editor-focused");
     });
 
     this.isLoaded = true;

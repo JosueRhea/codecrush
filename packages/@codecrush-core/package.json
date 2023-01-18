@@ -15,6 +15,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "postcss-nesting": "^10.2.0",
     "shiki": "^0.12.1"
   }
 }

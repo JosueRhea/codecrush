@@ -39,12 +39,13 @@ body {
 
 .text-editor pre .autocompletion {
   position: absolute;
-  background: var(--editor-editorLineNumber-foreground);
+  background: var(--editorSuggestWidget-background);
   height: fit-content;
   max-height: 400px;
-  border-radius: 5px;
+  border-radius: 2px;
   display: flex;
   flex-direction: column;
+  box-shadow: 20px 20px 80px rgba(0, 0, 0, 0.30);
 }
 
 .autocompletion .autocompletion-result {
@@ -55,6 +56,16 @@ body {
   padding-bottom: 5px;
   color: #ddd;
   background: none;
+}
+
+.autocompletion .active {
+  border: none;
+  text-align: left;
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #ddd;
+  background: var(--editorSuggestWidget-selectedBackground);
 }
 
 .text-editor code {

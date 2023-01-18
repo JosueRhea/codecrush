@@ -15,6 +15,14 @@ const keyworks = [
   "Math",
   "max",
   "min",
+  "export",
+  "default",
+  "module",
+  "exports",
+  "import",
+  "from",
+  "async",
+  "await"
 ];
 
 export const findQuery = (query) => {

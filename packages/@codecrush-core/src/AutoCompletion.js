@@ -10,6 +10,7 @@ export class AutoCompletion extends Component {
     this.completionEl = null;
     this.query = "";
     this.currentWord = "";
+    this.resultIndex = 0;
   }
 
   onKeyPressed(key) {
@@ -20,10 +21,14 @@ export class AutoCompletion extends Component {
       case "Shift":
         break;
       case "ArrowUp":
-        this.quit();
+        if (this.editor.isAutoCompleting) {
+          this.moveUp();
+        }
         break;
       case "ArrowDown":
-        this.quit();
+        if (this.editor.isAutoCompleting) {
+          this.moveDown();
+        }
         break;
       case "ArrowRight":
         this.quit();
@@ -44,9 +49,10 @@ export class AutoCompletion extends Component {
         if (this.editor.isAutoCompleting) {
           if (this.results.length > 0) {
             this.editor.onCompletionAccept(
-              this.results[0].substring(this.currentWord.length)
+              this.results[this.resultIndex].substring(this.currentWord.length)
             );
             this.editor.isAutoCompleting = false;
+            this.resultIndex = 0;
           }
         }
         this.quit();
@@ -74,7 +80,8 @@ export class AutoCompletion extends Component {
   quit() {
     if (!this.completionEl) return;
     this.completionEl.quit();
-    this.isAutoCompleting = false;
+    this.editor.isAutoCompleting = false;
+    this.resultIndex = 0;
   }
 
   search() {
@@ -95,6 +102,30 @@ export class AutoCompletion extends Component {
     );
     this.currentWord = currentWord;
     this.results = findQuery(currentWord);
+  }
+
+  moveDown() {
+    if (this.resultIndex < this.results.length - 1) {
+      this.completionEl.removeActive(this.resultIndex);
+      this.resultIndex += 1;
+      this.completionEl.addActive(this.resultIndex);
+    } else {
+      this.completionEl.removeActive(this.resultIndex);
+      this.resultIndex = 0;
+      this.completionEl.addActive(this.resultIndex);
+    }
+  }
+
+  moveUp() {
+    if (this.resultIndex > 0) {
+      this.completionEl.removeActive(this.resultIndex);
+      this.resultIndex -= 1;
+      this.completionEl.addActive(this.resultIndex);
+    } else {
+      this.completionEl.removeActive(this.resultIndex);
+      this.resultIndex = this.results.length - 1;
+      this.completionEl.addActive(this.resultIndex);
+    }
   }
 
   render() {

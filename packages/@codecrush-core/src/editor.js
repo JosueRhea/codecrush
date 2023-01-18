@@ -21,7 +21,7 @@ export class Editor {
     this.linesInViewport = null;
     this.isSelecting = false;
     this.editorSelection = [];
-    this.isAutoCompleting = false
+    this.isAutoCompleting = false;
   }
 
   async init() {
@@ -47,6 +47,14 @@ export class Editor {
     editor.style.setProperty(
       "--editor-editorLineNumber-activeForeground",
       this.theme.colors["editorLineNumber.activeForeground"]
+    );
+    editor.style.setProperty(
+      "--editorSuggestWidget-background",
+      this.theme.colors["editorSuggestWidget.background"]
+    );
+    editor.style.setProperty(
+      "--editorSuggestWidget-selectedBackground",
+      this.theme.colors["editorSuggestWidget.selectedBackground"]
     );
 
     // Pre element
@@ -101,7 +109,9 @@ export class Editor {
         this.preEl.getBoundingClientRect().top +
         this.preEl.scrollTop;
       const clickX =
-        e.clientX - this.preEl.getBoundingClientRect().left + this.preEl.scrollLeft;
+        e.clientX -
+        this.preEl.getBoundingClientRect().left +
+        this.preEl.scrollLeft;
 
       this.onMouseClick(clickX, clickY);
     });
@@ -185,7 +195,7 @@ export class Editor {
     }
   }
 
-  onCompletionAccept(completion){
+  onCompletionAccept(completion) {
     for (const component of this.components) {
       if (component.onCompletionAccept) {
         component.onCompletionAccept(completion);

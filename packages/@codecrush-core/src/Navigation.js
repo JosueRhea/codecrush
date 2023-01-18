@@ -17,10 +17,14 @@ export class Navigation extends Component {
         this.moveUp();
         break;
       case "ArrowDown":
+        if (this.editor.isAutoCompleting) break;
         this.moveDown();
         break;
       case "ArrowRight":
-        if (withCtrlKey) return this.moveRightOneWord();
+        if (withCtrlKey) {
+          this.moveRightOneWord();
+          break;
+        }
         this.moveRight();
         break;
       case "PageDown":

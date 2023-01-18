@@ -19,9 +19,10 @@ export class Completion {
     this.element.innerHTML = "";
 
     if (results.length > 0) {
-      results.forEach((result) => {
+      results.forEach((result, i) => {
         const buttonEl = document.createElement("button");
         buttonEl.classList.add("autocompletion-result");
+        if (i == 0) buttonEl.classList.add("active");
         buttonEl.textContent = result;
         buttonEl.value = result;
         this.element.appendChild(buttonEl);
@@ -35,5 +36,13 @@ export class Completion {
     this.element.style.top = 0;
     this.element.style.width = 0;
     this.element.style.left = 0;
+  }
+
+  removeActive(index) {
+    this.element.children[index].classList.remove("active");
+  }
+
+  addActive(index) {
+    this.element.children[index].classList.add("active");
   }
 }

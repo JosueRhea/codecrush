@@ -1,8 +1,19 @@
 {
-  "name": "-codecrush-core",
+  "name": "@codecrush/core",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/@codecrush-core.umd.cjs",
+  "module": "./dist/@codecrush-core.js",
+  "exports": {
+    ".": {
+      "import": "./dist/@codecrush-core.js",
+      "require": "./dist/@codecrush-core.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

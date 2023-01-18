@@ -7,6 +7,9 @@ const keyworks = [
   "filter",
   "slice",
   "splice",
+  "new",
+  "if",
+  "else",
 ];
 
 export const findQuery = (query) => {

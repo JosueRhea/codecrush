@@ -142,9 +142,7 @@ export class AutoCompletion extends Component {
       this.completionEl = completionEl;
     }
 
-    if (this.results.length > 0) {
-      this.editor.isAutoCompleting = true;
-    }
+    this.editor.isAutoCompleting = this.results.length > 0;
 
     this.completionEl.render(
       editorWidth / 2,

@@ -1,7 +1,7 @@
 import { keyCodeToChar } from "./characters";
 import { Completion } from "./completion";
 import { Component } from "./Component";
-import { findQuery } from "./langs/typescript";
+import { findQuery } from "./langs/javascript";
 
 export class AutoCompletion extends Component {
   constructor() {

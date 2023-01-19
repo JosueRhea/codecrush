@@ -51,6 +51,7 @@ importers:
       eslint-config-custom: workspace:*
       postcss-nesting: ^10.2.0
       shiki: ^0.12.1
+      tsconfig: workspace:*
       vite: ^4.0.0
       vite-plugin-dts: ^1.7.1
     dependencies:
@@ -59,6 +60,7 @@ importers:
     devDependencies:
       eslint: 7.32.0
       eslint-config-custom: link:../eslint-config-custom
+      tsconfig: link:../tsconfig
       vite: 4.0.4
       vite-plugin-dts: 1.7.1_vite@4.0.4
 

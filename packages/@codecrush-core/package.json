@@ -7,6 +7,7 @@
   ],
   "main": "./dist/es/index.js",
   "module": "./dist/es/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -26,7 +27,8 @@
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
     "vite": "^4.0.0",
-    "vite-plugin-dts": "^1.7.1"
+    "vite-plugin-dts": "^1.7.1",
+    "tsconfig": "workspace:*"
   },
   "dependencies": {
     "postcss-nesting": "^10.2.0",

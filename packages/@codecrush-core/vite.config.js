@@ -8,12 +8,23 @@ export default defineConfig({
       entry: path.resolve(__dirname, "index.js"),
       formats: ["cjs", "es", "iife", "umd"],
       name: "CodecrushCore",
-      fileName: (format) => `@codecrush-core.${format}.js`,
+      fileName: (format) => `${format}/index.js`,
     },
+    rollupOptions: {
+      output: {
+        globals: {
+          shiki: "shiki",
+        },
+      },
+    },
+    manifest: true,
+    ssrManifest: true,
+    ssr: true,
   },
   css: {
     postcss: {
       plugins: [postcssNesting()],
     },
   },
+  // plugins: [dts()],
 });

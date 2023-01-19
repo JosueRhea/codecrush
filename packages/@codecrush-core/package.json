@@ -2,16 +2,18 @@
   "name": "@codecrush/core",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/@codecrush-core.umd.cjs",
-  "module": "./dist/@codecrush-core.js",
+  "main": "./dist/es/index.js",
+  "module": "./dist/es/index.js",
   "exports": {
     ".": {
-      "import": "./dist/@codecrush-core.js",
-      "require": "./dist/@codecrush-core.umd.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./dist/index.css": {
+      "import": "./dist/style.css"
     }
   },
   "scripts": {
@@ -23,7 +25,8 @@
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vite-plugin-dts": "^1.7.1"
   },
   "dependencies": {
     "postcss-nesting": "^10.2.0",

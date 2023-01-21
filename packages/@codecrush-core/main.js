@@ -1,3 +1,5 @@
 import { initEditor } from "./index";
 
-initEditor();
+initEditor({
+  theme: "one-dark-pro",
+});

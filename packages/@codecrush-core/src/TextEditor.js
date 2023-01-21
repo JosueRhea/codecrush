@@ -16,7 +16,7 @@ export class TextEditor extends Component {
             this.deleteCharacterInRange(line.lineIndex, line.start, line.end);
           });
         } else {
-          this.deleteCharacter(this.editor.highlighter);
+          this.deleteCharacter(this.editor.codeToThemeTokens);
         }
         break;
       case "Enter":
@@ -36,7 +36,7 @@ export class TextEditor extends Component {
     currLine.appendText(
       parsedValue,
       this.editor.currentPositionOnLine,
-      this.editor.highlighter
+      this.editor.codeToThemeTokens
     );
   }
 
@@ -58,7 +58,7 @@ export class TextEditor extends Component {
       }
     } else {
       if (position >= 0) {
-        currentLine.deleteCharacter(position, this.editor.highlighter);
+        currentLine.deleteCharacter(position, this.editor.codeToThemeTokens);
         // this.editor.onCharacterDelete();
       } else {
         if (lineIndex > 0) {
@@ -82,7 +82,7 @@ export class TextEditor extends Component {
       if (this.editor.currentPositionOnLine > 0) {
         currentLine.deleteCharacter(
           this.editor.currentPositionOnLine,
-          this.editor.highlighter
+          this.editor.codeToThemeTokens
         );
         this.editor.onCharacterDelete();
       } else {
@@ -90,7 +90,7 @@ export class TextEditor extends Component {
           const lineToAppend =
             this.editor.lines[this.editor.currentLineIndex - 1];
           const newPosition = lineToAppend.getLength();
-          currentLine.giveContentTo(lineToAppend, this.editor.highlighter);
+          currentLine.giveContentTo(lineToAppend, this.editor.codeToThemeTokens);
           this.deleteLine(this.editor.currentLineIndex, newPosition);
         }
       }
@@ -121,7 +121,7 @@ export class TextEditor extends Component {
       this.editor.onNewLine();
     } else {
       const nextIndex = this.editor.currentLineIndex + 1;
-      currentLineEl.deleteCharacterAfter(position, this.editor.highlighter);
+      currentLineEl.deleteCharacterAfter(position, this.editor.codeToThemeTokens);
       const newLine = new Line(
         this.editor.editorContent,
         contentAfterPosition,
@@ -132,7 +132,7 @@ export class TextEditor extends Component {
       newLine.setIsActive(true);
       this.recomputeLineNumbers();
       newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
-      newLine.appendText(contentAfterPosition, 0, this.editor.highlighter);
+      newLine.appendText(contentAfterPosition, 0, this.editor.codeToThemeTokens);
       this.editor.onNewLine();
     }
   }

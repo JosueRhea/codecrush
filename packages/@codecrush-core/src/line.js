@@ -89,11 +89,7 @@ export class Line {
 
   getHtml(highlighter, currentCursorPosition) {
     if (!highlighter) return;
-    const highlightedTokens = highlighter.codeToThemedTokens(
-      this.text,
-      "ts",
-      "one-dark-pro"
-    );
+    const highlightedTokens = highlighter(this.text);
     this.textEl.innerHTML = "";
     highlightedTokens[0].forEach((token) => {
       const element = this.createTokenElement(token);

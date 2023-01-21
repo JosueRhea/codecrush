@@ -4,7 +4,7 @@ import { EditableInput } from "./editableInput";
 import { Line } from "./line";
 
 export class Editor {
-  constructor() {
+  constructor(selectedTheme) {
     this.components = [];
     this.editorContent = null;
     this.editorEl = null;
@@ -22,18 +22,22 @@ export class Editor {
     this.isSelecting = false;
     this.editorSelection = [];
     this.isAutoCompleting = false;
+    this.selectedTheme = selectedTheme ?? "poimandres";
   }
 
   async init() {
     //Get the code
     setCDN("https://unpkg.com/shiki/");
     await getHighlighter({
-      theme: "one-dark-pro",
-      langs: ["ts"],
+      theme: this.selectedTheme,
+      langs: ["js"],
     }).then((h) => {
       this.theme = h.getTheme();
       console.log(this.theme);
       this.highlighter = h;
+      this.codeToThemeTokens = (text) => {
+        return h.codeToThemedTokens(text, "js", this.selectedTheme);
+      };
     });
     //Parent element
     const editor = document.createElement("div");

@@ -4,7 +4,7 @@ import { EditableInput } from "./editableInput";
 import { Line } from "./line";
 
 export class Editor {
-  constructor({ theme, height, id }) {
+  constructor({ theme, height, id, parent }) {
     this.components = [];
     this.editorContent = null;
     this.editorEl = null;
@@ -25,6 +25,7 @@ export class Editor {
     this.selectedTheme = theme ?? "poimandres";
     this.height = height ?? null;
     this.id = id;
+    this.parent = parent
   }
 
   async init() {
@@ -34,8 +35,8 @@ export class Editor {
       return;
     }
     const editor = document.createElement("div");
-    document.body.appendChild(editor);
     editor.id = this.id;
+    this.parent.appendChild(editor);
 
     //Get the code
     setCDN("https://unpkg.com/shiki/");

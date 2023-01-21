@@ -14,6 +14,7 @@ export class Navigation extends Component {
         this.moveLeft();
         break;
       case "ArrowUp":
+        if (this.editor.isAutoCompleting) break;
         this.moveUp();
         break;
       case "ArrowDown":

@@ -18,8 +18,7 @@ body {
 }
 
 .codecrush-editor {
-  width: 80%;
-  height: 400px;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid #ddd;
   background: var(--editor-theme-bg);

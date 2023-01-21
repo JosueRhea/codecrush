@@ -6,7 +6,7 @@ import { TextEditor } from "./src/TextEditor";
 import "./style.css";
 
 export async function initEditor(options) {
-  const editor = new Editor(options.theme);
+  const editor = new Editor(options);
   editor.use(new TextEditor());
   editor.use(new Navigation());
   editor.use(new Selection());

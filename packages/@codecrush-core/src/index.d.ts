@@ -13,6 +13,7 @@ export type EditorTheme =
 
 export type EditorOptions = {
   theme: EditorTheme;
+  height: number;
 };
 
 export declare function initEditor(options: EditorOptions): Promise<void>;

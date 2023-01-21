@@ -4,7 +4,7 @@ import { EditableInput } from "./editableInput";
 import { Line } from "./line";
 
 export class Editor {
-  constructor(selectedTheme) {
+  constructor({ theme, height }) {
     this.components = [];
     this.editorContent = null;
     this.editorEl = null;
@@ -22,7 +22,8 @@ export class Editor {
     this.isSelecting = false;
     this.editorSelection = [];
     this.isAutoCompleting = false;
-    this.selectedTheme = selectedTheme ?? "poimandres";
+    this.selectedTheme = theme ?? "poimandres";
+    this.height = height ?? null;
   }
 
   async init() {
@@ -43,6 +44,7 @@ export class Editor {
     const editor = document.createElement("div");
     editor.setAttribute("class", "codecrush-editor");
     editor.setAttribute("tabindex", "0");
+    editor.style.height = this.height + "px";
     editor.style.setProperty("--editor-theme-bg", this.theme.bg);
     editor.style.setProperty(
       "--editor-editorLineNumber-foreground",

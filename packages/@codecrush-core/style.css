@@ -1,4 +1,9 @@
-:root {
+.codecrush-editor {
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background: var(--editor-theme-bg);
+  letter-spacing: 1px;
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
@@ -9,20 +14,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-}
-
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.codecrush-editor {
-  width: 100%;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-  background: var(--editor-theme-bg);
-  letter-spacing: 1px;
 
   & code {
     width: 100%;
@@ -118,7 +109,7 @@ body {
   }
 }
 
-.codecrush-editor-focused{
+.codecrush-editor-focused {
   border: 1px solid #000;
 }
 

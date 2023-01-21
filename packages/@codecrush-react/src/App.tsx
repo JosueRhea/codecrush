@@ -3,7 +3,7 @@ import { Editor } from "./components";
 
 function App() {
   return (
-    <div className="App">
+    <div className="code-editor">
       <Editor />
     </div>
   );

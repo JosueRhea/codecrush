@@ -4,7 +4,7 @@ import { EditableInput } from "./editableInput";
 import { Line } from "./line";
 
 export class Editor {
-  constructor({ theme, height }) {
+  constructor({ theme, height, id }) {
     this.components = [];
     this.editorContent = null;
     this.editorEl = null;
@@ -24,24 +24,37 @@ export class Editor {
     this.isAutoCompleting = false;
     this.selectedTheme = theme ?? "poimandres";
     this.height = height ?? null;
+    this.id = id;
   }
 
   async init() {
+    //Parent element
+    console.log(document.querySelector(`#${this.id}`));
+    if (document.querySelector(`#${this.id}`)) {
+      return;
+    }
+    const editor = document.createElement("div");
+    document.body.appendChild(editor);
+    editor.id = this.id;
+
     //Get the code
     setCDN("https://unpkg.com/shiki/");
     await getHighlighter({
       theme: this.selectedTheme,
       langs: ["js"],
-    }).then((h) => {
-      this.theme = h.getTheme();
-      console.log(this.theme);
-      this.highlighter = h;
-      this.codeToThemeTokens = (text) => {
-        return h.codeToThemedTokens(text, "js", this.selectedTheme);
-      };
-    });
-    //Parent element
-    const editor = document.createElement("div");
+    })
+      .then((h) => {
+        this.theme = h.getTheme();
+        console.log(this.theme);
+        this.highlighter = h;
+        this.codeToThemeTokens = (text) => {
+          return h.codeToThemedTokens(text, "js", this.selectedTheme);
+        };
+      })
+      .catch(() => {
+        throw Error("Error loading the theme");
+      });
+
     editor.setAttribute("class", "codecrush-editor");
     editor.setAttribute("tabindex", "0");
     editor.style.height = this.height + "px";
@@ -80,8 +93,6 @@ export class Editor {
     const code = document.createElement("code");
     code.setAttribute("class", "text-editor-code");
     pre.appendChild(code);
-
-    document.body.appendChild(editor);
 
     this.editorContent = code;
     this.editorEl = editor;

@@ -1,1 +1,18 @@
-export declare function initEditor(): Promise<void>;
+export type EditorTheme =
+  | "dracula-soft"
+  | "material-darker"
+  | "material-default"
+  | "material-ocean"
+  | "material-palenight"
+  | "nord"
+  | "one-dark-pro"
+  | "poimandres"
+  | "rose-pine-moon"
+  | "rose-pine"
+  | "slack-dark";
+
+export type EditorOptions = {
+  theme: EditorTheme;
+};
+
+export declare function initEditor(options: EditorOptions): Promise<void>;

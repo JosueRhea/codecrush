@@ -1,11 +1,10 @@
 import { Button } from "ui";
-// import { initEditor } from "@codecrush-core";
 import { initEditor } from "@codecrush/core";
 import { useEffect } from "react";
 
 export default function Web() {
   useEffect(() => {
-    console.log(initEditor());
+    console.log(initEditor({ theme: "material-darker" }));
   }, []);
   return (
     <div>

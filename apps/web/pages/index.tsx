@@ -1,15 +1,10 @@
-import { Button } from "ui";
-import { initEditor } from "@codecrush/core";
-import { useEffect } from "react";
+import { Editor } from "codecrush-react";
 
 export default function Web() {
-  useEffect(() => {
-    console.log(initEditor({ theme: "material-darker" }));
-  }, []);
   return (
     <div>
-      <h1>Web</h1>
-      <Button />
+      <Editor height={300} id="js-editor" theme="one-dark-pro" />
+      <Editor height={300} id="one-editor" theme="material-darker" />
     </div>
   );
 }

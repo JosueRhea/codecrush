@@ -3,7 +3,7 @@ export class Cursor {
     this.pos = { top: position.top, left: position.left };
 
     this.cursor = document.createElement("div");
-    this.cursor.style.backgroundColor = color
+    this.cursor.style.backgroundColor = color;
     this.cursor.style.position = "absolute";
     this.cursor.style.top = this.pos.top + "px";
     this.cursor.style.left = this.pos.left + "px";
@@ -11,6 +11,19 @@ export class Cursor {
     this.cursor.classList.add("cursor");
 
     editor.appendChild(this.cursor);
+    this.enableAnimation();
+  }
+
+  disableAnimation() {
+    if (this.cursor.style.animation) {
+      this.cursor.style.animation = "";
+    }
+  }
+
+  enableAnimation() {
+    if (!this.cursor.style.animation) {
+      this.cursor.style.animation = "cursor-blink 1.5s steps(2) infinite";
+    }
   }
 
   updatePosition({ top, left }) {
@@ -18,15 +31,15 @@ export class Cursor {
     this.cursor.style.left = left + "px";
   }
 
-  getPosition(){
-    return this.cursor.getBoundingClientRect()
+  getPosition() {
+    return this.cursor.getBoundingClientRect();
   }
 
-  getLeft(){
-    return this.cursor.offsetLeft
+  getLeft() {
+    return this.cursor.offsetLeft;
   }
 
-  moveLeftOneCharacter(offset) {    
+  moveLeftOneCharacter(offset) {
     this.cursor.style.left = `${this.cursor.offsetLeft - offset}px`;
   }
 

@@ -25,12 +25,13 @@ export class Editor {
     this.selectedTheme = theme ?? "poimandres";
     this.height = height ?? null;
     this.id = id;
-    this.parent = parent
+    this.parent = parent;
+    this.lastTimePressed = new Date();
+    this.lastTimeDiff = 100;
   }
 
   async init() {
-    //Parent element
-    console.log(document.querySelector(`#${this.id}`));
+    //Parent element    
     if (document.querySelector(`#${this.id}`)) {
       return;
     }
@@ -154,6 +155,7 @@ export class Editor {
     });
 
     this.isLoaded = true;
+    this.handleLastPressed();
     console.log("loaded");
   }
 
@@ -165,7 +167,20 @@ export class Editor {
     }
   }
 
+  handleLastPressed() {
+    setInterval(() => {
+      const currentTime = new Date();
+      const diff = currentTime.getTime() - this.lastTimePressed.getTime();
+      if (diff > 200) {
+        this.cursor.enableAnimation();
+      } else {
+        this.cursor.disableAnimation();
+      }
+    }, 200);
+  }
+
   onKeyPressed(e, withCtrlKey, shiftKey) {
+    this.lastTimePressed = new Date();
     for (const component of this.components) {
       if (component.onKeyPressed) {
         component.onKeyPressed(e, withCtrlKey, shiftKey);

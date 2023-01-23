@@ -2,7 +2,6 @@ import "./index.css";
 import { initEditor } from "./index";
 
 const app = document.querySelector("#app");
-console.log(app)
 
 initEditor({
   theme: "poimandres",

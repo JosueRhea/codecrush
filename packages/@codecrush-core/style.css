@@ -1,3 +1,9 @@
+@keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+}
+
 .codecrush-editor {
   width: 100%;
   border-radius: 5px;
@@ -111,10 +117,4 @@
 
 .codecrush-editor-focused {
   border: 1px solid #000;
-}
-
-@keyframes cursor-blink {
-  0% {
-    opacity: 0;
-  }
 }

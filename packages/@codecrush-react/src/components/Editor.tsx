@@ -1,12 +1,23 @@
-import { initEditor } from "codecrush-core";
-import { useEffect } from "react";
-import "codecrush-core/dist/index.css";
+import { initEditor, EditorOptions } from "codecrush-core";
+import { useEffect, useRef } from "react";
 
-const Editor = () => {
+export type EditorProps = {} & Pick<EditorOptions, "height" | "id" | "theme">;
+
+const Editor = (props: EditorProps) => {
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    initEditor({ theme: "material-darker", height: 300, id: "hello-world" });
+    // if (!ref)
+    //   throw new Error("Please provide a ref to a container for the editor");
+    if (ref.current) {
+      initEditor({
+        theme: props.theme,
+        height: props.height,
+        id: props.id,
+        parent: ref.current,
+      });
+    }
   }, []);
-  return <div className="codecrush-editor"></div>;
+  return <div style={{ width: "100%" }} ref={ref}></div>;
 };
 
-export default Editor;
+export { Editor };

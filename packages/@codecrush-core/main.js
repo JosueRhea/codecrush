@@ -14,6 +14,6 @@ initEditor({
 initEditor({
   theme: "poimandres",
   height: 400,
-  id: "hola-editor",
+  id: "js-editor",
   parent: app,
 });

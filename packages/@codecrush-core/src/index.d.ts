@@ -21,8 +21,10 @@ export type EditorOptions = {
 
 export declare class Editor {
   editorEl: HTMLDivElement;
+  components: Component[];
 
   use(component: Component): void;
+  getComponent(componentId: ComponentId): void;
 }
 
 export type PositionChange = {
@@ -36,8 +38,17 @@ export type PositionChange = {
   };
 };
 
+export type ComponentId =
+  | "text-editor"
+  | "navigation"
+  | "autocompletion"
+  | "selection";
+
 export declare function initEditor(options: EditorOptions): Promise<Editor>;
 export declare class Component extends Editor {
+  editor: Editor;
+  id: string;
+  constructor(id: string) {}
   onKeyPressed(data: string, withCtrlKey: boolean, shiftKey: boolean) {}
 
   onCharacterDelete() {}

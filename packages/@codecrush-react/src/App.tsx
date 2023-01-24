@@ -8,9 +8,9 @@ function App() {
       <div className="code-editor">
         <Editor height={300} id={"js-editor"} theme="material-darker" />
       </div>
-      <div className="code-editor">
+      {/* <div className="code-editor">
         <Editor height={300} id={"another-editor"} theme="dracula-soft" />
-      </div>
+      </div> */}
     </div>
   );
 }

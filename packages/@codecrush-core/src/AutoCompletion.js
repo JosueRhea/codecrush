@@ -5,7 +5,7 @@ import debounce from "./utils/debounce";
 
 export class AutoCompletion extends Component {
   constructor() {
-    super();
+    super('autocompletion');
     this.results = [];
     this.completionEl = null;
     this.query = "";

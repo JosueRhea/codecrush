@@ -5,7 +5,7 @@ import { insertInto } from "./utils/array";
 
 export class TextEditor extends Component {
   constructor() {
-    super();
+    super('text-editor');
   }
 
   onKeyPressed(key) {

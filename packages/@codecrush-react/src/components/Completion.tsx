@@ -2,10 +2,11 @@ import { Component } from "codecrush-core";
 
 export class CohereAutoCompletion extends Component {
   constructor() {
-    super();
+    super('cohere-autocompletion');
   }
 
   onKeyPressed(data: string, withCtrlKey: boolean, shiftKey: boolean): void {
-    console.log(data);
+    // const autoCompletion = this.editor
+    console.log(this.editor);
   }
 }

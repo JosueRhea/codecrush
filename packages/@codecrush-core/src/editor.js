@@ -28,11 +28,11 @@ export class Editor {
     this.parent = parent;
     this.lastTimePressed = new Date();
     this.lastTimeDiff = 100;
-    this.cohereToken = cohereToken
+    this.cohereToken = cohereToken;
   }
 
   async init() {
-    //Parent element    
+    //Parent element
     if (document.querySelector(`#${this.id}`)) {
       return;
     }
@@ -240,5 +240,9 @@ export class Editor {
   use(component) {
     this.components.push(component);
     component.editor = this;
+  }
+
+  getComponent(componentId) {
+    return this.components.find((x) => x.id === componentId);
   }
 }

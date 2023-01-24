@@ -1,6 +1,7 @@
 export class Component {
-  constructor() {
+  constructor(id) {
     this.editor = null;
+    this.id = id;
   }
 
   onKeyPressed(data, withCtrlKey, shiftKey) {}

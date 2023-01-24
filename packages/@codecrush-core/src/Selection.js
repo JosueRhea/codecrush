@@ -2,7 +2,7 @@ import { Component } from "./Component";
 
 export class Selection extends Component {
   constructor() {
-    super();
+    super('selection');
     this.range = null;
     this.isShiftKey = false;
     this.upCount = 0;

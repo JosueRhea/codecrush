@@ -4,7 +4,7 @@ import { inRange } from "./utils/numbers";
 
 export class Navigation extends Component {
   constructor() {
-    super();
+    super("navigation");
   }
 
   onKeyPressed(key, withCtrlKey) {

@@ -10,8 +10,7 @@ const Editor = (props: EditorProps) => {
     // if (!ref)
     //   throw new Error("Please provide a ref to a container for the editor");
     if (ref.current) {
-      console.log("Hola");
-      const editor = initEditor({
+      initEditor({
         theme: props.theme,
         height: props.height,
         id: props.id,

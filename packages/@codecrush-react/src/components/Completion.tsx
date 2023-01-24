@@ -1,13 +1,67 @@
-import { Component, NavigationComponent } from "codecrush-core";
+import { AutocompletionComponent, Component } from "codecrush-core";
+import debounce from "../utils/debounce";
 
 export class CohereAutoCompletion extends Component {
+  getResultsFromAi: any;
   constructor() {
     super("cohere-autocompletion");
+
+    this.init();
   }
 
-  onKeyPressed(data: string, withCtrlKey: boolean, shiftKey: boolean): void {
-    // const autoCompletion = this.editor
-    // const autocompletion =
-    //   this.editor.getComponent<NavigationComponent>("navigation");
+  init() {
+    this.getResultsFromAi = debounce(() => {
+      if (import.meta.env.VITE_COHERE_TOKEN) {
+        const completion =
+          this.editor.getComponent<AutocompletionComponent>("autocompletion");
+        this.fetchAutoCompletions(completion.currentWord)
+          .then((res) => res.json())
+          .then((data) => {
+            const suggestions = data.generations[0].text
+              .replace("\n", "")
+              .replace("---", "")
+              .split(",")
+              .map((x: string) => x.trim())
+              .filter((x: string) => x !== "");
+            suggestions.forEach((item: string) => {
+              completion.results.push(item);
+            });
+            completion.render();
+          });
+      }
+    }, 500);
+  }
+
+  async fetchAutoCompletions(currentWord: string) {
+    return fetch("https://api.cohere.ai/generate", {
+      method: "POST",
+      headers: {
+        "Cohere-Version": "2022-12-06",
+        accept: "application/json",
+        authorization: `Bearer ${import.meta.env.VITE_COHERE_TOKEN}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        max_tokens: 20,
+        return_likelihoods: "NONE",
+        truncate: "END",
+        prompt: `this program returns text autocompletions for code editor, it can have multiple autocompletions and should only return javascript code like this
+        input:spl
+        autocompletion:splice,slice
+        ---
+        input:con
+        autocompletion:const,console,continue
+        ---
+        input:for
+        autocompletion:for(let i = 0; i < array.length, i++),forEach,for(const a in array)
+        ---
+        input:${currentWord}
+        autocompletion:`,
+      }),
+    });
+  }
+
+  onSearchSuggestions(): void {
+    this.getResultsFromAi();
   }
 }

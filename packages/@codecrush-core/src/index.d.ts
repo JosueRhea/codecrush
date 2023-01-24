@@ -15,8 +15,7 @@ export type EditorOptions = {
   theme: EditorTheme;
   height: number;
   id: string;
-  parent: Element;
-  cohereToken?: string;
+  parent: Element;  
 };
 
 export declare class Editor {

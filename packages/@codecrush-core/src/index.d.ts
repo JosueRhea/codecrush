@@ -24,7 +24,7 @@ export declare class Editor {
   components: Component[];
 
   use(component: Component): void;
-  getComponent(componentId: ComponentId): void;
+  getComponent<T>(componentId: ComponentId): T;
 }
 
 export type PositionChange = {
@@ -43,6 +43,113 @@ export type ComponentId =
   | "navigation"
   | "autocompletion"
   | "selection";
+
+export class NavigationComponent {
+  onKeyPressed(key, withCtrlKey) {}
+
+  onCharacterDelete() {}
+
+  onNewLine() {}
+
+  onDeleteLine(positionOnLine) {}
+
+  moveRight() {}
+
+  moveRightOneWord() {}
+
+  moveLeft() {}
+
+  moveUp(endOfLine = false) {}
+
+  moveDown(startOfLine = false) {}
+
+  movePageDown() {}
+
+  movePageUp() {}
+
+  moveEndOfLine() {}
+
+  updateCursorPositionTo(position: number, line: any) {}
+
+  updateScroll() {}
+
+  //Mouse navigation
+  onMouseClick(clickX: number, clickY: number) {}
+
+  onCompletionAccept(completion: string) {}
+}
+
+export class TextEditorComponent {
+  onKeyPressed(key: string) {}
+
+  addCharacter(key: string) {}
+
+  deleteCharacterInRange(lineIndex: number, start: number, end: number) {}
+
+  deleteCharacterByLineIndex(lineIndex: number, position: number) {}
+
+  deleteCharacter() {}
+
+  createNewLine() {}
+
+  deleteLine(currentLineIndex: number, position: number) {}
+
+  recomputeLineNumbers() {}
+
+  onCompletionAccept(completion: string) {}
+}
+
+export class SelectionComponent {
+  isShiftKey = false;
+  upCount = 0;
+  downCount = 0;
+
+  onKeyPressed() {}
+
+  onPositionChange(data: PositionChange) {}
+
+  selectTextToUp(
+    lineBeforeIndex: number,
+    positionBeforeIndex: number,
+    lineAfterIndex: number,
+    positionAfterIndex: number
+  ) {}
+
+  selectTextToDown(
+    lineBeforeIndex: number,
+    positionBeforeIndex: number,
+    lineAfterIndex: number,
+    positionAfterIndex: number
+  ) {}
+
+  selectTextToLeft(lineIndex: number, start: number, end: number) {}
+
+  selectTextToRight(lineIndex: number, start: number, end: number) {}
+  deselectText() {}
+
+  deselectLine(lineIndex: number) {}
+
+  renderSelection() {}
+}
+
+export class AutocompletionComponent {
+  results: [any];
+  currentWord: string;
+
+  onKeyPressed(key: string) {}
+
+  quit() {}
+
+  async fetchAutoCompletions(currentWord) {}
+
+  search() {}
+
+  moveDown() {}
+
+  moveUp() {}
+
+  render() {}
+}
 
 export declare function initEditor(options: EditorOptions): Promise<Editor>;
 export declare class Component extends Editor {

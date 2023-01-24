@@ -4,10 +4,11 @@ import { initEditor } from "./index";
 const app = document.querySelector("#app");
 
 initEditor({
-  theme: "poimandres",
+  theme: "material-darker",
   height: 400,
   id: "js-editor",
   parent: app,
+  cohereToken: import.meta.env.VITE_COHERE_TOKEN,
 });
 
 initEditor({
@@ -15,4 +16,5 @@ initEditor({
   height: 400,
   id: "js-editor",
   parent: app,
+  cohereToken: import.meta.env.VITE_COHERE_TOKEN,
 });

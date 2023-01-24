@@ -16,6 +16,7 @@ export type EditorOptions = {
   height: number;
   id: string;
   parent: Element;
+  cohereToken?: string;
 };
 
 export declare function initEditor(options: EditorOptions): Promise<void>;

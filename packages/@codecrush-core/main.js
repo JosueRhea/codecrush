@@ -7,8 +7,7 @@ initEditor({
   theme: "material-darker",
   height: 400,
   id: "js-editor",
-  parent: app,
-  cohereToken: import.meta.env.VITE_COHERE_TOKEN,
+  parent: app  
 });
 
 initEditor({
@@ -16,5 +15,4 @@ initEditor({
   height: 400,
   id: "js-editor",
   parent: app,
-  cohereToken: import.meta.env.VITE_COHERE_TOKEN,
 });

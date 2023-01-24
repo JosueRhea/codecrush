@@ -5,6 +5,8 @@ import { Selection } from "./src/Selection";
 import { TextEditor } from "./src/TextEditor";
 import "./style.css";
 
+export { Component } from "./src/Component";
+
 export async function initEditor(options) {
   const editor = new Editor(options);
   editor.use(new TextEditor());

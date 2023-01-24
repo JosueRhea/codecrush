@@ -19,4 +19,38 @@ export type EditorOptions = {
   cohereToken?: string;
 };
 
-export declare function initEditor(options: EditorOptions): Promise<void>;
+export declare class Editor {
+  editorEl: HTMLDivElement;
+
+  use(component: Component): void;
+}
+
+export type PositionChange = {
+  before: {
+    index: number;
+    position: number;
+  };
+  after: {
+    index: number;
+    position: number;
+  };
+};
+
+export declare function initEditor(options: EditorOptions): Promise<Editor>;
+export declare class Component extends Editor {
+  onKeyPressed(data: string, withCtrlKey: boolean, shiftKey: boolean) {}
+
+  onCharacterDelete() {}
+
+  onNewLine() {}
+
+  onDeleteLine(positionOnLine: number) {}
+
+  onLineIndexChange() {}
+
+  onPositionChange(data: PositionChange) {}
+
+  onMouseClick(clickX: number, clickY: number) {}
+
+  onCompletionAccept(completion: string) {}
+}

@@ -16,6 +16,7 @@ export type EditorOptions = {
   height: number;
   id: string;
   parent: Element;  
+  components?: [T]
 };
 
 export declare class Editor {

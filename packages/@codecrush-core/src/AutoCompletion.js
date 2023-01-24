@@ -101,10 +101,10 @@ export class AutoCompletion extends Component {
       this.editor.currentPositionOnLine
     );
     this.currentWord = currentWord;
-    this.editor.onSearchSuggestions()
+    this.editor.onSearchSuggestions();
     this.results = findQuery(currentWord);
   }
-  
+
   moveDown() {
     if (this.resultIndex < this.results.length - 1) {
       this.completionEl.removeActive(this.resultIndex);

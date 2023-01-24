@@ -1,10 +1,15 @@
 import { Editor } from "codecrush-react";
+import { CohereAutoCompletion } from "../editorPlugins/AiAutocompletion";
 
 export default function Web() {
   return (
     <div>
-      <Editor height={300} id="js-editor" theme="one-dark-pro" />
-      <Editor height={300} id="one-editor" theme="material-darker" />
+      <Editor
+        height={300}
+        id="js-editor"
+        theme="material-darker"
+        components={[CohereAutoCompletion]}
+      />
     </div>
   );
 }

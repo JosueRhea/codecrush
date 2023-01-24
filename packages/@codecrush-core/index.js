@@ -13,6 +13,11 @@ export async function initEditor(options) {
   editor.use(new Navigation());
   editor.use(new AutoCompletion());
   editor.use(new Selection());
+  if (options.components && options.components.length > 0) {
+    options.components.forEach((cmp) => {
+      editor.use(new cmp());
+    });
+  }
   await editor.init();
   return editor;
 }

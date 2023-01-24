@@ -11,7 +11,7 @@ export class CohereAutoCompletion extends Component {
 
   init() {
     this.getResultsFromAi = debounce(() => {
-      if (import.meta.env.VITE_COHERE_TOKEN) {
+      if (process.env.NEXT_PUBLIC_COHERE_TOKEN) {
         const completion =
           this.editor.getComponent<AutocompletionComponent>("autocompletion");
         this.fetchAutoCompletions(completion.currentWord)
@@ -38,7 +38,7 @@ export class CohereAutoCompletion extends Component {
       headers: {
         "Cohere-Version": "2022-12-06",
         accept: "application/json",
-        authorization: `Bearer ${import.meta.env.VITE_COHERE_TOKEN}`,
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_COHERE_TOKEN}`,
         "content-type": "application/json",
       },
       body: JSON.stringify({

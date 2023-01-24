@@ -19,4 +19,6 @@ export class Component {
   onMouseClick(clickX, clickY) {}
 
   onCompletionAccept(completion) {}
+
+  onSearchSuggestions(cb) {}
 }

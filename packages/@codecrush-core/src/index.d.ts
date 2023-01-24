@@ -171,4 +171,5 @@ export declare class Component extends Editor {
   onMouseClick(clickX: number, clickY: number) {}
 
   onCompletionAccept(completion: string) {}
+  onSearchSuggestions() {}
 }

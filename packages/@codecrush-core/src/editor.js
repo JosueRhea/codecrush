@@ -237,6 +237,14 @@ export class Editor {
     }
   }
 
+  onSearchSuggestions(){
+    for (const component of this.components) {
+      if (component.onSearchSuggestions) {
+        component.onSearchSuggestions();
+      }
+    }
+  }
+
   use(component) {
     this.components.push(component);
     component.editor = this;

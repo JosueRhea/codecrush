@@ -1,11 +1,11 @@
 import { keyCodeToChar } from "./characters";
 import { Completion } from "./completion";
 import { Component } from "./Component";
-import { findQuery } from './langs/javascript'
+import { findQuery } from "./langs/javascript";
 
 export class AutoCompletion extends Component {
   constructor() {
-    super('autocompletion');
+    super("autocompletion");
     this.results = [];
     this.completionEl = null;
     this.query = "";
@@ -71,7 +71,7 @@ export class AutoCompletion extends Component {
         if (parsedValue == "") return;
         if (parsedValue.match(/[a-zA-Z0-9]/)) {
           this.search();
-          this.render()
+          this.render();
         }
         break;
     }
@@ -101,9 +101,10 @@ export class AutoCompletion extends Component {
       this.editor.currentPositionOnLine
     );
     this.currentWord = currentWord;
+    this.editor.onSearchSuggestions()
     this.results = findQuery(currentWord);
   }
-
+  
   moveDown() {
     if (this.resultIndex < this.results.length - 1) {
       this.completionEl.removeActive(this.resultIndex);

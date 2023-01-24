@@ -1,7 +1,7 @@
 import { keyCodeToChar } from "./characters";
 import { Completion } from "./completion";
 import { Component } from "./Component";
-import debounce from "./utils/debounce";
+import { findQuery } from './langs/javascript'
 
 export class AutoCompletion extends Component {
   constructor() {
@@ -11,21 +11,6 @@ export class AutoCompletion extends Component {
     this.query = "";
     this.currentWord = "";
     this.resultIndex = 0;
-    this.getResultsFromAi = debounce(() => {
-      if (this.editor.cohereToken) {
-        this.fetchAutoCompletions(this.currentWord)
-          .then((res) => res.json())
-          .then((data) => {
-            this.results = data.generations[0].text
-              .replace("\n", "")
-              .replace("---", "")
-              .split(",")
-              .map((x) => x.trim())
-              .filter((x) => x !== "");
-            this.render();
-          });
-      }
-    }, 500);
   }
 
   onKeyPressed(key) {
@@ -86,6 +71,7 @@ export class AutoCompletion extends Component {
         if (parsedValue == "") return;
         if (parsedValue.match(/[a-zA-Z0-9]/)) {
           this.search();
+          this.render()
         }
         break;
     }
@@ -96,35 +82,6 @@ export class AutoCompletion extends Component {
     this.completionEl.quit();
     this.editor.isAutoCompleting = false;
     this.resultIndex = 0;
-  }
-
-  async fetchAutoCompletions(currentWord) {
-    return fetch("https://api.cohere.ai/generate", {
-      method: "POST",
-      headers: {
-        "Cohere-Version": "2022-12-06",
-        accept: "application/json",
-        authorization: `Bearer ${this.editor.cohereToken}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        max_tokens: 20,
-        return_likelihoods: "NONE",
-        truncate: "END",
-        prompt: `this program returns text autocompletions for code editor, it can have multiple autocompletions and should only return javascript code like this
-        input:spl
-        autocompletion:splice,slice
-        ---
-        input:con
-        autocompletion:const,console,continue
-        ---
-        input:for
-        autocompletion:for(let i = 0; i < array.length, i++),forEach,for(const a in array)
-        ---
-        input:${currentWord}
-        autocompletion:`,
-      }),
-    });
   }
 
   search() {
@@ -144,7 +101,7 @@ export class AutoCompletion extends Component {
       this.editor.currentPositionOnLine
     );
     this.currentWord = currentWord;
-    this.getResultsFromAi();
+    this.results = findQuery(currentWord);
   }
 
   moveDown() {

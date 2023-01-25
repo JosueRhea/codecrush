@@ -57,7 +57,7 @@ export class AutoCompletion extends Component {
         if (this.editor.isAutoCompleting) {
           if (this.results.length > 0) {
             this.editor.onCompletionAccept(
-              this.results[this.resultIndex].substring(this.currentWord.length)
+              this.results[this.resultIndex].suggestion.substring(this.currentWord.length)
             );
             this.editor.isAutoCompleting = false;
             this.resultIndex = 0;

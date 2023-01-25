@@ -100,6 +100,12 @@
         padding-bottom: 5px;
         color: #ddd;
         background: none;
+        display: flex;
+        justify-content: space-between;
+
+        & .owner {
+          opacity: 0.5;
+        }
       }
 
       & .active {

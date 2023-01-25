@@ -58,7 +58,5 @@ const keyworks = [
 
 export const findQuery = (query) => {
   const result = keyworks.filter((n) => n.startsWith(query));
-  return result;
+  return result.map((x) => ({ suggestion: x, owner: "codecrush" }));
 };
-
-

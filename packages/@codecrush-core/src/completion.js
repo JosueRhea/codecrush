@@ -23,8 +23,14 @@ export class Completion {
         const buttonEl = document.createElement("button");
         buttonEl.classList.add("autocompletion-result");
         if (i == 0) buttonEl.classList.add("active");
-        buttonEl.textContent = result;
+        const completion = document.createElement('span')
+        const owner = document.createElement('owner')
+        owner.classList.add('owner')
+        completion.textContent = result.suggestion
+        owner.textContent = result.owner
         buttonEl.value = result;
+        buttonEl.append(completion, owner)
+
         this.element.appendChild(buttonEl);
       });
     }

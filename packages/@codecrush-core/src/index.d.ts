@@ -15,8 +15,8 @@ export type EditorOptions = {
   theme: EditorTheme;
   height: number;
   id: string;
-  parent: Element;  
-  components?: [T]
+  parent: Element;
+  components?: [T];
 };
 
 export declare class Editor {
@@ -132,8 +132,13 @@ export class SelectionComponent {
   renderSelection() {}
 }
 
+export type Suggestion = {
+  suggestion: string;
+  owner: string;
+};
+
 export class AutocompletionComponent {
-  results: [any];
+  results: Suggestion[];
   currentWord: string;
 
   onKeyPressed(key: string) {}

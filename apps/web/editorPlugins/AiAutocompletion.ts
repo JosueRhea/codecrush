@@ -29,7 +29,8 @@ export class CohereAutoCompletion extends Component {
 
       activityBar.registerActivity(
         "cohere-activity",
-        `co:here -> (${completion.currentWord})`
+        `co:here -> (${completion.currentWord})`,
+        true
       );
       this.fetchAutoCompletions(completion.currentWord)
         .then((res) => res.json())
@@ -92,5 +93,12 @@ autocompletion:`,
 
   onSearchSuggestions(): void {
     this.getResultsFromAi();
+  }
+
+  onAutoCompletionCancel(): void {
+    if (this.signal) {
+      this.signal.abort();
+      this.signal = null;
+    }
   }
 }

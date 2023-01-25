@@ -501,9 +501,9 @@ export class Navigation extends Component {
     const lineHeight =
       this.editor.lines[this.editor.currentLineIndex].getClientHeight();
 
-    if (relativePos.y > containerPos.height - lineHeight - 20) {
+    if (relativePos.y > containerPos.height - lineHeight - 25) {
       const scrollY = relativePos.y - containerPos.height + lineHeight;
-      this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + scrollY + 20;
+      this.editor.preEl.scrollTop = this.editor.preEl.scrollTop + scrollY + 25;
     }
 
     if (relativePos.y < 0) {

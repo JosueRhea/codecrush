@@ -157,6 +157,7 @@ export class Editor {
 
     this.isLoaded = true;
     this.handleLastPressed();
+    this.onReady();
     console.log("loaded");
   }
 
@@ -237,10 +238,18 @@ export class Editor {
     }
   }
 
-  onSearchSuggestions(){
+  onSearchSuggestions() {
     for (const component of this.components) {
       if (component.onSearchSuggestions) {
         component.onSearchSuggestions();
+      }
+    }
+  }
+
+  onReady() {
+    for (const component of this.components) {
+      if (component.onReady) {
+        component.onReady();
       }
     }
   }

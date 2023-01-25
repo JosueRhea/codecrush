@@ -42,7 +42,8 @@ export type ComponentId =
   | "text-editor"
   | "navigation"
   | "autocompletion"
-  | "selection";
+  | "selection"
+  | "activity-bar";
 
 export class NavigationComponent {
   onKeyPressed(key, withCtrlKey) {}
@@ -132,6 +133,11 @@ export class SelectionComponent {
   renderSelection() {}
 }
 
+export class ActivityBarComponent {
+  registerActivity(id: string, text: string) {}
+  removeActivity(id: string) {}
+}
+
 export type Suggestion = {
   suggestion: string;
   owner: string;
@@ -177,4 +183,6 @@ export declare class Component extends Editor {
 
   onCompletionAccept(completion: string) {}
   onSearchSuggestions() {}
+
+  onReady() {}
 }

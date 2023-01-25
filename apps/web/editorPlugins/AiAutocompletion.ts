@@ -1,4 +1,8 @@
-import { AutocompletionComponent, Component } from "codecrush-core";
+import {
+  ActivityBarComponent,
+  AutocompletionComponent,
+  Component,
+} from "codecrush-core";
 import debounce from "../utils/debounce";
 
 export class CohereAutoCompletion extends Component {
@@ -14,6 +18,13 @@ export class CohereAutoCompletion extends Component {
       if (process.env.NEXT_PUBLIC_COHERE_TOKEN) {
         const completion =
           this.editor.getComponent<AutocompletionComponent>("autocompletion");
+        const activityBar =
+          this.editor.getComponent<ActivityBarComponent>("activity-bar");
+
+        activityBar.registerActivity(
+          "cohere-activity",
+          "Getting autocompletions..."
+        );
         this.fetchAutoCompletions(completion.currentWord)
           .then((res) => res.json())
           .then((data) => {
@@ -24,9 +35,13 @@ export class CohereAutoCompletion extends Component {
               .map((x: string) => x.trim())
               .filter((x: string) => x !== "");
             suggestions.forEach((item: string) => {
-              completion.results.push({suggestion: item, owner: 'co:here'});
+              completion.results.push({ suggestion: item, owner: "co:here" });
             });
             completion.render();
+            activityBar.removeActivity("cohere-activity");
+          })
+          .catch(() => {
+            activityBar.removeActivity("cohere-activity");
           });
       }
     }, 500);

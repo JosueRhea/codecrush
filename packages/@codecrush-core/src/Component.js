@@ -21,4 +21,6 @@ export class Component {
   onCompletionAccept(completion) {}
 
   onSearchSuggestions(cb) {}
+
+  onReady() {}
 }

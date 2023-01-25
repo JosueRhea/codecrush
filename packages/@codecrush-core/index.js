@@ -1,3 +1,4 @@
+import { ActivityBar } from "./src/ActivityBar";
 import { AutoCompletion } from "./src/AutoCompletion";
 import { Editor } from "./src/editor";
 import { Navigation } from "./src/Navigation";
@@ -13,6 +14,7 @@ export async function initEditor(options) {
   editor.use(new Navigation());
   editor.use(new AutoCompletion());
   editor.use(new Selection());
+  editor.use(new ActivityBar());
   if (options.components && options.components.length > 0) {
     options.components.forEach((cmp) => {
       editor.use(new cmp());

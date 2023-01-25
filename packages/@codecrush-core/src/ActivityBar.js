@@ -1,4 +1,5 @@
 import { Component } from "./Component";
+import { loadingIcon } from "./icons";
 
 export class ActivityBar extends Component {
   constructor() {
@@ -20,13 +21,17 @@ export class ActivityBar extends Component {
 
   removeActivity(id) {
     const child = document.getElementById(id);
-    this.barEl.removeChild(child);
+    if (child) {
+      this.barEl.removeChild(child);
+    }
   }
-
-  registerActivity(id, text) {
-    const span = document.createElement("span");
-    span.id = id;
-    span.textContent = text;
-    this.barEl.appendChild(span);
+  registerActivity(id, text, isLoading) {
+    const element = document.createElement("p");
+    element.id = id;
+    element.textContent = text;
+    if(isLoading){
+      element.innerHTML += loadingIcon
+    }
+    this.barEl.appendChild(element);
   }
 }

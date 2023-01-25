@@ -78,6 +78,9 @@ export class Editor {
       "--editorSuggestWidget-selectedBackground",
       this.theme.colors["editorSuggestWidget.selectedBackground"]
     );
+    editor.style.setProperty('--activityBar-foreground', this.theme.colors["activityBar.foreground"])
+    editor.style.setProperty('--activityBar-background', this.theme.colors["activityBar.background"])
+
 
     // Pre element
     const pre = document.createElement("pre");

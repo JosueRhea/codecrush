@@ -58,8 +58,7 @@ export class Actions {
     for (let i = 0; i < text.length; i++) {
       if (i >= start && i < end) {
         continue;
-      } else {
-        console.log("Enter here with index", start, end)
+      } else {        
         newString += text[i];
       }
     }

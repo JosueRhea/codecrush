@@ -17,7 +17,9 @@
     "eslint-config-custom": "workspace:*",
     "husky": "8.0.3",
     "prettier": "latest",
-    "turbo": "latest"
+    "turbo": "latest",
+    "@playwright/test": "^1.30.0",
+    "@types/node": "^17.0.12"
   },
   "engines": {
     "node": ">=14.0.0"

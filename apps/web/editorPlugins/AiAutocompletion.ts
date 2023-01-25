@@ -24,7 +24,7 @@ export class CohereAutoCompletion extends Component {
               .map((x: string) => x.trim())
               .filter((x: string) => x !== "");
             suggestions.forEach((item: string) => {
-              completion.results.push(item);
+              completion.results.push({suggestion: item, owner: 'co:here'});
             });
             completion.render();
           });

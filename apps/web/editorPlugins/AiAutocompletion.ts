@@ -19,7 +19,7 @@ export class CohereAutoCompletion extends Component {
           .then((data) => {
             const suggestions = data.generations[0].text
               .replace("\n", "")
-              .replace("---", "")
+              .replace("--", "")
               .split(",")
               .map((x: string) => x.trim())
               .filter((x: string) => x !== "");
@@ -42,21 +42,28 @@ export class CohereAutoCompletion extends Component {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        max_tokens: 20,
+        max_tokens: 100,
         return_likelihoods: "NONE",
         truncate: "END",
         prompt: `this program returns text autocompletions for code editor, it can have multiple autocompletions and should only return javascript code like this
-        input:spl
-        autocompletion:splice,slice
-        ---
-        input:con
-        autocompletion:const,console,continue
-        ---
-        input:for
-        autocompletion:for(let i = 0; i < array.length, i++),forEach,for(const a in array)
-        ---
-        input:${currentWord}
-        autocompletion:`,
+--
+input:spl
+autocompletion:splice,slice
+--
+input:con
+autocompletion:const,console,continue
+--
+input:for
+autocompletion:for(let i = 0; i < array.length, i++),forEach,for(const a in array)
+--
+input:${currentWord}
+autocompletion:`,
+        temperature: 0.2,
+        k: 0,
+        p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+        stop_sequences: ["--"],
       }),
     });
   }

@@ -2,7 +2,7 @@ import { Component } from "./Component";
 
 export class Selection extends Component {
   constructor() {
-    super('selection');
+    super("selection");
     this.range = null;
     this.isShiftKey = false;
     this.upCount = 0;
@@ -100,7 +100,7 @@ export class Selection extends Component {
     if (this.editor.isSelecting && lineExistInSelectionIndex !== -1) {
       const lineSelection =
         this.editor.editorSelection[lineExistInSelectionIndex];
-      if (lineSelection.rightCount > 0) {        
+      if (lineSelection.rightCount > 0) {
         lineSelection.end = start;
         const width = currentLine.getOffsetSumRange(
           lineSelection.start,
@@ -123,23 +123,25 @@ export class Selection extends Component {
       }
       this.renderSelection();
     } else {
-      this.editor.isSelecting = true;
-      const selection = {
-        lineIndex: lineIndex,
-        start: start,
-        end: end,
-        leftCount: 1,
-        rightCount: 0,
-      };
-      const width = currentLine.getOffsetSumRange(
-        selection.start,
-        selection.end
-      );
-      const left = currentLine.getOffsetSum(selection.start);
-      selection.width = width;
-      selection.left = left;
-      this.editor.editorSelection.push(selection);
-      this.renderSelection();
+      if (currentLine) {
+        this.editor.isSelecting = true;
+        const selection = {
+          lineIndex: lineIndex,
+          start: start,
+          end: end,
+          leftCount: 1,
+          rightCount: 0,
+        };
+        const width = currentLine.getOffsetSumRange(
+          selection.start,
+          selection.end
+        );
+        const left = currentLine.getOffsetSum(selection.start);
+        selection.width = width;
+        selection.left = left;
+        this.editor.editorSelection.push(selection);
+        this.renderSelection();
+      }
     }
   }
 

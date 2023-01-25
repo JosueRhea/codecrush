@@ -21,14 +21,17 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "test:e2e": "playwright test",
     "lint": "eslint *.js"
   },
   "devDependencies": {
+    "@playwright/test": "^1.30.0",
+    "@types/node": "^17.0.12",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
     "vite": "^4.0.0",
-    "vite-plugin-dts": "^1.7.1",
-    "tsconfig": "workspace:*"
+    "vite-plugin-dts": "^1.7.1"
   },
   "dependencies": {
     "postcss-nesting": "^10.2.0",

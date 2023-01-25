@@ -2,6 +2,12 @@ lockfileVersion: 5.4
 
 importers:
 
+  '-w':
+    specifiers:
+      '@playwright/test': ^1.30.0
+    devDependencies:
+      '@playwright/test': 1.30.0
+
   .:
     specifiers:
       eslint-config-custom: workspace:*
@@ -47,8 +53,18 @@ importers:
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.4
 
+  packages:
+
+    specifiers:
+      '@playwright/test': ^1.30.0
+
+    devDependencies:
+      '@playwright/test': 1.30.0
+
   packages/@codecrush-core:
     specifiers:
+      '@playwright/test': ^1.30.0
+      '@types/node': ^17.0.12
       eslint: ^7.32.0
       eslint-config-custom: workspace:*
       postcss-nesting: ^10.2.0
@@ -60,10 +76,12 @@ importers:
       postcss-nesting: 10.2.0
       shiki: 0.12.1
     devDependencies:
+      '@playwright/test': 1.30.0
+      '@types/node': 17.0.45
       eslint: 7.32.0
       eslint-config-custom: link:../eslint-config-custom
       tsconfig: link:../tsconfig
-      vite: 4.0.4
+      vite: 4.0.4_@types+node@17.0.45
       vite-plugin-dts: 1.7.1_vite@4.0.4
 
   packages/@codecrush-react:
@@ -781,6 +799,15 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+
+  /@playwright/test/1.30.0:
+    resolution: {integrity: sha512-SVxkQw1xvn/Wk/EvBnqWIq6NLo1AppwbYOjNLmyU0R1RoQ3rLEBtmjTnElcnz8VEtn11fptj1ECxK0tgURhajw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 17.0.45
+      playwright-core: 1.30.0
+    dev: true
 
   /@rollup/pluginutils/5.0.2:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
@@ -2526,6 +2553,12 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
+  /playwright-core/1.30.0:
+    resolution: {integrity: sha512-7AnRmTCf+GVYhHbLJsGUtskWTE33SwMZkybJ0v6rqR1boxq2x36U7p1vDRV7HO2IwTZgmycracLxPEJI49wu4g==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
+
   /postcss-nesting/10.2.0:
     resolution: {integrity: sha512-EwMkYchxiDiKUhlJGzWsD9b2zvq/r2SSubcRrgP+jujMXFzqvANLt16lJANC+5uZ6hjI7lpRmI6O8JIl+8l1KA==}
     engines: {node: ^12 || ^14 || >=16}
@@ -3071,7 +3104,7 @@ packages:
       fs-extra: 10.1.0
       kolorist: 1.6.0
       ts-morph: 16.0.0
-      vite: 4.0.4
+      vite: 4.0.4_@types+node@17.0.45
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -3102,6 +3135,40 @@ packages:
       terser:
         optional: true
     dependencies:
+      esbuild: 0.16.14
+      postcss: 8.4.20
+      resolve: 1.22.1
+      rollup: 3.9.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: true
+
+  /vite/4.0.4_@types+node@17.0.45:
+    resolution: {integrity: sha512-xevPU7M8FU0i/80DMR+YhgrzR5KS2ORy1B4xcX/cXLsvnUWvfHuqMmVU6N0YiJ4JWGRJJsLCgjEzKjG9/GKoSw==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': '>= 14'
+      less: '*'
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 17.0.45
       esbuild: 0.16.14
       postcss: 8.4.20
       resolve: 1.22.1

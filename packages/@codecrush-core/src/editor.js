@@ -249,6 +249,14 @@ export class Editor {
     }
   }
 
+  onAutoCompletionCancel(){
+    for (const component of this.components) {
+      if (component.onAutoCompletionCancel) {
+        component.onAutoCompletionCancel();
+      }
+    }
+  }
+
   onReady() {
     for (const component of this.components) {
       if (component.onReady) {

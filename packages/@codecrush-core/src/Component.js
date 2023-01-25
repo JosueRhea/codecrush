@@ -23,4 +23,6 @@ export class Component {
   onSearchSuggestions(cb) {}
 
   onReady() {}
+
+  onAutoCompletionCancel() {}
 }

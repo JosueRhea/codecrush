@@ -86,6 +86,7 @@ export class AutoCompletion extends Component {
   }
 
   quit() {
+    this.editor.onAutoCompletionCancel()
     if (!this.completionEl) return;
     this.completionEl.quit();
     this.editor.isAutoCompleting = false;

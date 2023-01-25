@@ -1,14 +1,21 @@
 import "./index.css";
-import { initEditor } from "./index";
+import { Component, initEditor } from "./index";
 
 const app = document.querySelector("#app");
+
+class Example extends Component {
+  onAutoCompletionCancel() {
+    console.log("Cancel");
+  }
+}
 
 initEditor({
   theme: "poimandres",
   height: 400,
   id: "js-editor",
   parent: app,
+  components: [Example],
 }).then((editor) => {
   const activityBar = editor.getComponent("activity-bar");
-  activityBar.registerActivity("hi", 'Hello world', true)
+  activityBar.registerActivity("hi", "Hello world");
 });

@@ -134,7 +134,7 @@ export class SelectionComponent {
 }
 
 export class ActivityBarComponent {
-  registerActivity(id: string, text: string) {}
+  registerActivity(id: string, text: string, isLoading: boolean) {}
   removeActivity(id: string) {}
 }
 
@@ -182,7 +182,10 @@ export declare class Component extends Editor {
   onMouseClick(clickX: number, clickY: number) {}
 
   onCompletionAccept(completion: string) {}
+  
   onSearchSuggestions() {}
 
   onReady() {}
+
+  onAutoCompletionCancel() {}
 }

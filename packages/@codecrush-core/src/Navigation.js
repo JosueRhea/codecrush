@@ -604,28 +604,9 @@ export class Navigation extends Component {
         this.moveEndOfLine();
       }
     }
-  }
-
-  onCompletionAccept(completion) {
-  //   const beforeCursorPosition = this.editor.currentPositionOnLine;
-  //   this.editor.currentPositionOnLine += completion.length;
-  //   this.updateCursorPositionTo(
-  //     this.editor.currentPositionOnLine,
-  //     this.editor.lines[this.editor.currentLineIndex]
-  //   );
-  //   this.editor.onPositionChange({
-  //     before: {
-  //       line: {
-  //         index: this.editor.currentLineIndex,
-  //         position: beforeCursorPosition,
-  //       },
-  //     },
-  //     after: {
-  //       line: {
-  //         index: this.editor.currentLineIndex,
-  //         position: this.editor.currentPositionOnLine,
-  //       },
-  //     },
-  //   });
+    if (!this.editor.isMouseSelecting) {
+      const selection = this.editor.getComponent("selection");
+      selection.deselectText();
+    }
   }
 }

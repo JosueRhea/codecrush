@@ -29,6 +29,9 @@ export class Editor {
     this.lastTimePressed = new Date();
     this.lastTimeDiff = 100;
     this.cohereToken = cohereToken;
+    this.isMouseDown = false;
+    this.mouseDownOffsetStart = null;
+    this.isMouseSelecting = false;
   }
 
   async init() {
@@ -78,9 +81,14 @@ export class Editor {
       "--editorSuggestWidget-selectedBackground",
       this.theme.colors["editorSuggestWidget.selectedBackground"]
     );
-    editor.style.setProperty('--activityBar-foreground', this.theme.colors["activityBar.foreground"])
-    editor.style.setProperty('--activityBar-background', this.theme.colors["activityBar.background"])
-
+    editor.style.setProperty(
+      "--activityBar-foreground",
+      this.theme.colors["activityBar.foreground"]
+    );
+    editor.style.setProperty(
+      "--activityBar-background",
+      this.theme.colors["activityBar.background"]
+    );
 
     // Pre element
     const pre = document.createElement("pre");
@@ -126,7 +134,9 @@ export class Editor {
       e.preventDefault();
     });
 
-    this.preEl.addEventListener("mousedown", (e) => {
+    this.preEl.addEventListener("mouseup", (e) => {
+      this.mouseDownOffsetStart = null;
+      this.isMouseDown = false;
       const clickY =
         e.clientY -
         this.preEl.getBoundingClientRect().top +
@@ -135,6 +145,40 @@ export class Editor {
         e.clientX -
         this.preEl.getBoundingClientRect().left +
         this.preEl.scrollLeft;
+      this.onMouseClick(clickX, clickY);
+    });
+
+    this.preEl.addEventListener("mousemove", (e) => {
+      if (this.isMouseDown) {
+        const clickY =
+          e.clientY -
+          this.preEl.getBoundingClientRect().top +
+          this.preEl.scrollTop;
+        const clickX =
+          e.clientX -
+          this.preEl.getBoundingClientRect().left +
+          this.preEl.scrollLeft;
+
+        const newOffset = clickY + clickX;
+        if (this.mouseDownOffsetStart !== newOffset) {
+          this.isMouseSelecting = true;
+          this.onMouseClick(clickX, clickY);
+        }
+      }
+    });
+
+    this.preEl.addEventListener("mousedown", (e) => {
+      this.isMouseDown = true;
+      this.isMouseSelecting = false
+      const clickY =
+        e.clientY -
+        this.preEl.getBoundingClientRect().top +
+        this.preEl.scrollTop;
+      const clickX =
+        e.clientX -
+        this.preEl.getBoundingClientRect().left +
+        this.preEl.scrollLeft;
+      this.mouseDownOffsetStart = clickX + clickY;
 
       this.onMouseClick(clickX, clickY);
     });
@@ -162,6 +206,14 @@ export class Editor {
     this.handleLastPressed();
     this.onReady();
     console.log("loaded");
+  }
+
+  onMouseDrag() {
+    for (const component of this.components) {
+      if (component.onMouseDrag) {
+        component.onMouseDrag();
+      }
+    }
   }
 
   onMouseClick(clickX, clickY) {
@@ -249,7 +301,7 @@ export class Editor {
     }
   }
 
-  onAutoCompletionCancel(){
+  onAutoCompletionCancel() {
     for (const component of this.components) {
       if (component.onAutoCompletionCancel) {
         component.onAutoCompletionCancel();

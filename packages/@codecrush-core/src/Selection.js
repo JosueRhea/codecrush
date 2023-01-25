@@ -30,7 +30,7 @@ export class Selection extends Component {
   }
 
   onPositionChange(data) {
-    if (!this.isShiftKey) return;
+    if (!this.editor.isMouseSelecting && !this.isShiftKey) return;
     const lineBeforeIndex = data.before.line.index;
     const positionBeforeIndex = data.before.line.position;
     const lineAfterIndex = data.after.line.index;
@@ -188,23 +188,25 @@ export class Selection extends Component {
       }
       this.renderSelection();
     } else {
-      this.editor.isSelecting = true;
-      const selection = {
-        lineIndex: lineIndex,
-        start: start,
-        end: end,
-        rightCount: 1,
-        leftCount: 0,
-      };
-      const width = currentLine.getOffsetSumRange(
-        selection.start,
-        selection.end
-      );
-      const left = currentLine.getOffsetSum(selection.start);
-      selection.width = width;
-      selection.left = left;
-      this.editor.editorSelection.push(selection);
-      this.renderSelection();
+      if (currentLine) {
+        this.editor.isSelecting = true;
+        const selection = {
+          lineIndex: lineIndex,
+          start: start,
+          end: end,
+          rightCount: 1,
+          leftCount: 0,
+        };
+        const width = currentLine.getOffsetSumRange(
+          selection.start,
+          selection.end
+        );
+        const left = currentLine.getOffsetSum(selection.start);
+        selection.width = width;
+        selection.left = left;
+        this.editor.editorSelection.push(selection);
+        this.renderSelection();
+      }
     }
   }
 

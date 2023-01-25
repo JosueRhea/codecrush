@@ -29,9 +29,11 @@ export class Navigation extends Component {
         this.moveRight();
         break;
       case "PageDown":
+        if (this.editor.isAutoCompleting) break;
         this.movePageDown();
         break;
       case "PageUp":
+        if (this.editor.isAutoCompleting) break;
         this.movePageUp();
         break;
       case "Backspace":

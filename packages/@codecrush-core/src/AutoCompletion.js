@@ -34,10 +34,18 @@ export class AutoCompletion extends Component {
         this.quit();
         break;
       case "PageDown":
-        this.quit();
+        if (this.editor.isAutoCompleting) {
+          for (let i = 0; i < 10; i++) {
+            this.moveDown();
+          }
+        }
         break;
       case "PageUp":
-        this.quit();
+        if (this.editor.isAutoCompleting) {
+          for (let i = 0; i < 10; i++) {
+            this.moveUp();
+          }
+        }
         break;
       case " ":
         this.quit();

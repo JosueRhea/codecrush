@@ -28,4 +28,7 @@ export default defineConfig({
     },
   },
   plugins: [dts()],
+  server: {
+    port: 5173
+  }
 });

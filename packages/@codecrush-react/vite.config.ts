@@ -20,4 +20,7 @@ export default defineConfig({
     ssrManifest: true,
     ssr: true,
   },
+  server: {
+    port: 5174
+  }
 });

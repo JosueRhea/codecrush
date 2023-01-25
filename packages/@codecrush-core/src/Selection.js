@@ -1,5 +1,17 @@
 import { Component } from "./Component";
 
+const acceptedSelectionKeys = [
+  "ArrowDown",
+  "ArrowUp",
+  "ArrowLeft",
+  "ArrowRight",
+  "Shift",
+  "Home",
+  "End",
+  "PageDown",
+  "PageUp",
+];
+
 export class Selection extends Component {
   constructor() {
     super("selection");
@@ -10,7 +22,7 @@ export class Selection extends Component {
   }
 
   onKeyPressed(key, _, shiftKey) {
-    if (shiftKey) this.isShiftKey = true;
+    if (shiftKey && acceptedSelectionKeys.includes(key)) this.isShiftKey = true;
     else {
       this.isShiftKey = false;
       this.deselectText();

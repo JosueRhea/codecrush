@@ -3,11 +3,7 @@ import { Component, initEditor } from "./index";
 
 const app = document.querySelector("#app");
 
-class Example extends Component {
-  onAutoCompletionCancel() {
-    console.log("Cancel");
-  }
-}
+class Example extends Component {}
 
 initEditor({
   theme: "poimandres",

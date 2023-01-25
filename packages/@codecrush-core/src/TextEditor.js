@@ -5,7 +5,7 @@ import { insertInto } from "./utils/array";
 
 export class TextEditor extends Component {
   constructor() {
-    super('text-editor');
+    super("text-editor");
   }
 
   onKeyPressed(key) {
@@ -90,7 +90,10 @@ export class TextEditor extends Component {
           const lineToAppend =
             this.editor.lines[this.editor.currentLineIndex - 1];
           const newPosition = lineToAppend.getLength();
-          currentLine.giveContentTo(lineToAppend, this.editor.codeToThemeTokens);
+          currentLine.giveContentTo(
+            lineToAppend,
+            this.editor.codeToThemeTokens
+          );
           this.deleteLine(this.editor.currentLineIndex, newPosition);
         }
       }
@@ -121,7 +124,10 @@ export class TextEditor extends Component {
       this.editor.onNewLine();
     } else {
       const nextIndex = this.editor.currentLineIndex + 1;
-      currentLineEl.deleteCharacterAfter(position, this.editor.codeToThemeTokens);
+      currentLineEl.deleteCharacterAfter(
+        position,
+        this.editor.codeToThemeTokens
+      );
       const newLine = new Line(
         this.editor.editorContent,
         contentAfterPosition,
@@ -132,7 +138,11 @@ export class TextEditor extends Component {
       newLine.setIsActive(true);
       this.recomputeLineNumbers();
       newLine.setLineNumber(this.editor.lineNumbersEl, nextIndex);
-      newLine.appendText(contentAfterPosition, 0, this.editor.codeToThemeTokens);
+      newLine.appendText(
+        contentAfterPosition,
+        0,
+        this.editor.codeToThemeTokens
+      );
       this.editor.onNewLine();
     }
   }
@@ -166,6 +176,33 @@ export class TextEditor extends Component {
   }
 
   onCompletionAccept(completion) {
+    const currentLine = this.editor.lines[this.editor.currentLineIndex];
+    const lineContent = currentLine.getContent();
+    const navigation = this.editor.getComponent("navigation");
+
+    const beforePosition = lineContent.substring(
+      0,
+      this.editor.currentPositionOnLine
+    );
+    const lastDelimiter = Math.max(
+      beforePosition.lastIndexOf("."),
+      beforePosition.lastIndexOf(" ")
+    );
+
+    const startPosition = lastDelimiter + 1;
+    const endPosition = this.editor.currentPositionOnLine;
+
+    currentLine.deleteCharacterRange(
+      startPosition,
+      endPosition,
+      this.editor.codeToThemeTokens
+    );
+    this.editor.currentPositionOnLine = startPosition;
     this.addCharacter(completion);
+    this.editor.currentPositionOnLine += completion.length;
+    navigation.updateCursorPositionTo(
+      this.editor.currentPositionOnLine,
+      currentLine
+    );
   }
 }

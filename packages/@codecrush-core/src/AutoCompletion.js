@@ -57,7 +57,7 @@ export class AutoCompletion extends Component {
         if (this.editor.isAutoCompleting) {
           if (this.results.length > 0) {
             this.editor.onCompletionAccept(
-              this.results[this.resultIndex].suggestion.substring(this.currentWord.length)
+              this.results[this.resultIndex].suggestion
             );
             this.editor.isAutoCompleting = false;
             this.resultIndex = 0;
@@ -86,7 +86,7 @@ export class AutoCompletion extends Component {
   }
 
   quit() {
-    this.editor.onAutoCompletionCancel()
+    this.editor.onAutoCompletionCancel();
     if (!this.completionEl) return;
     this.completionEl.quit();
     this.editor.isAutoCompleting = false;

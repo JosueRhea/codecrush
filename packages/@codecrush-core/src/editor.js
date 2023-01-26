@@ -62,6 +62,7 @@ export class Editor {
       });
 
     editor.setAttribute("class", "codecrush-editor");
+    editor.setAttribute('data-testid', 'codecrush-container')
     editor.setAttribute("tabindex", "0");
     editor.style.height = this.height + "px";
     editor.style.setProperty("--editor-theme-bg", this.theme.bg);
@@ -203,6 +204,7 @@ export class Editor {
     });
 
     this.isLoaded = true;
+    editor.setAttribute('editor-loaded', true)
     this.handleLastPressed();
     this.onReady();
     console.log("loaded");

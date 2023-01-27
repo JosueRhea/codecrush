@@ -102,7 +102,6 @@ export class AutoCompletion extends Component {
       this.editor.currentPositionOnLine
     );
     const lastDelimiter = Math.max(
-      beforePosition.lastIndexOf("."),
       beforePosition.lastIndexOf(" ")
     );
     const currentWord = lineContent.slice(

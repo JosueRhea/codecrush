@@ -184,10 +184,7 @@ export class TextEditor extends Component {
       0,
       this.editor.currentPositionOnLine
     );
-    const lastDelimiter = Math.max(
-      beforePosition.lastIndexOf("."),
-      beforePosition.lastIndexOf(" ")
-    );
+    const lastDelimiter = Math.max(beforePosition.lastIndexOf(" "));
 
     const startPosition = lastDelimiter + 1;
     const endPosition = this.editor.currentPositionOnLine;

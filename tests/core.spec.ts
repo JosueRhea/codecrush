@@ -37,6 +37,38 @@ test("@codecrush-core", async ({ page }) => {
   // check create new line with content
   await page.keyboard.press("ArrowLeft");
   await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("Enter");
+
+  const activeLine = editorContainer.locator(".line").nth(1);
+  await expect(activeLine).toHaveText('rld!"');
+  await expect(activeLine).toHaveClass("line active");
+
+  // Line selection
+  await page.keyboard.press("End");
+  await page.keyboard.down("Shift");
+  await page.keyboard.press("Home");
+  await page.keyboard.up("Shift");
+  await page.keyboard.press("Backspace");
+
+  await expect(activeLine).toHaveText("");
+
+  await page.keyboard.press("Backspace");
+  await page.keyboard.down("Shift");
+  await page.keyboard.press("Home");
+  await page.keyboard.up("Shift");
+  await page.keyboard.press("Backspace");
+
+  //Autocompletion
+  await page.keyboard.press("f");
+  const autoCompletionEl = editorContainer.locator("pre > .autocompletion");
+  const firstAutoCompletion = autoCompletionEl
+    .locator(".autocompletion-result")
+    .nth(0);
+  await expect(firstAutoCompletion).toHaveClass("autocompletion-result active");
+  await expect(firstAutoCompletion.textContent.length).toBeGreaterThan(0);
 
   // TODO: check the cursor
 });

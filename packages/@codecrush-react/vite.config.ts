@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: (format) => `${format}/index.js`,
     },
     rollupOptions: {
-      external: ["codecrush-core"],
+      external: ["codecrush-core", "react", "react-dom"],
     },
     manifest: true,
     ssrManifest: true,

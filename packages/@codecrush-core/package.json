@@ -1,7 +1,14 @@
 {
   "name": "codecrush-core",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "author": {
+    "name": "JosueRhea"
+  },
+  "repository": {
+    "url": "https://github.com/JosueRhea/codecrush"
+  },
+  "homepage": "https://github.com/JosueRhea/codecrush",
   "publishConfig": {
     "access": "public"
   },

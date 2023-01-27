@@ -4,10 +4,17 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "files": [
     "dist"
   ],
+  "author": {
+    "name": "JosueRhea"
+  },
+  "repository": {
+    "url": "https://github.com/JosueRhea/codecrush"
+  },
+  "homepage": "https://github.com/JosueRhea/codecrush",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/components/index.d.ts",

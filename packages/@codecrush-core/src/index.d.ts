@@ -135,6 +135,7 @@ export class SelectionComponent {
 
 export class ActivityBarComponent {
   registerActivity(id: string, text: string, isLoading: boolean) {}
+  updateActivity(id: string, text: string, isLoading: boolean) {}
   removeActivity(id: string) {}
 }
 

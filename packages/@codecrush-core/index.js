@@ -1,6 +1,7 @@
 import { ActivityBar } from "./src/ActivityBar";
 import { AutoCompletion } from "./src/AutoCompletion";
 import { Editor } from "./src/editor";
+import { HistoryChanges } from "./src/HistoryChanges";
 import { Navigation } from "./src/Navigation";
 import { Selection } from "./src/Selection";
 import { TextEditor } from "./src/TextEditor";
@@ -15,6 +16,7 @@ export async function initEditor(options) {
   editor.use(new AutoCompletion());
   editor.use(new Selection());
   editor.use(new ActivityBar());
+  editor.use(new HistoryChanges());
   if (options.components && options.components.length > 0) {
     options.components.forEach((cmp) => {
       editor.use(new cmp());

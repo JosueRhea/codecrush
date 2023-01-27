@@ -310,6 +310,14 @@ export class Editor {
     }
   }
 
+  onTextAdded(text){
+    for (const component of this.components) {
+      if (component.onTextAdded) {
+        component.onTextAdded(text);
+      }
+    }
+  }
+
   onReady() {
     for (const component of this.components) {
       if (component.onReady) {

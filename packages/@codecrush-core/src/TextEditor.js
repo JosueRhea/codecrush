@@ -38,6 +38,10 @@ export class TextEditor extends Component {
       this.editor.currentPositionOnLine,
       this.editor.codeToThemeTokens
     );
+    this.editor.onTextAdded({
+      text: key,
+      lineIndex: this.editor.currentLineIndex,
+    });
   }
 
   deleteCharacterInRange(lineIndex, start, end) {

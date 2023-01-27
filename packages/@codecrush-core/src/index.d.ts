@@ -43,7 +43,8 @@ export type ComponentId =
   | "navigation"
   | "autocompletion"
   | "selection"
-  | "activity-bar";
+  | "activity-bar"
+  | "history-changes";
 
 export class NavigationComponent {
   onKeyPressed(key, withCtrlKey) {}
@@ -183,10 +184,12 @@ export declare class Component extends Editor {
   onMouseClick(clickX: number, clickY: number) {}
 
   onCompletionAccept(completion: string) {}
-  
+
   onSearchSuggestions() {}
 
   onReady() {}
 
   onAutoCompletionCancel() {}
+
+  onTextAdded(data: { text: string; lineIndex: number }) {}
 }

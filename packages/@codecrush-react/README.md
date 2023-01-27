@@ -1,5 +1,5 @@
 # Codecrush React
-An wrapper for codecrush-core to use the editor in react
+An wrapper for codecrush-core (javascript/typescript) editor to use in react
 
 ## Installation
 

@@ -147,6 +147,7 @@
     border-top: 1px solid var(--editor-editorLineNumber-foreground);
     background-color: var(--activityBar-background);
     display: flex;
+    gap: 5px;
 
     & p {
       margin: 0;

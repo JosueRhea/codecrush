@@ -5,7 +5,9 @@ test("@codecrush-core", async ({ page }) => {
 
   // check if the editor is loaded
   const editorContainer = await page.getByTestId("codecrush-container");
-  await expect(editorContainer).toHaveAttribute("editor-loaded", "true");
+  await expect(editorContainer).toHaveAttribute("editor-loaded", "true", {
+    timeout: 10000,
+  });
 
   // check focused class
   editorContainer.click();
@@ -68,7 +70,25 @@ test("@codecrush-core", async ({ page }) => {
     .locator(".autocompletion-result")
     .nth(0);
   await expect(firstAutoCompletion).toHaveClass("autocompletion-result active");
-  await expect(firstAutoCompletion.textContent.length).toBeGreaterThan(0);
+  await expect(
+    await (
+      await firstAutoCompletion.innerText()
+    ).length
+  ).toBeGreaterThan(0);
+
+  for (let i = 0; i < 10; i++) {
+    await page.keyboard.press("ArrowDown");
+  }
+
+  const activeCompletion = autoCompletionEl.locator(".active");
+  const autoCompletionText = await activeCompletion
+    .locator("span")
+    .nth(0)
+    .textContent();
+  await page.keyboard.press("Enter");
+  const lineContentAfterAutoCompletion = await firstLine.textContent();
+
+  await expect(lineContentAfterAutoCompletion).toBe(autoCompletionText);
 
   // TODO: check the cursor
 });

@@ -24,11 +24,12 @@ export class Completion {
         buttonEl.classList.add("autocompletion-result");
         if (i == 0) buttonEl.classList.add("active");
         const completion = document.createElement('span')
-        const owner = document.createElement('owner')
+        const owner = document.createElement('span')
         owner.classList.add('owner')
+        completion.classList.add('suggestion')
         completion.textContent = result.suggestion
         owner.textContent = result.owner
-        buttonEl.value = result;
+        buttonEl.value = result.suggestion;
         buttonEl.append(completion, owner)
 
         this.element.appendChild(buttonEl);

@@ -63,7 +63,7 @@ The following example we create a component to register in the activity bar whic
 
 In this case we'll be using `onReady` and `onKeyPressed` events provided by the editor.
 
-```jsx
+```tsx
 import { Editor } from "codecrush-react";
 import "codecrush-core/dist/index.css"; // styles from the core package
 import { Component, ActivityBarComponent } from "codecrush-core";
@@ -71,13 +71,13 @@ import { Component, ActivityBarComponent } from "codecrush-core";
 class Example extends Component {
   onReady() {
     const activityBar =
-      this.editor.getComponent < ActivityBarComponent > "activity-bar"; // get the activity bar
+      this.editor.getComponent<ActivityBarComponent>("activity-bar"); // get the activity bar
     activityBar.registerActivity("key-pressed", "Keyboard: "); // register a new entry with id and text
   }
 
   onKeyPressed(key: string) {
     const activityBar =
-      this.editor.getComponent < ActivityBarComponent > "activity-bar";
+      this.editor.getComponent <ActivityBarComponent>("activity-bar");
     activityBar.updateActivity("key-pressed", "Keyboard: " + key); //update the activity when the key is pressed
   }
 }

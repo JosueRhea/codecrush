@@ -90,6 +90,15 @@ test("@codecrush-core", async ({ page }) => {
 
   await expect(lineContentAfterAutoCompletion).toBe(autoCompletionText);
 
+  // Activity bar
+  const activityBar = editorContainer.getByTestId("activity-bar");
+  await page.keyboard.press("Shift");
+  await expect(activityBar.locator("p").nth(0)).toHaveText("Keyboard: Shift");
+
+  // ACtivity bar loading
+  await page.keyboard.press("a");
+  await expect(activityBar.locator("p").nth(0).locator("svg")).toBeTruthy();
+
   // TODO: check the cursor
   // TODO: check scroll
 });

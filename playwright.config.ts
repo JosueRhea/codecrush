@@ -12,6 +12,7 @@ const config: PlaywrightTestConfig = {
   timeout: 30 * 1000,
   use: {
     actionTimeout: 30000,
+    video: "on",
   },
   projects: [
     {

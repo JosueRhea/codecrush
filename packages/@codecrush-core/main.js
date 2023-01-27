@@ -10,11 +10,8 @@ class Example extends Component {
   }
   onKeyPressed(key) {
     const activityBar = this.editor.getComponent("activity-bar");
-    if (key == "a") {
-      activityBar.updateActivity("new-character", "Keyboard: " + key, true);
-    } else {
-      activityBar.updateActivity("new-character", "Keyboard: " + key, false);
-    }
+
+    activityBar.updateActivity("new-character", "Keyboard: " + key, false);
   }
 }
 

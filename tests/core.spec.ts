@@ -91,4 +91,5 @@ test("@codecrush-core", async ({ page }) => {
   await expect(lineContentAfterAutoCompletion).toBe(autoCompletionText);
 
   // TODO: check the cursor
+  // TODO: check scroll
 });

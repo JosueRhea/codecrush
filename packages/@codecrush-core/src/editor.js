@@ -4,7 +4,7 @@ import { EditableInput } from "./editableInput";
 import { Line } from "./line";
 
 export class Editor {
-  constructor({ theme, height, id, parent, cohereToken }) {
+  constructor({ theme, height, id, parent }) {
     this.components = [];
     this.editorContent = null;
     this.editorEl = null;
@@ -28,7 +28,6 @@ export class Editor {
     this.parent = parent;
     this.lastTimePressed = new Date();
     this.lastTimeDiff = 100;
-    this.cohereToken = cohereToken;
     this.isMouseDown = false;
     this.mouseDownOffsetStart = null;
     this.isMouseSelecting = false;

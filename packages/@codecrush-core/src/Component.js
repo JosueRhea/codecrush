@@ -27,4 +27,6 @@ export class Component {
   onAutoCompletionCancel() {}
 
   onTextAdded(data) {}
+
+  onChange() {}
 }

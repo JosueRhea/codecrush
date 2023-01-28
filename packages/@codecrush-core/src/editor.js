@@ -61,7 +61,7 @@ export class Editor {
       });
 
     editor.setAttribute("class", "codecrush-editor");
-    editor.setAttribute('data-testid', 'codecrush-container')
+    editor.setAttribute("data-testid", "codecrush-container");
     editor.setAttribute("tabindex", "0");
     editor.style.height = this.height + "px";
     editor.style.setProperty("--editor-theme-bg", this.theme.bg);
@@ -169,7 +169,7 @@ export class Editor {
 
     this.preEl.addEventListener("mousedown", (e) => {
       this.isMouseDown = true;
-      this.isMouseSelecting = false
+      this.isMouseSelecting = false;
       const clickY =
         e.clientY -
         this.preEl.getBoundingClientRect().top +
@@ -203,7 +203,7 @@ export class Editor {
     });
 
     this.isLoaded = true;
-    editor.setAttribute('editor-loaded', true)
+    editor.setAttribute("editor-loaded", true);
     this.handleLastPressed();
     this.onReady();
     console.log("loaded");
@@ -245,7 +245,6 @@ export class Editor {
       }
     }
   }
-
   onCharacterDelete() {
     for (const component of this.components) {
       if (component.onCharacterDelete) {
@@ -310,10 +309,18 @@ export class Editor {
     }
   }
 
-  onTextAdded(text){
+  onTextAdded(text) {
     for (const component of this.components) {
       if (component.onTextAdded) {
         component.onTextAdded(text);
+      }
+    }
+  }
+
+  onChange() {
+    for (const component of this.components) {
+      if (component.onChange) {
+        component.onChange();
       }
     }
   }

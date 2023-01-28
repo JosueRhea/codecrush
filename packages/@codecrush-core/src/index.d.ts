@@ -192,4 +192,5 @@ export declare class Component extends Editor {
   onAutoCompletionCancel() {}
 
   onTextAdded(data: { text: string; lineIndex: number }) {}
+  onChange();
 }

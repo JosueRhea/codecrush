@@ -42,6 +42,7 @@ export class TextEditor extends Component {
       text: key,
       lineIndex: this.editor.currentLineIndex,
     });
+    this.editor.onChange();
   }
 
   deleteCharacterInRange(lineIndex, start, end) {
@@ -51,6 +52,7 @@ export class TextEditor extends Component {
         this.deleteCharacterByLineIndex(lineIndex, i);
       }
     }
+    this.editor.onChange();
   }
 
   deleteCharacterByLineIndex(lineIndex, position) {
@@ -74,6 +76,7 @@ export class TextEditor extends Component {
         }
       }
     }
+    this.editor.onChange();
   }
 
   deleteCharacter() {
@@ -102,6 +105,7 @@ export class TextEditor extends Component {
         }
       }
     }
+    this.editor.onChange();
   }
 
   createNewLine() {
@@ -149,6 +153,7 @@ export class TextEditor extends Component {
       );
       this.editor.onNewLine();
     }
+    this.editor.onChange();
   }
 
   deleteLine(currentLineIndex, position) {
@@ -171,6 +176,7 @@ export class TextEditor extends Component {
       const length = position ? position : newCurrentLine.getLength();
       this.editor.onDeleteLine(length);
     }
+    this.editor.onChange();
   }
 
   recomputeLineNumbers() {
@@ -205,5 +211,6 @@ export class TextEditor extends Component {
       this.editor.currentPositionOnLine,
       currentLine
     );
+    this.editor.onChange();
   }
 }

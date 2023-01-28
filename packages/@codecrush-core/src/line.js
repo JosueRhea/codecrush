@@ -58,6 +58,10 @@ export class Line {
     this.#lineNumberEl.textContent = number;
   }
 
+  getLineNumber() {
+    return this.#lineNumberEl.textContent;
+  }
+
   appendText(newText, currentCursorPosition, highlighter) {
     if (newText.length > 1) {
       let newCursor = currentCursorPosition;

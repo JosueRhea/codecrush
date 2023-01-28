@@ -44,7 +44,8 @@ export type ComponentId =
   | "autocompletion"
   | "selection"
   | "activity-bar"
-  | "history-changes";
+  | "history-changes"
+  | "shorcuts";
 
 export class NavigationComponent {
   onKeyPressed(key, withCtrlKey) {}

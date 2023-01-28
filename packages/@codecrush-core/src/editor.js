@@ -31,6 +31,7 @@ export class Editor {
     this.isMouseDown = false;
     this.mouseDownOffsetStart = null;
     this.isMouseSelecting = false;
+    this.prevent = { componentId: null };
   }
 
   async init() {
@@ -209,22 +210,6 @@ export class Editor {
     console.log("loaded");
   }
 
-  onMouseDrag() {
-    for (const component of this.components) {
-      if (component.onMouseDrag) {
-        component.onMouseDrag();
-      }
-    }
-  }
-
-  onMouseClick(clickX, clickY) {
-    for (const component of this.components) {
-      if (component.onMouseClick) {
-        component.onMouseClick(clickX, clickY);
-      }
-    }
-  }
-
   handleLastPressed() {
     setInterval(() => {
       const currentTime = new Date();
@@ -237,100 +222,79 @@ export class Editor {
     }, 200);
   }
 
+  runComponents(functionName, ...args) {
+    for (const component of this.components) {
+      if (component[functionName]) {
+        if (this.prevent.componentId !== null) {
+          if (component.id === this.prevent.componentId) {
+            component[functionName](...args);
+          }
+        } else {
+          component[functionName](...args);
+        }
+      }
+    }
+    this.prevent.componentId = null;
+  }
+
+  preventDefault(id) {
+    this.prevent.componentId = id;
+  }
+
+  onMouseDrag() {
+    this.runComponents("onMouseDrag");
+  }
+
+  onMouseClick(clickX, clickY) {
+    this.runComponents("onMouseClick", clickX, clickY);
+  }
+
   onKeyPressed(e, withCtrlKey, shiftKey) {
     this.lastTimePressed = new Date();
-    for (const component of this.components) {
-      if (component.onKeyPressed) {
-        component.onKeyPressed(e, withCtrlKey, shiftKey);
-      }
-    }
+    this.runComponents("onKeyPressed", e, withCtrlKey, shiftKey);
   }
   onCharacterDelete() {
-    for (const component of this.components) {
-      if (component.onCharacterDelete) {
-        component.onCharacterDelete();
-      }
-    }
+    this.runComponents("onCharacterDelete");
   }
 
   onNewLine() {
-    for (const component of this.components) {
-      if (component.onNewLine) {
-        component.onNewLine();
-      }
-    }
+    this.runComponents("onNewLine");
   }
 
   onLineIndexChange() {
-    for (const component of this.components) {
-      if (component.onNewLine) {
-        component.onLineIndexChange();
-      }
-    }
+    this.runComponents("onLineIndexChange");
   }
 
   onDeleteLine(positionOnLine) {
-    for (const component of this.components) {
-      if (component.onDeleteLine) {
-        component.onDeleteLine(positionOnLine);
-      }
-    }
+    this.runComponents("onDeleteLine", positionOnLine);
   }
 
   onPositionChange(data) {
-    for (const component of this.components) {
-      if (component.onPositionChange) {
-        component.onPositionChange(data);
-      }
-    }
+    this.runComponents("onPositionChange", data);
   }
 
   onCompletionAccept(completion) {
-    for (const component of this.components) {
-      if (component.onCompletionAccept) {
-        component.onCompletionAccept(completion);
-      }
-    }
+    this.runComponents("onCompletionAccept", completion);
   }
 
   onSearchSuggestions() {
-    for (const component of this.components) {
-      if (component.onSearchSuggestions) {
-        component.onSearchSuggestions();
-      }
-    }
+    this.runComponents("onSearchSuggestions");
   }
 
   onAutoCompletionCancel() {
-    for (const component of this.components) {
-      if (component.onAutoCompletionCancel) {
-        component.onAutoCompletionCancel();
-      }
-    }
+    this.runComponents("onAutoCompletionCancel");
   }
 
   onTextAdded(text) {
-    for (const component of this.components) {
-      if (component.onTextAdded) {
-        component.onTextAdded(text);
-      }
-    }
+    this.runComponents("onTextAdded", text);
   }
 
   onChange() {
-    for (const component of this.components) {
-      if (component.onChange) {
-        component.onChange();
-      }
-    }
+    this.runComponents("onChange");
   }
 
   onReady() {
-    for (const component of this.components) {
-      if (component.onReady) {
-        component.onReady();
-      }
-    }
+    this.runComponents("onReady");
   }
 
   use(component) {

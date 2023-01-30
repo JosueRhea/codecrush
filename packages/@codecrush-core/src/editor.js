@@ -44,7 +44,7 @@ export class Editor {
     this.parent.appendChild(editor);
 
     //Get the code
-    setCDN("https://unpkg.com/shiki/");
+    setCDN("https://unpkg.com/shiki@0.12.1/");
     await getHighlighter({
       theme: this.selectedTheme,
       langs: ["js"],

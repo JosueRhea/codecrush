@@ -224,14 +224,12 @@ export class Editor {
 
   runComponents(functionName, ...args) {
     for (const component of this.components) {
-      if (component[functionName]) {
-        if (this.prevent.componentId !== null) {
-          if (component.id === this.prevent.componentId) {
-            component[functionName](...args);
-          }
-        } else {
+      if (this.prevent.componentId !== null) {
+        if (component.id === this.prevent.componentId) {
           component[functionName](...args);
         }
+      } else {
+        component[functionName](...args);
       }
     }
     this.prevent.componentId = null;

@@ -4,6 +4,9 @@ import { Component, initEditor } from "./index";
 const app = document.querySelector("#app");
 
 class Example extends Component {
+  constructor(){
+    super('example')
+  }
   onReady() {
     const activityBar = this.editor.getComponent("activity-bar");
     activityBar.registerActivity("new-character", "Keyboard: ", false);

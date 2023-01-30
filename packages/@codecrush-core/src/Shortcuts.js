@@ -19,7 +19,7 @@ export class Shortcuts extends Component {
         shiftKey &&
         action.key.toUpperCase() === key
       ) {
-        this.editor.preventDefault(this.id);
+        this.editor.preventDefault(this.id)
         action.cb();
       }
 
@@ -30,7 +30,7 @@ export class Shortcuts extends Component {
         shiftKey &&
         action.key.toUpperCase() === key
       ) {
-        this.editor.preventDefault(this.id);
+        this.editor.preventDefault(this.id)
         action.cb();
       }
 
@@ -41,7 +41,7 @@ export class Shortcuts extends Component {
         !shiftKey &&
         action.key === key
       ) {
-        this.editor.preventDefault(this.id);
+        this.editor.preventDefault(this.id)
         action.cb();
       }
     });

@@ -10,7 +10,10 @@ const acceptedSelectionKeys = [
   "End",
   "PageDown",
   "PageUp",
+  "Control",
 ];
+
+const shouldNotDeselectKeys = ["Control"];
 
 export class Selection extends Component {
   constructor() {
@@ -24,8 +27,10 @@ export class Selection extends Component {
   onKeyPressed(key, _, shiftKey) {
     if (shiftKey && acceptedSelectionKeys.includes(key)) this.isShiftKey = true;
     else {
-      this.isShiftKey = false;
-      this.deselectText();
+      if (!shouldNotDeselectKeys.includes(key)) {
+        this.isShiftKey = false;
+        this.deselectText();
+      }
     }
   }
 

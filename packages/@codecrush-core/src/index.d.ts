@@ -169,7 +169,7 @@ export declare function initEditor(options: EditorOptions): Promise<Editor>;
 export declare class Component extends Editor {
   editor: Editor;
   id: string;
-  constructor(id: string) {}
+  constructor(componentId: string, canPreventDefault?: boolean) {}
   onKeyPressed(data: string, withCtrlKey: boolean, shiftKey: boolean) {}
 
   onCharacterDelete() {}

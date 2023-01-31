@@ -90,7 +90,7 @@ export class TextEditor extends Component {
       if (position >= 0) {
         currentLine.deleteCharacter(position, this.editor.codeToThemeTokens);
         const cursor = this.editor.getComponent("navigation");
-        cursor.moveLeft();
+        cursor.updateCursorPositionTo(position, currentLine)
         // this.editor.onCharacterDelete();
         // this.editor.onCharacterDelete();
       } else {

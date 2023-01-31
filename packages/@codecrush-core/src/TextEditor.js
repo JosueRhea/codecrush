@@ -38,6 +38,10 @@ export class TextEditor extends Component {
       this.editor.currentPositionOnLine,
       this.editor.codeToThemeTokens
     );
+    const cursor = this.editor.getComponent("navigation");
+    for (let i = 0; i < parsedValue.length; i++) {
+      cursor.moveRight();
+    }
     this.editor.onTextAdded({
       text: key,
       lineIndex: this.editor.currentLineIndex,
@@ -54,6 +58,10 @@ export class TextEditor extends Component {
       this.editor.currentPositionOnLine,
       this.editor.codeToThemeTokens
     );
+    const cursor = this.editor.getComponent("navigation");
+    for (let i = 0; i < parsedValue.length; i++) {
+      cursor.moveRight();
+    }
     this.editor.onTextAdded({
       text: key,
       lineIndex: this.editor.currentLineIndex,
@@ -81,6 +89,9 @@ export class TextEditor extends Component {
     } else {
       if (position >= 0) {
         currentLine.deleteCharacter(position, this.editor.codeToThemeTokens);
+        const cursor = this.editor.getComponent("navigation");
+        cursor.moveLeft();
+        // this.editor.onCharacterDelete();
         // this.editor.onCharacterDelete();
       } else {
         if (lineIndex > 0) {

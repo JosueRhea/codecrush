@@ -49,7 +49,7 @@ export class Navigation extends Component {
       default:
         const parsedValue = keyCodeToChar[key] ?? key;
         if (parsedValue == "") return;
-        this.moveRight();
+        // this.moveRight();
         break;
     }
 

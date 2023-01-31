@@ -214,4 +214,11 @@ export class Line {
     }
     return this.leftMovesOffsets.length;
   }
+
+  clone() {
+    return {
+      content: this.getContent(),
+      index: this.getLineNumber(),
+    };
+  }
 }

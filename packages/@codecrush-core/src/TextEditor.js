@@ -45,6 +45,22 @@ export class TextEditor extends Component {
     this.editor.onChange();
   }
 
+  addCharacterByLineIndex(key, lineIndex) {
+    const parsedValue = keyCodeToChar[key] ?? key;
+    if (parsedValue == "") return;
+    const currLine = this.editor.lines[lineIndex];
+    currLine.appendText(
+      parsedValue,
+      this.editor.currentPositionOnLine,
+      this.editor.codeToThemeTokens
+    );
+    this.editor.onTextAdded({
+      text: key,
+      lineIndex: this.editor.currentLineIndex,
+    });
+    this.editor.onChange();
+  }
+
   deleteCharacterInRange(lineIndex, start, end) {
     const line = this.editor.lines[lineIndex];
     for (let i = line.getLength(); i >= 0; i--) {
@@ -76,7 +92,6 @@ export class TextEditor extends Component {
         }
       }
     }
-    this.editor.onChange();
   }
 
   deleteCharacter() {

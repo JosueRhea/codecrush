@@ -10,19 +10,56 @@ export class HistoryChanges extends Component {
 
   onReady() {
     this.saveToHistory = debounce(() => {
-      this.history.push(this.editor.lines);
-      this.pointer = this.history.length;
-    }, 500);
+      const linesClone = this.editor.lines.map((line) => {
+        return line.clone();
+      });
+      this.history.push(linesClone);
+      this.pointer = this.history.length - 1;
+    }, 200);
+
+    this.saveToHistory();
 
     //Register shortcut
     const shorcuts = this.editor.getComponent("shortcuts");
-    shorcuts.register({ withCtrl: true, key: "c" }, () => {
-      console.log("Copy command");
+    shorcuts.register({ withCtrl: true, key: "z" }, () => {
+      this.backToBefore();
     });
+    shorcuts.register({ withCtrl: true, key: "y" }, () => {
+      this.backToForward();
+    });
+  }
+
+  backToBefore() {
+    if (this.pointer > 0) {
+      const textEditor = this.editor.getComponent("text-editor");
+      this.pointer--;
+      this.history[this.pointer].map((line) => {
+        textEditor.deleteCharacterInRange(
+          line.index,
+          0,
+          this.editor.lines[line.index].getLength()
+        );
+        textEditor.addCharacterByLineIndex(line.content, line.index);
+      });
+    }
+  }
+
+  backToForward() {
+    if (this.pointer < this.history.length - 1) {
+      const textEditor = this.editor.getComponent("text-editor");
+      this.pointer++;
+      this.history[this.pointer].map((line) => {
+        textEditor.deleteCharacterInRange(
+          line.index,
+          0,
+          this.editor.lines[line.index].getLength()
+        );
+        textEditor.addCharacterByLineIndex(line.content, line.index);
+      });
+    }
   }
 
   onChange() {
     this.saveToHistory();
-    console.log(this.history);
   }
 }

@@ -136,6 +136,7 @@ export class Editor {
     });
 
     this.preEl.addEventListener("mouseup", (e) => {
+      this.prevent.componentId = null;
       this.mouseDownOffsetStart = null;
       this.isMouseDown = false;
       const clickY =
@@ -150,6 +151,7 @@ export class Editor {
     });
 
     this.preEl.addEventListener("mousemove", (e) => {
+      this.prevent.componentId = null;
       if (this.isMouseDown) {
         const clickY =
           e.clientY -
@@ -169,6 +171,7 @@ export class Editor {
     });
 
     this.preEl.addEventListener("mousedown", (e) => {
+      this.prevent.componentId = null;
       this.isMouseDown = true;
       this.isMouseSelecting = false;
       const clickY =
@@ -195,6 +198,7 @@ export class Editor {
     });
 
     hiddenInput.onChange((e, withCtrlKey, shiftKey) => {
+      this.prevent.componentId = null;
       this.onKeyPressed(e, withCtrlKey, shiftKey);
     });
 
@@ -224,7 +228,7 @@ export class Editor {
 
   runComponents(functionName, ...args) {
     for (const component of this.components) {
-      if (this.prevent.componentId !== null) {
+      if (this.prevent.componentId != null) {
         if (component.id === this.prevent.componentId) {
           component[functionName](...args);
         }
@@ -232,7 +236,6 @@ export class Editor {
         component[functionName](...args);
       }
     }
-    this.prevent.componentId = null;
   }
 
   preventDefault(id) {

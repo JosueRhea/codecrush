@@ -214,7 +214,6 @@ export class TextEditor extends Component {
   onCompletionAccept(completion) {
     const currentLine = this.editor.lines[this.editor.currentLineIndex];
     const lineContent = currentLine.getContent();
-    const navigation = this.editor.getComponent("navigation");
 
     const beforePosition = lineContent.substring(
       0,
@@ -230,13 +229,7 @@ export class TextEditor extends Component {
       endPosition,
       this.editor.codeToThemeTokens
     );
-    this.editor.currentPositionOnLine = startPosition;
     this.addCharacter(completion);
-    this.editor.currentPositionOnLine += completion.length;
-    navigation.updateCursorPositionTo(
-      this.editor.currentPositionOnLine,
-      currentLine
-    );
     this.editor.onChange();
   }
 }

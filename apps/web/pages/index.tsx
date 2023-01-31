@@ -5,7 +5,7 @@ export default function Web() {
   return (
     <div>
       <Editor
-        height={300}
+        height={500}
         id="js-editor"
         theme="material-darker"
         components={[CohereAutoCompletion]}

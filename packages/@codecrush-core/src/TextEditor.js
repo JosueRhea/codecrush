@@ -184,6 +184,22 @@ export class TextEditor extends Component {
     this.editor.onChange();
   }
 
+  createNewLineWith(content, lineIndex) {
+    //Deactivate the currrent line
+    const newLine = new Line(
+      this.editor.editorContent,
+      content,
+      lineIndex,
+      lineIndex
+    );
+    this.editor.lines = insertInto(this.editor.lines, lineIndex, newLine);
+    newLine.setIsActive(true);
+    this.recomputeLineNumbers();
+    newLine.setLineNumber(this.editor.lineNumbersEl, lineIndex);
+    this.editor.onNewLine();
+    this.editor.onChange();
+  }
+
   deleteLine(currentLineIndex, position) {
     const currentLine = this.editor.lines[currentLineIndex];
     if (currentLine) {

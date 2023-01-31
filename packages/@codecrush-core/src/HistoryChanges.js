@@ -42,6 +42,10 @@ export class HistoryChanges extends Component {
             editorLine.getLength()
           );
           textEditor.addCharacterByLineIndex(line.content, line.index);
+        } else {
+          const navigation = this.editor.getComponent("navigation");
+          textEditor.createNewLineWith(line.content, line.index);
+          navigation.updatePositionOnLine(line.content.length, line.index);
         }
       });
     }
@@ -60,6 +64,10 @@ export class HistoryChanges extends Component {
             editorLine.getLength()
           );
           textEditor.addCharacterByLineIndex(line.content, line.index);
+        } else {
+          const navigation = this.editor.getComponent("navigation");
+          textEditor.createNewLineWith(line.content, line.index);
+          navigation.updatePositionOnLine(line.content.length, line.index);
         }
       });
     }

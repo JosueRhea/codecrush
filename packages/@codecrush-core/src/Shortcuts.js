@@ -6,10 +6,6 @@ export class Shortcuts extends Component {
     this.shortcuts = [];
   }
 
-  onReady() {
-    console.log("Editor ready for shortcuts");
-  }
-
   onKeyPressed(key, withCtrlKey, shiftKey) {
     this.shortcuts.forEach((action) => {
       if (

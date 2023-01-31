@@ -86,9 +86,7 @@ export class Navigation extends Component {
 
   onNewLine() {
     this.editor.currentLineIndex += 1;
-    console.log(this.editor.currentLineIndex)
     const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
-    console.log(newCurrentLine)
     const beforeCursorPosition = this.editor.currentPositionOnLine;
     this.editor.currentPositionOnLine = 0;
     this.updateCursorPositionTo(
@@ -495,7 +493,6 @@ export class Navigation extends Component {
   }
 
   updatePositionOnLine(position, lineIndex) {
-    console.log(typeof lineIndex, lineIndex)
     this.editor.currentPositionOnLine = position
     //Deactive current line
     this.editor.lines[this.editor.currentLineIndex].setIsActive(false);

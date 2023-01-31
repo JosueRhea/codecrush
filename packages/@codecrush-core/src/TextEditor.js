@@ -87,7 +87,6 @@ export class TextEditor extends Component {
     if (currentLine.isEmpty()) {
       navigation.updatePositionOnLine(position, lineIndex);
       if (lineIndex > 0) {
-        console.log("TODO: delete line for selection");
         // this.deleteLine(lineIndex);
       }
     } else {
@@ -98,7 +97,7 @@ export class TextEditor extends Component {
         // this.editor.onCharacterDelete();
       } else {
         if (lineIndex > 0) {
-          console.log("TODO: give content to line for selection");
+          // "TODO: give content to line for selection"
           // const lineToAppend = this.editor.lines[lineIndex - 1];
           // const newPosition = lineToAppend.getLength();
           // currentLine.giveContentTo(lineToAppend, this.editor.highlighter);

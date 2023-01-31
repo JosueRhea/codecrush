@@ -53,7 +53,6 @@ export class HistoryChanges extends Component {
       this.pointer++;
       this.history[this.pointer].forEach((line) => {
         const editorLine = this.editor.lines[line.index];
-        console.log(editorLine);
         if (editorLine) {
           textEditor.deleteCharacterInRange(
             line.index,

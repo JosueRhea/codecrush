@@ -51,7 +51,6 @@ export class Editor {
     })
       .then((h) => {
         this.theme = h.getTheme();
-        console.log(this.theme);
         this.highlighter = h;
         this.codeToThemeTokens = (text) => {
           return h.codeToThemedTokens(text, "js", this.selectedTheme);
@@ -210,8 +209,7 @@ export class Editor {
     this.isLoaded = true;
     editor.setAttribute("editor-loaded", true);
     this.handleLastPressed();
-    this.onReady();
-    console.log("loaded");
+    this.onReady();    
   }
 
   handleLastPressed() {

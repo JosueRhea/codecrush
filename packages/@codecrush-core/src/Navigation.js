@@ -47,8 +47,8 @@ export class Navigation extends Component {
         this.moveEndOfLine();
         break;
       default:
-        const parsedValue = keyCodeToChar[key] ?? key;
-        if (parsedValue == "") return;
+        // const parsedValue = keyCodeToChar[key] ?? key;
+        // if (parsedValue == "") return;
         // this.moveRight();
         break;
     }
@@ -86,7 +86,9 @@ export class Navigation extends Component {
 
   onNewLine() {
     this.editor.currentLineIndex += 1;
+    console.log(this.editor.currentLineIndex)
     const newCurrentLine = this.editor.lines[this.editor.currentLineIndex];
+    console.log(newCurrentLine)
     const beforeCursorPosition = this.editor.currentPositionOnLine;
     this.editor.currentPositionOnLine = 0;
     this.updateCursorPositionTo(
@@ -343,6 +345,7 @@ export class Navigation extends Component {
       this.editor.currentLineIndex < this.editor.lines.length - 1 &&
       !startOfLine
     ) {
+      //Deactive current line
       this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
       const beforeCurrentLineIndex = this.editor.currentLineIndex;
       this.editor.currentLineIndex += 1;
@@ -483,6 +486,26 @@ export class Navigation extends Component {
   }
 
   updateCursorPositionTo(position, line) {
+    const left = line.getOffsetSum(position);
+    const linePos = line.getPosition();
+    this.editor.cursor.updatePosition({
+      top: linePos.top,
+      left: linePos.left + left,
+    });
+  }
+
+  updatePositionOnLine(position, lineIndex) {
+    console.log(typeof lineIndex, lineIndex)
+    this.editor.currentPositionOnLine = position
+    //Deactive current line
+    this.editor.lines[this.editor.currentLineIndex].setIsActive(false);
+
+    //New current line
+    this.editor.currentLineIndex = lineIndex
+    this.editor.lines[lineIndex].setIsActive(true)
+
+    //get here
+    const line = this.editor.lines[lineIndex]
     const left = line.getOffsetSum(position);
     const linePos = line.getPosition();
     this.editor.cursor.updatePosition({

@@ -218,7 +218,7 @@ export class Line {
   clone() {
     return {
       content: this.getContent(),
-      index: this.getLineNumber(),
+      index: Number(this.getLineNumber()),
     };
   }
 }

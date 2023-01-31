@@ -33,13 +33,16 @@ export class HistoryChanges extends Component {
     if (this.pointer > 0) {
       const textEditor = this.editor.getComponent("text-editor");
       this.pointer--;
-      this.history[this.pointer].map((line) => {
-        textEditor.deleteCharacterInRange(
-          line.index,
-          0,
-          this.editor.lines[line.index].getLength()
-        );
-        textEditor.addCharacterByLineIndex(line.content, line.index);
+      this.history[this.pointer].forEach((line) => {
+        const editorLine = this.editor.lines[line.index];
+        if (editorLine) {
+          textEditor.deleteCharacterInRange(
+            line.index,
+            0,
+            editorLine.getLength()
+          );
+          textEditor.addCharacterByLineIndex(line.content, line.index);
+        }
       });
     }
   }
@@ -48,13 +51,17 @@ export class HistoryChanges extends Component {
     if (this.pointer < this.history.length - 1) {
       const textEditor = this.editor.getComponent("text-editor");
       this.pointer++;
-      this.history[this.pointer].map((line) => {
-        textEditor.deleteCharacterInRange(
-          line.index,
-          0,
-          this.editor.lines[line.index].getLength()
-        );
-        textEditor.addCharacterByLineIndex(line.content, line.index);
+      this.history[this.pointer].forEach((line) => {
+        const editorLine = this.editor.lines[line.index];
+        console.log(editorLine);
+        if (editorLine) {
+          textEditor.deleteCharacterInRange(
+            line.index,
+            0,
+            editorLine.getLength()
+          );
+          textEditor.addCharacterByLineIndex(line.content, line.index);
+        }
       });
     }
   }

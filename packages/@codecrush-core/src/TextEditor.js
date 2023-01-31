@@ -38,10 +38,11 @@ export class TextEditor extends Component {
       this.editor.currentPositionOnLine,
       this.editor.codeToThemeTokens
     );
-    const cursor = this.editor.getComponent("navigation");
-    for (let i = 0; i < parsedValue.length; i++) {
-      cursor.moveRight();
-    }
+    const navigation = this.editor.getComponent("navigation");
+    navigation.updatePositionOnLine(
+      this.editor.currentPositionOnLine + parsedValue.length,
+      this.editor.currentLineIndex
+    );
     this.editor.onTextAdded({
       text: key,
       lineIndex: this.editor.currentLineIndex,
@@ -58,13 +59,14 @@ export class TextEditor extends Component {
       this.editor.currentPositionOnLine,
       this.editor.codeToThemeTokens
     );
-    const cursor = this.editor.getComponent("navigation");
-    for (let i = 0; i < parsedValue.length; i++) {
-      cursor.moveRight();
-    }
+    const navigation = this.editor.getComponent("navigation");
+    navigation.updatePositionOnLine(
+      this.editor.currentPositionOnLine + parsedValue.length,
+      lineIndex
+    );
     this.editor.onTextAdded({
       text: key,
-      lineIndex: this.editor.currentLineIndex,
+      lineIndex: lineIndex,
     });
     this.editor.onChange();
   }
@@ -81,7 +83,9 @@ export class TextEditor extends Component {
 
   deleteCharacterByLineIndex(lineIndex, position) {
     const currentLine = this.editor.lines[lineIndex];
+    const navigation = this.editor.getComponent("navigation");
     if (currentLine.isEmpty()) {
+      navigation.updatePositionOnLine(position, lineIndex);
       if (lineIndex > 0) {
         console.log("TODO: delete line for selection");
         // this.deleteLine(lineIndex);
@@ -89,8 +93,7 @@ export class TextEditor extends Component {
     } else {
       if (position >= 0) {
         currentLine.deleteCharacter(position, this.editor.codeToThemeTokens);
-        const cursor = this.editor.getComponent("navigation");
-        cursor.updateCursorPositionTo(position, currentLine)
+        navigation.updatePositionOnLine(position, lineIndex);
         // this.editor.onCharacterDelete();
         // this.editor.onCharacterDelete();
       } else {
@@ -221,13 +224,12 @@ export class TextEditor extends Component {
     );
     const lastDelimiter = Math.max(beforePosition.lastIndexOf(" "));
 
-    const startPosition = lastDelimiter + 1;
+    const startPosition = lastDelimiter;
     const endPosition = this.editor.currentPositionOnLine;
-
-    currentLine.deleteCharacterRange(
+    this.deleteCharacterInRange(
+      this.editor.currentLineIndex,
       startPosition,
-      endPosition,
-      this.editor.codeToThemeTokens
+      endPosition
     );
     this.addCharacter(completion);
     this.editor.onChange();

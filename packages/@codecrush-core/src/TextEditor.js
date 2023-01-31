@@ -239,7 +239,7 @@ export class TextEditor extends Component {
     );
     const lastDelimiter = Math.max(beforePosition.lastIndexOf(" "));
 
-    const startPosition = lastDelimiter;
+    const startPosition = lastDelimiter + 1;
     const endPosition = this.editor.currentPositionOnLine;
     this.deleteCharacterInRange(
       this.editor.currentLineIndex,

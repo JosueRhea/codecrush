@@ -176,6 +176,11 @@ export class Line {
     return content == "" ? null : content;
   }
 
+  getContentRange(start, end){
+    const content = this.textEl.textContent.slice(start, end);
+    return content == "" ? null : content;
+  }
+
   getPosition() {
     return { top: this.textEl.offsetTop, left: this.textEl.offsetLeft };
   }

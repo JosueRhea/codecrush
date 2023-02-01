@@ -45,7 +45,8 @@ export type ComponentId =
   | "selection"
   | "activity-bar"
   | "history-changes"
-  | "shorcuts";
+  | "shorcuts"
+  | "copy-paste";
 
 export class NavigationComponent {
   onKeyPressed(key, withCtrlKey) {}

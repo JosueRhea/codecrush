@@ -1,5 +1,6 @@
 import { ActivityBar } from "./src/ActivityBar";
 import { AutoCompletion } from "./src/AutoCompletion";
+import { CopyPaste } from "./src/CopyPaste";
 import { Editor } from "./src/editor";
 import { HistoryChanges } from "./src/HistoryChanges";
 import { Navigation } from "./src/Navigation";
@@ -24,6 +25,7 @@ export async function initEditor(options) {
   editor.use(new Selection());
   editor.use(new ActivityBar());
   editor.use(new HistoryChanges());
+  editor.use(new CopyPaste());
   await editor.init();
   return editor;
 }

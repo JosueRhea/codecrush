@@ -13,6 +13,22 @@ export class CopyPaste extends Component {
     shorcuts.register({ withCtrl: true, key: "x" }, () => {
       this.cutToClipboard();
     });
+
+    shorcuts.register({ withCtrl: true, key: "v" }, async () => {
+      await this.pasteFromClipboard()
+    });
+  }
+
+  async pasteFromClipboard(){
+    try {
+      const data = await navigator.clipboard.readText();
+      if(data.length > 0){
+        const textEditor = this.editor.getComponent('text-editor')
+        textEditor.insertIntoMultipleLines(data)
+      }
+    } catch (err) {
+      console.error("Failed to paste: ", err);
+    }
   }
 
   copyToClipboard() {

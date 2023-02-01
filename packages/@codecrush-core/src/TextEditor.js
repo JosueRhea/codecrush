@@ -50,6 +50,18 @@ export class TextEditor extends Component {
     this.editor.onChange();
   }
 
+  insertIntoMultipleLines(data) {
+    const splited = data.split(/\r\n|\n/);
+    splited.forEach((lineContent, index) => {
+      if (index == 0) {
+        this.addCharacter(lineContent);
+      } else {
+        this.createNewLineWith(lineContent, this.editor.currentLineIndex + 1);
+        this.addCharacter(lineContent);
+      }
+    });
+  }
+
   addCharacterByLineIndex(key, lineIndex) {
     const parsedValue = keyCodeToChar[key] ?? key;
     if (parsedValue == "") return;
@@ -185,7 +197,9 @@ export class TextEditor extends Component {
   }
 
   createNewLineWith(content, lineIndex) {
-    //Deactivate the currrent line
+    const currentLineEl = this.editor.lines[this.editor.currentLineIndex];
+    currentLineEl.setIsActive(false);
+
     const newLine = new Line(
       this.editor.editorContent,
       content,
@@ -193,11 +207,15 @@ export class TextEditor extends Component {
       lineIndex
     );
     this.editor.lines = insertInto(this.editor.lines, lineIndex, newLine);
-    newLine.setIsActive(true);
-    this.recomputeLineNumbers();
     newLine.setLineNumber(this.editor.lineNumbersEl, lineIndex);
-    this.editor.onNewLine();
-    this.editor.onChange();
+    this.recomputeLineNumbers();
+    newLine.setIsActive(true);
+
+    //Update the cursor
+    this.editor.currentLineIndex += 1;
+    this.editor.currentPositionOnLine = 0;
+    const nav = this.editor.getComponent('navigation')
+    nav.updateCursorPositionTo(this.editor.currentPositionOnLine, newLine);
   }
 
   deleteLine(currentLineIndex, position) {

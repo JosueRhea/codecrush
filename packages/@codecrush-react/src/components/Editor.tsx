@@ -19,7 +19,7 @@ const Editor = (props: EditorProps) => {
       });
     }
   }, [ref]);
-  return <div style={{ width: "100%" }} ref={ref}></div>;
+  return <div style={{ width: "100%", height: props.height }} ref={ref}></div>;
 };
 
 export { Editor };

@@ -63,6 +63,7 @@ export class Editor {
         throw Error("Error loading the theme");
       });
 
+    editor.style.background = this.theme.bg;
     editor.setAttribute("data-testid", "codecrush-container");
     editor.setAttribute("tabindex", "0");
     editor.style.setProperty("--editor-theme-bg", this.theme.bg);

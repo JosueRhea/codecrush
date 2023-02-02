@@ -98,15 +98,31 @@
       /* animation: cursor-blink 1.5s steps(2) infinite; */
     }
 
+    & .autocompletion::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+  
+    & .autocompletion::-webkit-scrollbar-track {
+      background: var(--editor-theme-bg);
+    }
+  
+    & .autocompletion::-webkit-scrollbar-thumb {
+      background: var(--editor-editorLineNumber-foreground);
+      border-radius: 20px;
+    }
+
     & .autocompletion {
       position: absolute;
       background: var(--editorSuggestWidget-background);
       height: fit-content;
-      max-height: 400px;
+      max-height: 250px;
       border-radius: 2px;
       display: flex;
       flex-direction: column;
       box-shadow: 20px 20px 80px rgba(0, 0, 0, 0.3);
+      font-size: 14px;
+      overflow-y: auto;
 
       & .autocompletion-result {
         border: none;
@@ -118,6 +134,8 @@
         background: none;
         display: flex;
         justify-content: space-between;
+        padding-left: 5px;
+        padding-right: 5px;
 
         & .owner {
           opacity: 0.5;

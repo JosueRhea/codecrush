@@ -11,13 +11,28 @@ export class Cursor {
     this.cursor.classList.add("cursor");
 
     editor.appendChild(this.cursor);
-    this.enableAnimation();
+    this.deactivate()
   }
 
   disableAnimation() {
     if (this.cursor.style.animation) {
       this.cursor.style.animation = "";
     }
+  }
+
+  activate() {
+    if (!this.cursor.style.animation) {
+      this.cursor.style.animation = "cursor-blink 1.5s steps(2) infinite";
+    }
+
+    this.cursor.style.opacity = 1;
+  }
+
+  deactivate() {
+    if (this.cursor.style.animation) {
+      this.cursor.style.animation = "";
+    }
+    this.cursor.style.opacity = 0;
   }
 
   enableAnimation() {

@@ -42,6 +42,9 @@ export class Editor {
     const editor = document.createElement("div");
     editor.id = this.id;
     this.parent.appendChild(editor);
+    editor.setAttribute("class", "codecrush-editor");
+    editor.style.height = this.height + "px";
+    editor.style.background = "#1b1e28";
 
     //Get the code
     setCDN("https://unpkg.com/shiki@0.12.1/");
@@ -60,10 +63,8 @@ export class Editor {
         throw Error("Error loading the theme");
       });
 
-    editor.setAttribute("class", "codecrush-editor");
     editor.setAttribute("data-testid", "codecrush-container");
     editor.setAttribute("tabindex", "0");
-    editor.style.height = this.height + "px";
     editor.style.setProperty("--editor-theme-bg", this.theme.bg);
     editor.style.setProperty(
       "--editor-editorLineNumber-foreground",
@@ -193,6 +194,7 @@ export class Editor {
         hiddenInput.focus();
         this.isFocus = true;
         this.editorEl.classList.add("codecrush-editor-focused");
+        this.cursor.activate();
       }
     });
 
@@ -204,22 +206,25 @@ export class Editor {
     hiddenInput.onBlur((e) => {
       this.isFocus = false;
       this.editorEl.classList.remove("codecrush-editor-focused");
+      this.cursor.deactivate();
     });
 
     this.isLoaded = true;
     editor.setAttribute("editor-loaded", true);
     this.handleLastPressed();
-    this.onReady();    
+    this.onReady();
   }
 
   handleLastPressed() {
     setInterval(() => {
-      const currentTime = new Date();
-      const diff = currentTime.getTime() - this.lastTimePressed.getTime();
-      if (diff > 200) {
-        this.cursor.enableAnimation();
-      } else {
-        this.cursor.disableAnimation();
+      if (this.isFocus) {
+        const currentTime = new Date();
+        const diff = currentTime.getTime() - this.lastTimePressed.getTime();
+        if (diff > 200) {
+          this.cursor.enableAnimation();
+        } else {
+          this.cursor.disableAnimation();
+        }
       }
     }, 200);
   }

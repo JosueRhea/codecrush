@@ -48,6 +48,10 @@ export default function Web({ children }: { children: ReactNode }) {
           name="description"
           content="Extensible and powerful code editor for Javascript"
         />
+        <meta
+          property="og:image"
+          content="/og.png"
+        />
         <link rel="icon" type="image/x-icon" href="/favicon.png" />
       </Head>
       <main className="w-full max-w-6xl my-10 px-2">

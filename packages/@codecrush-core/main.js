@@ -23,21 +23,5 @@ initEditor({
   height: 400,
   id: "js-editor",
   parent: app,
-  initialValue: `import { Component } from "codecrush-core";
-  
-class Example extends Component {
-  constructor(){
-    super('example')
-  }
-  onReady() {
-    const activityBar = this.editor.getComponent("activity-bar");
-    activityBar.registerActivity("new-character", "Keyboard: ", false);
-  }
-  onKeyPressed(key) {
-    const activityBar = this.editor.getComponent("activity-bar");
-
-    activityBar.updateActivity("new-character", "Keyboard: " + key, false);
-  }
-}`,
   components: [Example],
 });

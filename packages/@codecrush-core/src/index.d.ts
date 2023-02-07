@@ -17,6 +17,7 @@ export type EditorOptions = {
   id: string;
   parent: Element;
   components?: [T];
+  initialValue?: string;
 };
 
 export declare class Editor {

@@ -4,8 +4,9 @@ import { EditableInput } from "./editableInput";
 import { Line } from "./line";
 
 export class Editor {
-  constructor({ theme, height, id, parent }) {
+  constructor({ theme, height, id, parent, initialValue }) {
     this.components = [];
+    this.initialValue = initialValue ?? ""
     this.editorContent = null;
     this.editorEl = null;
     this.preEl = null;
@@ -214,6 +215,8 @@ export class Editor {
     editor.setAttribute("editor-loaded", true);
     this.handleLastPressed();
     this.onReady();
+    const textEditor = this.getComponent('text-editor')
+    textEditor.insertIntoMultipleLines(this.initialValue)
   }
 
   handleLastPressed() {

@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 
 export type EditorProps = {} & Pick<
   EditorOptions,
-  "height" | "id" | "theme" | "components"
+  "height" | "id" | "theme" | "components" | "initialValue"
 >;
 
 const Editor = (props: EditorProps) => {
@@ -16,6 +16,7 @@ const Editor = (props: EditorProps) => {
         id: props.id,
         parent: ref.current,
         components: props.components,
+        initialValue: props.initialValue
       });
     }
   }, [ref]);
